@@ -6,9 +6,10 @@ Aplikacja frontendowa do pracy inżynierskiej.
 ___
 ## SPIS TREŚCI
 1. [Struktura](docs/structure.md)
-2. [Wymagania](docs/requirements.md)
-3. [Dependabot](docs/dependabot.md)
-4. [Storybook](docs/storybook.md)
+2. [Nazewnictwo](docs/naming-conventions.md)
+3. [Wymagania](docs/requirements.md)
+4. [Dependabot](docs/dependabot.md)
+5. [Storybook](docs/storybook.md)
 
 ___
 ## STOS TECHNOLOGICZNY
