@@ -30,8 +30,7 @@ ___
 ```bash
 npm install
 ```
-3. Uzupełnij plik `.env` na podstawie `.env.example`
-4. Uruchom aplikację
+3. Uruchom aplikację
 ```bash
 npm run dev
 ```
