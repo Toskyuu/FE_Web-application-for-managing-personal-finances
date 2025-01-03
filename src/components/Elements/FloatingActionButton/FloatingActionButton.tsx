@@ -1,7 +1,7 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FontAwesomeIconProps } from "@fortawesome/react-fontawesome";
-import FloatingButtonLabel from "@/components/Elements/FloatingButtonLabel/FloatingButtonLabel";
+import {FloatingButtonLabel} from "@/components";
 
 interface FloatingActionButtonProps {
     icon: FontAwesomeIconProps["icon"];

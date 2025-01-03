@@ -1,12 +1,12 @@
 import React from 'react';
-import Header from '@/components/Layout/Header/Header';
-import FloatingButtons from "@/components/Elements/FloatingButtons/FloatingButtons";
+import { UserLayout } from './components';
 
 const App: React.FC = () => {
     return (
-        <div className="App">
-            <Header />
-            <FloatingButtons />
+        <div className="App bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark">
+            <UserLayout>
+                hejka
+            </UserLayout>
         </div>
     );
 };

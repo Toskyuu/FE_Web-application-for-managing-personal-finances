@@ -1,5 +1,5 @@
 import { Meta, StoryFn } from '@storybook/react';
-import Header from './Header';
+import Header from './Header.tsx';
 
 export default {
     title: 'Components/Header',
