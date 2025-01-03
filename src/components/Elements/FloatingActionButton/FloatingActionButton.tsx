@@ -17,7 +17,7 @@ const FloatingActionButton: React.FC<FloatingActionButtonProps> = ({ icon, label
             <FloatingButtonLabel label={label} color={color} bgColor={bgColor} />
             <button
                 onClick={onClick}
-                className="w-16 h-16 bg-primary text-text-dark rounded-full shadow-lg flex items-center justify-center transition-transform transform"
+                className={`w-16 h-16 bg-${bgColor} text-text-dark rounded-full shadow-lg flex items-center justify-center transition-transform transform`}
             >
                 <FontAwesomeIcon icon={icon} size="xl" />
             </button>

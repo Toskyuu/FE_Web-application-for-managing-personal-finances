@@ -24,7 +24,6 @@ const FloatingButtons: React.FC = () => {
                 <FontAwesomeIcon icon={faPlus} size="xl" />
             </button>
 
-            {/* Przycisków rozwiniętych */}
             <div
                 className={`absolute bottom-20 right-0 space-y-4 ${isExpanded ? "flex" : "hidden"} flex-col items-center transition-all duration-500 ease-in-out z-50`}
             >

@@ -33,7 +33,7 @@ const Header: React.FC = () => {
 
     return (
         <div>
-            <header className="sticky top-0 z-50 bg-secondary shadow-md">
+            <header className="sticky top-0 z-50 bg-primary shadow-md">
                 <div className="container mx-auto flex items-center justify-between p-4">
                     <button
                         className="absolute left-0 ml-4 text-text-dark"
@@ -43,7 +43,7 @@ const Header: React.FC = () => {
                         <FontAwesomeIcon icon={faBars} size="lg"/>
                     </button>
 
-                    <div className="text-2xl font-bold text-primary text-center flex-grow">
+                    <div className="text-2xl font-bold text-error text-center flex-grow">
                         YourFinance
                     </div>
                 </div>
