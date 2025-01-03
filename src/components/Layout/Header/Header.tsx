@@ -33,7 +33,6 @@ const Header: React.FC = () => {
 
     return (
         <div>
-            {/* Header */}
             <header className="sticky top-0 z-50 bg-secondary shadow-md">
                 <div className="container mx-auto flex items-center justify-between p-4">
                     <button
@@ -55,8 +54,7 @@ const Header: React.FC = () => {
                     isMenuOpen ? "translate-x-0" : "-translate-x-full"
                 } transition-transform duration-300 ease-in-out`}
             >
-                {/* Menu */}
-                <nav className="mt-16">
+                <nav className="mt-16 text-lg">
                     <ul className="flex flex-col items-start space-y-4 pl-4">
                         <li>
                             <a

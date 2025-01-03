@@ -1,11 +1,12 @@
 import React from 'react';
-import Header from './components/Layout/Header/Header';
+import Header from '@/components/Layout/Header/Header';
+import FloatingButtons from "@/components/Elements/FloatingButtons/FloatingButtons";
 
 const App: React.FC = () => {
     return (
         <div className="App">
             <Header />
-            {/* Reszta aplikacji */}
+            <FloatingButtons />
         </div>
     );
 };
