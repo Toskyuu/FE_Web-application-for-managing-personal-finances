@@ -5,8 +5,7 @@ import {UserLayout} from "@/components";
 const DashboardPage: React.FC = () => {
     return (
         <UserLayout>
-            <h1>Witaj w swoim panelu użytkownika!</h1>
-            {/* Można tu dodać dane użytkownika, saldo konta, transakcje itp. */}
+            <div className={'bg-surface-light dark:bg-surface-dark p-48 content-center text-center dark:text-text-dark text-text-light rounded-2xl shadow-2xl'}>Witaj w swoim panelu użytkownika!</div>
         </UserLayout>
     );
 };

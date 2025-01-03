@@ -5,24 +5,30 @@ module.exports = {
     theme: {
         colors: {
             primary: {
-                DEFAULT: '#5ba355',
+                DEFAULT: '#3e8a80',
             },
             secondary: {
-                DEFAULT: '#9067C6',
+                DEFAULT: '#4c837b',
             },
             background: {
-                light: '#F7F5FB',
-                dark: '#0A1128',
+                light: '#FEF5EF',
+                dark: '#171717',
             },
+            // 1e1e1e
             surface: {
-                light: '#F5F1ED',
-                dark: '#0B2027',
+                light: '#cac1c1',
+                dark: '#232323',
             },
             text: {
-                light: '#0A1128',
+                light: '#121212',
                 dark: '#F7F5FB',
             },
-            error: '#FF6B6B',
+            success: {
+                DEFAULT: '#519872',
+            },
+            error: {
+                DEFAULT: '#BC4B51',
+            },
         },
         extend: {
             fontFamily: {
