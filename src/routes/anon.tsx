@@ -1,4 +1,4 @@
-import { AuthRouter } from '@/features/auth';
+import { AuthRouter } from '@/features/Auth/router';
 
 export const anonRoutes = [
     {

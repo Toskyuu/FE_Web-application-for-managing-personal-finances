@@ -1,22 +1,13 @@
-import { Route, Routes } from 'react-router-dom';
-
-import { Layout } from './components/Layout.tsx';
-import { Login } from './pages/Login.tsx';
-import { Register } from './pages/Register.tsx';
+import { Routes, Route } from "react-router-dom";
+import AnonLayout from "@/components/Layout/AnonLayout/AnonLayout";
+import LoginPage from "@/pages/Anon/LoginPage";
 
 export const AuthRouter = () => {
     return (
         <Routes>
-            <Route
-                path="/"
-                element={<Layout />}
-                children={
-                    <>
-                        <Route path="/register" element={<Register />} />
-                        <Route path="/login" element={<Login />} />
-                    </>
-                }
-            />
+            <Route path="/" element={<AnonLayout />}>
+                <Route path="login" element={<LoginPage />} />
+            </Route>
         </Routes>
     );
 };

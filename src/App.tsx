@@ -1,14 +1,15 @@
 import React from 'react';
 import LandingPage from "@/pages/Anon/LandingPage.tsx";
+import LoginPage from "@/pages/Anon/LoginPage.tsx";
+import {AppRoutes} from "@/routes";
+import {BrowserRouter} from "react-router-dom";
 
 const App: React.FC = () => {
     return (
-        <div className="App">
-           <LandingPage>
-               {/*<AppRoutes />*/}
+        <BrowserRouter>
+            <AppRoutes />
+        </BrowserRouter>
 
-           </LandingPage>
-        </div>
     );
 };
 

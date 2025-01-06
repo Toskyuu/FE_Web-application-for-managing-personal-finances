@@ -7,3 +7,4 @@ export { default as DefaultButton } from '@/components/Elements/Buttons/DefaultB
 export { default as UserLayout } from './Layout/UserLayout/UserLayout.tsx'
 export { default as AnonLayout } from './Layout/AnonLayout/AnonLayout.tsx'
 export { default as MainCard } from './Elements/Card/MainCard.tsx'
+export { default as LoginForm } from './Elements/Forms/LoginForm.tsx'

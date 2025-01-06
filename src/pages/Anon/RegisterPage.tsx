@@ -1,4 +1,11 @@
+import LoginForm from "@/components/Elements/Forms/LoginForm.tsx";
+import React from 'react';
 
-export const Register = () => {
-    return <RegisterForm />;
+const RegisterPage: React.FC = () => {
+    return (
+        <div>
+            <RegisterForm/>
+        </div>
+    );
 };
+export default RegisterPage;
