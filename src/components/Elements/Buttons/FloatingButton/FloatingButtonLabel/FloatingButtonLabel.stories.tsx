@@ -1,5 +1,5 @@
 import { Meta, StoryFn } from '@storybook/react';
-import Label from "./FloatingButtonLabel";
+import Label from "./FloatingButtonLabel.tsx";
 
 export default {
     title: 'Components/Label',
