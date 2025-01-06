@@ -14,8 +14,8 @@ const UserLayout: React.FC<UserLayoutProps> = ({ children }) => {
                 <main className="flex-1 p-6 flex items-center justify-center">
                     {children}
                 </main>
-                <FloatingButtons/>
             </div>
+            <FloatingButtons/>
         </div>
 
     );

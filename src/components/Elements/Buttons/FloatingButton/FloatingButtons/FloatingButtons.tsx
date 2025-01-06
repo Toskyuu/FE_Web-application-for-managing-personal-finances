@@ -8,7 +8,7 @@ import {
     faList,
     faClock
 } from "@fortawesome/free-solid-svg-icons";
-import FloatingActionButton from "@/components/Elements/FloatingActionButton/FloatingActionButton";
+import FloatingActionButton from "@/components/Elements/Buttons/FloatingButton/FloatingActionButton/FloatingActionButton.tsx";
 
 const FloatingButtons: React.FC = () => {
     const [isExpanded, setIsExpanded] = useState(false);
@@ -64,7 +64,6 @@ const FloatingButtons: React.FC = () => {
                 />
             </div>
 
-            {/* Tło */}
             {isExpanded && (
                 <div
                     className="fixed inset-0 bg-black bg-opacity-50 z-40"

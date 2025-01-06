@@ -1,11 +1,13 @@
 import React from 'react';
-import DashboardPage from "@/pages/DashboardPage.tsx";
+import LandingPage from "@/pages/Anon/LandingPage.tsx";
 
 const App: React.FC = () => {
     return (
         <div className="App">
-           <DashboardPage>
-           </DashboardPage>
+           <LandingPage>
+               {/*<AppRoutes />*/}
+
+           </LandingPage>
         </div>
     );
 };

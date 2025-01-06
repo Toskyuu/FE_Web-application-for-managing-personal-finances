@@ -10,6 +10,8 @@ import {
     faMoneyBillTransfer,
     faTable,
 } from "@fortawesome/free-solid-svg-icons";
+import YourFinance from "@/assets/YourFinance.png";
+
 
 const Header: React.FC = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -34,17 +36,17 @@ const Header: React.FC = () => {
     return (
         <div>
             <header className="sticky top-0 z-50 bg-primary shadow-md">
-                <div className="container mx-auto flex items-center justify-between p-4">
+                <div className="container mx-auto flex items-center justify-center p-4">
                     <button
-                        className="absolute left-0 ml-4 text-text-dark"
+                        className="absolute left-0 ml-4 text-text-dark h-10 w-10"
                         onClick={() => setIsMenuOpen(!isMenuOpen)}
                         aria-label="Open navigation"
                     >
                         <FontAwesomeIcon icon={faBars} size="lg"/>
                     </button>
 
-                    <div className="text-2xl font-bold text-error text-center flex-grow">
-                        YourFinance
+                    <div className="flex items-center h-10">
+                        <img src={YourFinance} alt="Logo" className="h-full w-auto object-contain" />
                     </div>
                 </div>
             </header>
