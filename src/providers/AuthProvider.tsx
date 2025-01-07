@@ -4,15 +4,17 @@ import {useNavigate} from "react-router-dom";
 
 interface AuthContextType {
     token: string | null;
-    login: (email: string, password: string) => Promise<void>;
-    logout: () => void;
+    logIn: (email: string, password: string) => Promise<void>;
+    logOut: () => void;
+    register: (username: string, email: string, password: string) => Promise<void>;
     isAuthenticated: boolean;
 }
 
 export const AuthContext = createContext<AuthContextType>({
     token: null,
-    login: async () => {},
-    logout: () => {},
+    logIn: async () => {},
+    logOut: () => {},
+    register: async () => {},
     isAuthenticated: false,
 });
 
@@ -20,7 +22,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [token, setToken] = useState<string | null>(localStorage.getItem("token"));
     const navigate = useNavigate();
 
-    const login = async (email: string, password: string) => {
+    const logIn = async (email: string, password: string) => {
         try {
             const formData = new FormData();
             formData.set("username", email);
@@ -40,13 +42,35 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
         }
     };
 
-    const logout = () => {
+    const logOut = () => {
         setToken(null);
         localStorage.removeItem("token");
     };
 
+    const register = async (username: string, email: string, password: string) => {
+        try {
+            const formData = new FormData();
+            formData.set("username", username);
+            formData.set("email", email);
+            formData.set("password", password);
+
+            const response = await apiClient.post(
+                "/users/register",
+                { username,
+                email,
+                password}
+        );
+
+            console.log(response);
+            navigate('/');
+        } catch (error) {
+            console.error("Registration failed", error);
+            throw error;
+        }
+    };
+
     return (
-        <AuthContext.Provider value={{ token, login, logout, isAuthenticated: !!token }}>
+        <AuthContext.Provider value={{ token, logIn, logOut, register, isAuthenticated: !!token }}>
             {children}
         </AuthContext.Provider>
     );
