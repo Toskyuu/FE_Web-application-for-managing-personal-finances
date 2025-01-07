@@ -2,13 +2,13 @@ import React from "react";
 
 interface DefaultButtonProps {
     text: string;
-    onClick: () => void;
-    color: string;
-    bgColor: string;
-    fontSize: string;
-    padding: string;
-    radius: string;
-    minwidth: string;
+    onClick?: () => void;
+    color?: string;
+    bgColor?: string;
+    fontSize?: string;
+    padding?: string;
+    radius?: string;
+    minwidth?: string;
 }
 
 const DefaultButton: React.FC<DefaultButtonProps> = ({
