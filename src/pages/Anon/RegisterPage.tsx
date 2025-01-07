@@ -7,11 +7,11 @@ const RegisterPage: React.FC = () => {
     const {isAuthenticated} = useAuth();
     const navigate = useNavigate();
 
-    // useEffect(() => {
-    //     if (isAuthenticated) {
-    //         navigate('/');
-    //     }
-    // }, [isAuthenticated, navigate]);
+    useEffect(() => {
+        if (isAuthenticated) {
+            navigate('/');
+        }
+    }, [isAuthenticated, navigate]);
 
     return (
 
