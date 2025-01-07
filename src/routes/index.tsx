@@ -16,7 +16,7 @@ export const AppRoutes = () => {
          if (!isAuthenticated) return anonRoutes;
 
          console.log("Jesteś zalogowany.")
-        return anonRoutes;
+        return userRoutes;
     };
 
     const routes = determineRoutes();

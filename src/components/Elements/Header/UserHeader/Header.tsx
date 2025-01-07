@@ -11,10 +11,13 @@ import {
     faTable,
 } from "@fortawesome/free-solid-svg-icons";
 import YourFinance from "@/assets/YourFinance.png";
+import {DefaultButton} from "@/components";
+import {useAuth} from "@/hooks/useAuth.tsx";
 
 
 const Header: React.FC = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const {logOut} = useAuth();
 
     useEffect(() => {
         const theme = localStorage.getItem('theme');
@@ -46,7 +49,7 @@ const Header: React.FC = () => {
                     </button>
 
                     <div className="flex items-center h-10">
-                        <img src={YourFinance} alt="Logo" className="h-full w-auto object-contain" />
+                        <img src={YourFinance} alt="Logo" className="h-full w-auto object-contain"/>
                     </div>
                 </div>
             </header>
@@ -124,7 +127,17 @@ const Header: React.FC = () => {
                     </ul>
                 </nav>
 
-                <div className="fixed bottom-8 right-0 px-4 py-2">
+                <div className="fixed bottom-8 w-full p-5 flex justify-between items-center ">
+                    <DefaultButton
+                        fontSize="text-2xl"
+                        color="text-text-dark"
+                        bgColor="bg-error"
+                        onClick={() => logOut()}
+                        text={"Wyloguj się"}
+                        padding="p-4"
+                        radius="rounded-2xl"
+                        minwidth="min-w-30"
+                    />
                     <button onClick={toggleTheme}
                             className="h-12 w-12 rounded-lg p-2 hover:bg-gray-100 dark:hover:bg-gray-700">
                         <svg className="fill-text-dark block dark:hidden" viewBox="0 0 20 20">

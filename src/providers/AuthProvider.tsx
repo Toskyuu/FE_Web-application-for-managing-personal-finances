@@ -1,4 +1,4 @@
-import { createContext, useState, ReactNode } from "react";
+import {createContext, useState, ReactNode} from "react";
 import apiClient from "@/lib/apiClient.tsx";
 import {useNavigate} from "react-router-dom";
 
@@ -12,13 +12,16 @@ interface AuthContextType {
 
 export const AuthContext = createContext<AuthContextType>({
     token: null,
-    logIn: async () => {},
-    logOut: () => {},
-    register: async () => {},
+    logIn: async () => {
+    },
+    logOut: () => {
+    },
+    register: async () => {
+    },
     isAuthenticated: false,
 });
 
-const AuthProvider = ({ children }: { children: ReactNode }) => {
+export const AuthProvider = ({children}: { children: ReactNode }) => {
     const [token, setToken] = useState<string | null>(localStorage.getItem("token"));
     const navigate = useNavigate();
 
@@ -29,7 +32,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
             formData.set("password", password);
 
             const response = await apiClient.post("/users/login", formData, {
-                headers: { "Content-Type": "multipart/form-data" },
+                headers: {"Content-Type": "multipart/form-data"},
             });
 
             const userToken = response.data.access_token;
@@ -45,6 +48,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     const logOut = () => {
         setToken(null);
         localStorage.removeItem("token");
+        console.log("Wylogowano usera")
     };
 
     const register = async (username: string, email: string, password: string) => {
@@ -56,10 +60,12 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
 
             const response = await apiClient.post(
                 "/users/register",
-                { username,
-                email,
-                password}
-        );
+                {
+                    username,
+                    email,
+                    password
+                }
+            );
 
             console.log(response);
             navigate('/');
@@ -70,7 +76,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ token, logIn, logOut, register, isAuthenticated: !!token }}>
+        <AuthContext.Provider value={{token, logIn, logOut, register, isAuthenticated: !!token}}>
             {children}
         </AuthContext.Provider>
     );
