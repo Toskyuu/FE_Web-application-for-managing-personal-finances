@@ -1,7 +1,7 @@
 import React from "react";
 import {useForm, SubmitHandler} from "react-hook-form";
 import {DefaultButton, MainCard} from "@/components";
-import {loginRequest} from "@/lib/apiClient.tsx";
+import {useAuth} from "@/hooks/useAuth.tsx";
 
 interface LoginFormInputs {
     email: string;
@@ -10,9 +10,10 @@ interface LoginFormInputs {
 
 const LoginForm: React.FC = () => {
     const {register, handleSubmit, formState: {errors}} = useForm<LoginFormInputs>();
+    const { login } = useAuth();
 
     const onSubmit: SubmitHandler<LoginFormInputs> = async (data) => {
-        await loginRequest(data.email, data.password);
+        await login(data.email, data.password);
     };
 
     return (

@@ -1,13 +1,15 @@
 import React from 'react';
-import LandingPage from "@/pages/Anon/LandingPage.tsx";
-import LoginPage from "@/pages/Anon/LoginPage.tsx";
 import {AppRoutes} from "@/routes";
 import {BrowserRouter} from "react-router-dom";
+import AuthProvider from '@/providers/AuthProvider'
+
 
 const App: React.FC = () => {
     return (
         <BrowserRouter>
+            <AuthProvider>
             <AppRoutes />
+            </AuthProvider>
         </BrowserRouter>
 
     );
