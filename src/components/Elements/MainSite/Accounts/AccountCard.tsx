@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {MainCard} from "@/components";
 import apiClient from "@/lib/apiClient.tsx";
-import {translateAccountType} from "@/utils/AccountTypeTranslator.tsx";
+import {translateAccountType} from "@/utils/Translators.tsx";
 
 interface Account {
     id: number;
@@ -47,12 +47,10 @@ const AccountsCard: React.FC = () => {
                             key={account.id}
                             className="flex flex-col border border-gray-300 dark:border-gray-700 p-4 rounded-lg bg-white dark:bg-gray-800"
                         >
-                            {/* Górna sekcja: Nazwa konta i saldo */}
                             <div className="flex justify-between items-center mb-2">
                                 <h3 className="text-lg font-semibold">{account.name}</h3>
                                 <p className="text-lg font-bold">{account.balance.toFixed(2)} PLN</p>
                             </div>
-                            {/* Dolna sekcja: Typ konta */}
                             <div className="flex items-center justify-items-start">
                             <p className="text-md text-gray-600 dark:text-gray-400">
                                 Typ: {translateAccountType(account.type)}

@@ -9,3 +9,5 @@ export { default as AnonLayout } from './Layout/AnonLayout/AnonLayout.tsx'
 export { default as MainCard } from './Elements/Card/MainCard.tsx'
 export { default as LoginForm } from './Elements/Forms/LoginForm.tsx'
 export { default as AccountCard } from './Elements/MainSite/Accounts/AccountCard.tsx'
+export { default as TransactionCard } from './Elements/MainSite/Transactions/TransactionCard.tsx'
+
