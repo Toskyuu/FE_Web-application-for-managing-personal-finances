@@ -38,7 +38,7 @@ const Header: React.FC = () => {
 
     return (
         <div>
-            <header className="sticky top-0 z-50 bg-primary shadow-md">
+            <header className="sticky top-0 z-30 bg-primary shadow-md">
                 <div className="container mx-auto flex items-center justify-center p-4">
                     <button
                         className="absolute left-0 ml-4 text-text-dark h-10 w-10"
@@ -55,7 +55,7 @@ const Header: React.FC = () => {
             </header>
 
             <div
-                className={`fixed top-5 left-0 h-full w-64 bg-secondary shadow-lg z-40 transform ${
+                className={`fixed top-5 left-0 h-full w-64 bg-secondary shadow-lg z-20 transform ${
                     isMenuOpen ? "translate-x-0" : "-translate-x-full"
                 } transition-transform duration-300 ease-in-out`}
             >

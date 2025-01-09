@@ -9,12 +9,21 @@ import {
     faClock
 } from "@fortawesome/free-solid-svg-icons";
 import FloatingActionButton from "@/components/Elements/Buttons/FloatingButton/FloatingActionButton/FloatingActionButton.tsx";
+import {useModal} from "@/hooks/useModal.tsx";
+import TransactionCreateForm from "@/components/Elements/Forms/TransactionCreateForm.tsx";
 
 const FloatingButtons: React.FC = () => {
     const [isExpanded, setIsExpanded] = useState(false);
+    const { openModal } = useModal();
+
+    const handleOpenModal = (content: React.ReactNode) => {
+        openModal(content);
+        setIsExpanded(false);
+    };
+
 
     return (
-        <div className="fixed bottom-6 right-6 z-50">
+        <div className="fixed bottom-6 right-6 z-30">
             <button
                 onClick={() => setIsExpanded(!isExpanded)}
                 className={`w-16 h-16 bg-primary text-text-dark rounded-full shadow-lg flex items-center justify-center transition-transform transform ${
@@ -44,7 +53,7 @@ const FloatingButtons: React.FC = () => {
                 <FloatingActionButton
                     icon={faMoneyBillTransfer}
                     label="Dodaj transakcje"
-                    onClick={() => console.log("Transakcje clicked")}
+                    onClick={() => handleOpenModal(<TransactionCreateForm/>)}
                     color="text-dark"
                     bgColor="primary"
                 />
