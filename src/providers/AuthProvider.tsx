@@ -1,6 +1,7 @@
 import {createContext, useState, ReactNode} from "react";
 import apiClient from "@/lib/apiClient.tsx";
 import {useNavigate} from "react-router-dom";
+import {useData} from "@/hooks/useData.tsx";
 
 interface AuthContextType {
     token: string | null;
@@ -24,6 +25,7 @@ export const AuthContext = createContext<AuthContextType>({
 export const AuthProvider = ({children}: { children: ReactNode }) => {
     const [token, setToken] = useState<string | null>(localStorage.getItem("token"));
     const navigate = useNavigate();
+    const { clearData, fetchData } = useData();
 
     const logIn = async (email: string, password: string) => {
         try {
@@ -38,6 +40,9 @@ export const AuthProvider = ({children}: { children: ReactNode }) => {
             const userToken = response.data.access_token;
             setToken(userToken);
             localStorage.setItem("token", userToken);
+
+            fetchData();
+
             navigate('/');
         } catch (error) {
             console.error("Login failed", error);
@@ -48,7 +53,9 @@ export const AuthProvider = ({children}: { children: ReactNode }) => {
     const logOut = () => {
         setToken(null);
         localStorage.removeItem("token");
+        clearData();
         console.log("Wylogowano usera")
+
     };
 
     const register = async (username: string, email: string, password: string) => {
@@ -82,4 +89,3 @@ export const AuthProvider = ({children}: { children: ReactNode }) => {
     );
 };
 
-export default AuthProvider;

@@ -10,11 +10,22 @@ export const translateAccountType = (type: string): string => {
 };
 
 const TransactionTypeTranslations: { [key: string]: string } = {
-    Outcome: "Wychodząca",
-    Income: "Przychodząca",
-    Internal: "Wewnętrzny",
+    Outcome: "Wydatek",
+    Income: "Dochód",
+    Internal: "Przelew wewnętrzny",
 };
 
 export const translateTransactionType = (type: string): string => {
     return TransactionTypeTranslations[type] || type;
+};
+
+const RecurringTypeTranslations: { [key: string]: string } = {
+    Daily: "Codziennie",
+    Weekly: "Co tydzień",
+    Biweekly: "Co dwa tygodnie",
+    Monthly: "Co miesiąc"
+};
+
+export const translateRecurringType = (type: string): string => {
+    return RecurringTypeTranslations[type] || type;
 };
