@@ -18,10 +18,7 @@ const AccountsCard: React.FC = () => {
     useEffect(() => {
         const fetchAccounts = async () => {
             try {
-                const response = await apiClient.post("/accounts/accounts", {},
-                    {
-                       params: {user_id: 6}
-                    });
+                const response = await apiClient.post("/accounts/accounts", {});
                 setAccounts(response.data);
                 setLoading(false);
             } catch (err) {

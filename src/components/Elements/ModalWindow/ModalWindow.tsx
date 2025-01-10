@@ -1,11 +1,10 @@
 import React from "react";
-import {useModal} from "@/hooks/useModal";
+import { useModal } from "@/hooks/useModal";
 
 const ModalWindow: React.FC = () => {
-    const {isOpen, content, closeModal} = useModal();
+    const { isOpen, content, closeModal } = useModal();
 
     if (!isOpen) return null;
-
 
     return (
         <>
@@ -25,7 +24,8 @@ const ModalWindow: React.FC = () => {
                         ✖
                     </button>
                     <div className="text-center">
-                        <div className="mb-4">{content}</div>
+                        <div className="mb-4 max-h-96 overflow-y-auto scrollbar-none">{content}</div>
+                        TO-DO NAPRAWIĆ SCROLL
                     </div>
                 </div>
             </div>
