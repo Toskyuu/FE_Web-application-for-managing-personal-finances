@@ -1,10 +1,11 @@
 import React from "react";
-import { useModal } from "@/hooks/useModal";
+import {useModal} from "@/hooks/useModal";
 
 const ModalWindow: React.FC = () => {
-    const { isOpen, content, closeModal } = useModal();
+    const {isOpen, content, closeModal} = useModal();
 
     if (!isOpen) return null;
+
 
     return (
         <>
@@ -13,9 +14,10 @@ const ModalWindow: React.FC = () => {
                 onClick={closeModal}
             ></div>
 
-            <div className="fixed inset-0 z-50 flex items-center justify-center">
+            <div className="fixed inset-0 z-40 flex items-center justify-center pointer-events-none">
                 <div
-                    className="relative bg-surface-light text-text-light dark:bg-surface-dark dark:text-text-dark rounded-lg shadow-lg w-full max-w-lg p-6 mx-4">
+                    className="relative bg-background-light text-text-light dark:bg-surface-dark dark:text-text-dark rounded-2xl shadow-2xl w-full max-w-lg p-6 mx-4 pointer-events-auto"
+                >
                     <button
                         className="absolute top-3 right-3 text-gray-500 hover:text-gray-700"
                         onClick={closeModal}
@@ -24,12 +26,6 @@ const ModalWindow: React.FC = () => {
                     </button>
                     <div className="text-center">
                         <div className="mb-4">{content}</div>
-                        <button
-                            onClick={closeModal}
-                            className="mt-6 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark focus:outline-none"
-                        >
-                            Zamknij
-                        </button>
                     </div>
                 </div>
             </div>

@@ -1,26 +1,55 @@
 import React, {useState, useEffect} from "react";
 import {useForm} from "react-hook-form";
-import {useData} from "@/hooks/useData.tsx";
 import apiClient from "@/lib/apiClient.tsx";
+import {useData} from "@/hooks/useData.tsx";
 import {useModal} from "@/hooks/useModal.tsx";
 import {DefaultButton, FormField} from "@/components";
-import {translateTransactionType} from "@/utils/Translators.tsx";
+import {translateRecurringType, translateTransactionType} from "@/utils/Translators.tsx";
 
-interface FormData {
+interface RecurringTransactionFormData {
     description: string;
     amount: number;
-    date: string;
+    recurring_frequency: string;
+    start_date: string;
     category_id: number;
     account_id: number;
-    type: string;
     account_id_2?: number;
+    type: string;
 }
 
-const TransactionCreateForm: React.FC = () => {
-    const {register, handleSubmit, setValue, formState: {errors}} = useForm<FormData>();
-    const [type, setType] = useState<string>("Outcome");
+const RecurringTransactionForm: React.FC = () => {
+    const {register, handleSubmit, setValue, formState: {errors}} = useForm<RecurringTransactionFormData>();
+    const [type, setType] = useState<string>("Income");
     const {accounts, categories} = useData();
     const {closeModal} = useModal();
+
+    useEffect(() => {
+        const today = new Date().toISOString().split("T")[0];
+        setValue("start_date", today);
+    }, [setValue]);
+
+    const onSubmit = async (data: RecurringTransactionFormData) => {
+        try {
+            const requestBody = {
+                ...data,
+                account_id_2: data.account_id_2 || null,
+            };
+
+            const response = await apiClient.post("/recurring-transactions", requestBody);
+
+            console.log("Recurring transaction successfully created:", response.data);
+            closeModal();
+        } catch (error) {
+            console.error("Error creating recurring transaction:", error);
+        }
+    };
+
+    const RecurringTypes = [
+        {value: "Daily", label: translateRecurringType("Daily")},
+        {value: "Weekly", label: translateRecurringType("Weekly")},
+        {value: "Biweekly", label: translateRecurringType("Biweekly")},
+        {value: "Monthly", label: translateRecurringType("Monthly")},
+    ];
 
     const TransactionTypes = [
         {value: "Income", label: translateTransactionType("Income")},
@@ -28,28 +57,7 @@ const TransactionCreateForm: React.FC = () => {
         {value: "Internal", label: translateTransactionType("Internal")},
     ];
 
-    useEffect(() => {
-        const today = new Date().toISOString().split("T")[0];
-        setValue("date", today);
-    }, [setValue]);
 
-    const onSubmit = async (data: FormData) => {
-        try {
-            const requestBody = {
-                ...data,
-                account_id_2: data.account_id_2 || null,
-            };
-
-            const response = await apiClient.post("/transactions", requestBody);
-
-            console.log("Transaction successfully created:", response.data);
-            closeModal();
-        } catch (error) {
-            console.error("Error creating transaction:", error);
-        }
-    };
-
-    // Konfiguracja pól formularza
     const fields = [
         {
             id: "description",
@@ -64,10 +72,17 @@ const TransactionCreateForm: React.FC = () => {
             validation: {required: "Kwota jest wymagana", min: 0},
         },
         {
-            id: "date",
-            label: "Data",
+            id: "recurring_frequency",
+            label: "Częstotliwość",
+            type: "select",
+            options: RecurringTypes,
+            validation: {required: "Częstotliwość jest wymagana"},
+        },
+        {
+            id: "start_date",
+            label: "Data rozpoczęcia",
             type: "date",
-            validation: {required: "Data jest wymagana"},
+            validation: {required: "Data rozpoczęcia jest wymagana"},
         },
         {
             id: "category_id",
@@ -125,13 +140,14 @@ const TransactionCreateForm: React.FC = () => {
                     errors={errors}
                 />
             ))}
+
             <div className="w-full flex justify-center items-center pt-5">
                 <DefaultButton
                     fontSize="text-2xl"
                     color="text-text-dark"
                     bgColor="bg-success"
                     onClick={() => onSubmit}
-                    text={"Dodaj transakcję"}
+                    text={"Dodaj cykliczną transakcję"}
                     padding="p-4"
                     radius="rounded-2xl"
                     minwidth="min-w-30"
@@ -141,4 +157,5 @@ const TransactionCreateForm: React.FC = () => {
     );
 };
 
-export default TransactionCreateForm;
+export default RecurringTransactionForm;
+

@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, {useState} from "react";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {
     faPlus,
     faCreditCard,
@@ -8,13 +8,20 @@ import {
     faList,
     faClock
 } from "@fortawesome/free-solid-svg-icons";
-import FloatingActionButton from "@/components/Elements/Buttons/FloatingButton/FloatingActionButton/FloatingActionButton.tsx";
+import FloatingActionButton
+    from "@/components/Elements/Buttons/FloatingButton/FloatingActionButton/FloatingActionButton.tsx";
 import {useModal} from "@/hooks/useModal.tsx";
-import TransactionCreateForm from "@/components/Elements/Forms/TransactionCreateForm.tsx";
+import {
+    AccountCreateForm,
+    BudgetCreateForm,
+    TransactionCreateForm,
+    RecurringTransactionCreateForm,
+    CategoryCreateForm
+} from "@/components";
 
 const FloatingButtons: React.FC = () => {
     const [isExpanded, setIsExpanded] = useState(false);
-    const { openModal } = useModal();
+    const {openModal} = useModal();
 
     const handleOpenModal = (content: React.ReactNode) => {
         openModal(content);
@@ -30,7 +37,7 @@ const FloatingButtons: React.FC = () => {
                     isExpanded ? "rotate-45" : "rotate-0"
                 } focus:outline-none`}
             >
-                <FontAwesomeIcon icon={faPlus} size="xl" />
+                <FontAwesomeIcon icon={faPlus} size="xl"/>
             </button>
 
             <div
@@ -39,14 +46,14 @@ const FloatingButtons: React.FC = () => {
                 <FloatingActionButton
                     icon={faCreditCard}
                     label="Dodaj konto"
-                    onClick={() => console.log("Konto clicked")}
+                    onClick={() => handleOpenModal(<AccountCreateForm/>)}
                     color="text-dark"
                     bgColor="primary"
                 />
                 <FloatingActionButton
                     icon={faChartPie}
                     label="Dodaj budżet"
-                    onClick={() => console.log("Budżet clicked")}
+                    onClick={() => handleOpenModal(<BudgetCreateForm/>)}
                     color="text-dark"
                     bgColor="primary"
                 />
@@ -60,14 +67,14 @@ const FloatingButtons: React.FC = () => {
                 <FloatingActionButton
                     icon={faClock}
                     label="Dodaj cykliczną transakcję"
-                    onClick={() => console.log("Transakcja cykliczna clicked")}
+                    onClick={() => handleOpenModal(<RecurringTransactionCreateForm/>)}
                     color="text-dark"
                     bgColor="primary"
                 />
                 <FloatingActionButton
                     icon={faList}
                     label="Dodaj kategorię"
-                    onClick={() => console.log("Kategoria clicked")}
+                    onClick={() => handleOpenModal(<CategoryCreateForm/>)}
                     color="text-dark"
                     bgColor="primary"
                 />
