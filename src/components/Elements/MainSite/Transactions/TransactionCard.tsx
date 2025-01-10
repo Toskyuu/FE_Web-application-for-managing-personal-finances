@@ -22,10 +22,7 @@ const TransactionCard: React.FC = () => {
     useEffect(() => {
         const fetchTransactions = async () => {
             try {
-                const response = await apiClient.post("/transactions/transactions", {},
-                    {
-                        params: {user_id: 1}
-                    });
+                const response = await apiClient.post("/transactions/transactions", {});
                 setTransactions(response.data);
                 setLoading(false);
             } catch (err) {
