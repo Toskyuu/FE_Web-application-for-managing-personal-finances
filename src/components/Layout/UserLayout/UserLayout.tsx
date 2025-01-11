@@ -8,10 +8,10 @@ const UserLayout: React.FC = () => {
     return (
         <ModalProvider>
             <div
-                className="flex h-full w-full min-h-screen min-w-screen bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark">
+                className="flex h-full w-full min-h-screen min-w-screen bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark ">
                 <div className="flex-1 flex flex-col">
                     <Header />
-                    <main className="p-6 flex flex-col items-center">
+                    <main className="p-6 flex flex-col items-center overflow-auto ">
                         <div className="w-full max-w-7xl">
                             <Outlet />
                         </div>

@@ -1,3 +1,24 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer utilities {
+    .scrollbar-custom {
+        overflow-y: auto;
+    }
+
+    .scrollbar-custom::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    .scrollbar-custom::-webkit-scrollbar-track {
+        @apply bg-surface-light;
+        border-radius: 9999px;
+    }
+
+    .scrollbar-custom::-webkit-scrollbar-thumb {
+        @apply bg-background-dark;
+        @apply bg-opacity-50;
+        border-radius: 9999px;
+    }
+}

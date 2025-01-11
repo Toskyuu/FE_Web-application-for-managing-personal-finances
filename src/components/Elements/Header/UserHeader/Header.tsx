@@ -36,8 +36,7 @@ const Header: React.FC = () => {
         }
     }
 
-    return (
-        <div>
+    return (<>
             <header className="sticky top-0 z-30 bg-primary shadow-md">
                 <div className="container mx-auto flex items-center justify-center p-4">
                     <button
@@ -159,7 +158,7 @@ const Header: React.FC = () => {
                     onClick={() => setIsMenuOpen(false)}
                 ></div>
             )}
-        </div>
+        </>
     );
 };
 
