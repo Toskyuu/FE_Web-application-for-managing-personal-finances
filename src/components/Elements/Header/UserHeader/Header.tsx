@@ -36,8 +36,7 @@ const Header: React.FC = () => {
         }
     }
 
-    return (
-        <div>
+    return (<>
             <header className="sticky top-0 z-30 bg-primary shadow-md">
                 <div className="container mx-auto flex items-center justify-center p-4">
                     <button
@@ -63,7 +62,7 @@ const Header: React.FC = () => {
                     <ul className="flex flex-col items-start space-y-4 pl-4">
                         <li>
                             <a
-                                href="#przeglad"
+                                href="/"
                                 className="flex items-center px-4 py-2 text-text-dark hover:bg-gray-200 transition-colors"
                             >
                                 <FontAwesomeIcon icon={faLandmark} className="mr-2"/>
@@ -72,7 +71,7 @@ const Header: React.FC = () => {
                         </li>
                         <li>
                             <a
-                                href="#transakcje"
+                                href="/transactions"
                                 className="flex items-center px-4 py-2 text-text-dark hover:bg-gray-200 transition-colors"
                             >
                                 <FontAwesomeIcon icon={faMoneyBillTransfer} className="mr-2"/>
@@ -159,7 +158,7 @@ const Header: React.FC = () => {
                     onClick={() => setIsMenuOpen(false)}
                 ></div>
             )}
-        </div>
+        </>
     );
 };
 

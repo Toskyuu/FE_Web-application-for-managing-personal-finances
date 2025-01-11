@@ -22,7 +22,7 @@ const AnonHeader: React.FC = () => {
     }
 
     return (
-        <div>
+        <>
             <header className="sticky top-0 z-50 bg-primary shadow-md">
                 <div className="container mx-auto flex items-center justify-center p-4">
                     <button onClick={toggleTheme}
@@ -43,7 +43,7 @@ const AnonHeader: React.FC = () => {
                     </div>
                 </div>
             </header>
-        </div>
+        </>
     );
 };
 

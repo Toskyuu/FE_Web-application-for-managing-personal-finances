@@ -6,7 +6,6 @@ const ModalWindow: React.FC = () => {
 
     if (!isOpen) return null;
 
-
     return (
         <>
             <div
@@ -24,8 +23,10 @@ const ModalWindow: React.FC = () => {
                     >
                         ✖
                     </button>
-                    <div className="text-center">
-                        <div className="mb-4">{content}</div>
+                    <div className="text-left pt-4">
+                        <div className="scrollbar-custom mb-4 px-4 max-h-[500px]">
+                            {content}
+                        </div>
                     </div>
                 </div>
             </div>
