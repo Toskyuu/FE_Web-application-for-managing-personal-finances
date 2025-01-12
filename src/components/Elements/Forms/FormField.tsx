@@ -11,6 +11,7 @@ interface FormFieldProps {
     validation?: object;
     value?: string | number;
     onChange?: (value: string) => void;
+    step?: string;
 }
 
 const FormField: React.FC<FormFieldProps> = ({
@@ -23,6 +24,7 @@ const FormField: React.FC<FormFieldProps> = ({
                                                  validation = {},
                                                  value,
                                                  onChange,
+                                                 step = "0.01"
                                              }) => {
     return (
         <div>
@@ -49,6 +51,8 @@ const FormField: React.FC<FormFieldProps> = ({
                     id={id}
                     type={type}
                     {...register(id, validation)}
+                    step={type === "number" ? step : undefined}
+
                     className="w-full p-2 border bg-background-dark rounded"
                 />
             )}

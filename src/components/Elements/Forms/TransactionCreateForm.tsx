@@ -49,7 +49,6 @@ const TransactionCreateForm: React.FC = () => {
         }
     };
 
-    // Konfiguracja pól formularza
     const fields = [
         {
             id: "description",

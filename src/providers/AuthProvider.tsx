@@ -1,7 +1,8 @@
-import {createContext, useState, ReactNode} from "react";
+import {createContext, useState, ReactNode, useEffect} from "react";
 import apiClient from "@/lib/apiClient.tsx";
 import {useNavigate} from "react-router-dom";
 import {useData} from "@/hooks/useData.tsx";
+import {jwtDecode, JwtPayload} from "jwt-decode";
 
 interface AuthContextType {
     token: string | null;
@@ -26,6 +27,26 @@ export const AuthProvider = ({children}: { children: ReactNode }) => {
     const [token, setToken] = useState<string | null>(localStorage.getItem("token"));
     const navigate = useNavigate();
     const { clearData, fetchData } = useData();
+
+    const checkTokenExpiration = () => {
+        if (!token) return false;
+
+        try {
+            const decoded = jwtDecode<JwtPayload>(token);
+
+            const currentTime = Math.floor(Date.now() / 1000);
+            return decoded.exp ? decoded.exp > currentTime : false;
+        } catch (error) {
+            console.error("Invalid token", error);
+            return false;
+        }
+    };
+
+    useEffect(() => {
+        if (!checkTokenExpiration()) {
+            logOut();
+        }
+    }, [token]);
 
     const logIn = async (email: string, password: string) => {
         try {

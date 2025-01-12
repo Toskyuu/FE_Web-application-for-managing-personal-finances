@@ -3,6 +3,7 @@ import {AppRoutes} from "@/routes";
 import {BrowserRouter} from "react-router-dom";
 import {AuthProvider} from '@/providers/AuthProvider'
 import {DataProvider} from "@/providers/DataProvider.tsx";
+import {FilterProvider} from "@/providers/FilterProvider.tsx";
 
 
 const App: React.FC = () => {
@@ -10,7 +11,9 @@ const App: React.FC = () => {
         <BrowserRouter>
             <DataProvider>
                 <AuthProvider>
-                    <AppRoutes/>
+                    <FilterProvider>
+                        <AppRoutes/>
+                    </FilterProvider>
                 </AuthProvider>
             </DataProvider>
         </BrowserRouter>
