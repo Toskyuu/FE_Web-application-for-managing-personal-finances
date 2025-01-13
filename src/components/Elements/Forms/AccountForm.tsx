@@ -20,7 +20,7 @@ interface AccountFormProps {
     type?: string;
 }
 
-const AccountCreateForm: React.FC<AccountFormProps> = ({id, name, initial_balance, type}) => {
+const AccountForm: React.FC<AccountFormProps> = ({id, name, initial_balance, type}) => {
     const {register, handleSubmit, formState: {errors}, setValue} = useForm<AccountFormData>({
         defaultValues: {
             name: name || "",
@@ -117,4 +117,4 @@ const AccountCreateForm: React.FC<AccountFormProps> = ({id, name, initial_balanc
     );
 };
 
-export default AccountCreateForm;
+export default AccountForm;

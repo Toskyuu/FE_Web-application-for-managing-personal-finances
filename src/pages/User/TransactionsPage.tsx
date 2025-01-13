@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
-import { FilterTransactionForm, MainCard } from "@/components";
+import React, {useState, useEffect} from "react";
+import {DropDownMenu, FilterTransactionForm, TransactionForm} from "@/components";
 import apiClient from "@/lib/apiClient.tsx";
-import { useData } from "@/hooks/useData.tsx";
-import { useModal } from "@/hooks/useModal.tsx";
-import { useFilters } from "@/hooks/useFilters";
+import {useData} from "@/hooks/useData.tsx";
+import {useModal} from "@/hooks/useModal.tsx";
+import {useFilters} from "@/hooks/useFilters";
+import {useRefresh} from "@/hooks/useRefresh.tsx";
 
 interface Transaction {
     id: number;
@@ -23,11 +24,12 @@ const TransactionsPage: React.FC = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [sortBy, setSortBy] = useState<string>("date");
     const [order, setOrder] = useState<"asc" | "desc">("desc");
-    const { openModal } = useModal();
-    const { filters } = useFilters();
+    const {openModal, closeModal} = useModal();
+    const {filters} = useFilters();
+    const {forceRefresh, refreshKey} = useRefresh();
 
     const size = 10;
-    const { categories, accounts } = useData();
+    const {categories, accounts} = useData();
 
     const fetchTransactions = async (
         page: number,
@@ -55,6 +57,10 @@ const TransactionsPage: React.FC = () => {
     useEffect(() => {
         fetchTransactions(page, sortBy, order, filters);
     }, [page, sortBy, order, filters]);
+
+    useEffect(() => {
+        fetchTransactions(page, sortBy, order, filters);
+    }, [refreshKey]);
 
     const loadMore = () => {
         setPage((prevPage) => prevPage + 1);
@@ -86,6 +92,67 @@ const TransactionsPage: React.FC = () => {
         return order === "asc" ? "Rosnąco" : "Malejąco";
     };
 
+    const handleOpenModal = (content: React.ReactNode) => {
+        openModal(content);
+    };
+
+    const handleEditTransaction = (
+        id: number,
+        description: string,
+        amount: number,
+        date: string,
+        category_id: number,
+        account_id: number,
+        type: string,
+        account_id_2?: number
+    ) => {
+        handleOpenModal(
+            <TransactionForm
+                id={id}
+                description={description}
+                amount={amount}
+                date={date}
+                category_id={category_id}
+                account_id={account_id}
+                type={type}
+                account_id_2={account_id_2}
+            />
+        );
+    };
+
+
+    const handleDeleteTransaction = async (transactionId: number) => {
+        openModal(
+            <div className="flex flex-col items-center  space-y-4">
+                <h2 className="text-xl font-bold text-center">Czy na pewno chcesz usunąć tę transakcję?</h2>
+                <div className="flex space-x-4">
+                    <button
+                        className="px-6 py-2 bg-error text-white rounded-lg hover:bg-error-dark"
+                        onClick={async () => {
+                            try {
+                                await apiClient.delete(`/transactions/${transactionId}`);
+                                console.log(`Transakcja o ID ${transactionId} zostało usunięte`);
+                                forceRefresh();
+                            } catch (error) {
+                                console.error("Błąd podczas usuwania konta:", error);
+                            } finally {
+                                closeModal();
+                            }
+                        }}
+                    >
+                        Tak
+                    </button>
+                    <button
+                        className="px-6 py-2 bg-success text-white rounded-lg hover:bg-success-dark"
+                        onClick={closeModal}
+                    >
+                        Nie
+                    </button>
+                </div>
+            </div>
+        );
+    };
+
     return (
         <div className="p-4 space-y-6">
             <h1 className="text-2xl font-bold text-center mb-4">Transakcje</h1>
@@ -94,7 +161,7 @@ const TransactionsPage: React.FC = () => {
                 <div className="flex justify-end">
                     <button
                         onClick={() =>
-                            openModal(<FilterTransactionForm  />)
+                            openModal(<FilterTransactionForm/>)
                         }
                         className="p-3 rounded-2xl shadow-2xl bg-secondary text-text-dark"
                     >
@@ -124,45 +191,61 @@ const TransactionsPage: React.FC = () => {
                 </div>
             </div>
 
-            {transactions.map((transaction) => (
-                <MainCard
-                    key={transaction.id}
-                    fontSize="text-base"
-                    padding="p-6"
-                    height="h-auto"
-                    width="w-full sm:w-3/4 mx-auto"
-                >
+            <div className="grid grid-cols-1 gap-6 w-full sm:w-3/4 mx-auto">
+                {transactions.map((transaction) => (
                     <div
-                        className={`flex flex-col md:flex-row items-start md:items-center border-l-4 ${getBorderColor(transaction.type)} pl-4`}
+                        key={transaction.id}
+                        className={`relative flex flex-col items-start p-6 bg-surface-light dark:bg-surface-dark text-text-light dark:text-text-dark shadow-2xl rounded-2xl space-y-4 border-l-4 border-t-4 ${getBorderColor(transaction.type)}`}
                     >
-                        <div className="flex-1">
-                            <p className="font-semibold text-sm text-left">
-                                {getCategoryName(transaction.category_id)}
-                            </p>
-                            {transaction.type === "Internal" ? (
-                                <p className="mt-2 font-semibold text-sm text-left">
-                                    {getAccountName(transaction.account_id)} &rarr; {getAccountName(transaction.account_id_2!)}
-                                </p>
-                            ) : (
-                                <p className="mt-2 font-semibold text-sm text-left">
-                                    {getAccountName(transaction.account_id)}
-                                </p>
-                            )}
-                            <p className="mt-2 text-left">
-                                {transaction.description}
-                            </p>
+                        <div className="absolute top-0 right-4">
+                            <DropDownMenu
+                                options={[
+                                    {
+                                        label: "Edytuj transakcję",
+                                        onClick: () =>
+                                            handleEditTransaction(
+                                                transaction.id,
+                                                transaction.description,
+                                                transaction.amount,
+                                                transaction.date,
+                                                transaction.category_id,
+                                                transaction.account_id,
+                                                transaction.type,
+                                                transaction.account_id_2 ? transaction.account_id_2 : undefined
+                                            ),
+                                    },
+                                    {
+                                        label: "Usuń transakcję",
+                                        onClick: () => handleDeleteTransaction(transaction.id),
+                                        className: "text-red-500",
+                                    },
+                                ]}
+                            />
                         </div>
-                        <div className="flex flex-col items-end">
-                            <p className={`text-lg font-semibold ${transaction.type === "Outcome" ? "text-red-500" : "text-green-500"}`}>
+
+                        <p className="font-semibold text-sm">{getCategoryName(transaction.category_id)}</p>
+                        {transaction.type === "Internal" ? (
+                            <p className="text-md font-semibold">
+                                {getAccountName(transaction.account_id)} &rarr; {getAccountName(transaction.account_id_2!)}
+                            </p>
+                        ) : (
+                            <p className="text-md font-semibold">{getAccountName(transaction.account_id)}</p>
+                        )}
+                        <p className="text-sm">{transaction.description}</p>
+                        <div className="flex flex-col items-end w-full">
+                            <p
+                                className={`text-lg font-semibold ${
+                                    transaction.type === "Outcome" ? "text-red-500" : "text-green-500"
+                                }`}
+                            >
                                 {`${transaction.amount.toFixed(2)} PLN`}
                             </p>
-                            <p className="mt-2 text-sm text-gray-500">
-                                {new Date(transaction.date).toLocaleDateString()}
-                            </p>
+                            <p className="text-sm text-gray-500">{new Date(transaction.date).toLocaleDateString()}</p>
                         </div>
                     </div>
-                </MainCard>
-            ))}
+                ))}
+            </div>
+
 
             {isLoading ? (
                 <p className="text-center">Ładowanie...</p>

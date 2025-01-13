@@ -12,10 +12,10 @@ import FloatingActionButton
     from "@/components/Elements/Buttons/FloatingButton/FloatingActionButton/FloatingActionButton.tsx";
 import {useModal} from "@/hooks/useModal.tsx";
 import {
-    AccountCreateForm,
-    BudgetCreateForm,
-    TransactionCreateForm,
-    RecurringTransactionCreateForm,
+    AccountForm,
+    BudgetForm,
+    TransactionForm,
+    RecurringTransactionForm,
     CategoryCreateForm
 } from "@/components";
 
@@ -46,28 +46,28 @@ const FloatingButtons: React.FC = () => {
                 <FloatingActionButton
                     icon={faCreditCard}
                     label="Dodaj konto"
-                    onClick={() => handleOpenModal(<AccountCreateForm/>)}
+                    onClick={() => handleOpenModal(<AccountForm/>)}
                     color="text-dark"
                     bgColor="primary"
                 />
                 <FloatingActionButton
                     icon={faChartPie}
                     label="Dodaj budżet"
-                    onClick={() => handleOpenModal(<BudgetCreateForm/>)}
+                    onClick={() => handleOpenModal(<BudgetForm/>)}
                     color="text-dark"
                     bgColor="primary"
                 />
                 <FloatingActionButton
                     icon={faMoneyBillTransfer}
                     label="Dodaj transakcje"
-                    onClick={() => handleOpenModal(<TransactionCreateForm/>)}
+                    onClick={() => handleOpenModal(<TransactionForm/>)}
                     color="text-dark"
                     bgColor="primary"
                 />
                 <FloatingActionButton
                     icon={faClock}
                     label="Dodaj cykliczną transakcję"
-                    onClick={() => handleOpenModal(<RecurringTransactionCreateForm/>)}
+                    onClick={() => handleOpenModal(<RecurringTransactionForm/>)}
                     color="text-dark"
                     bgColor="primary"
                 />

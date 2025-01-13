@@ -11,7 +11,7 @@ interface BudgetFormData {
     month: string;
 }
 
-const BudgetCreateForm: React.FC = () => {
+const BudgetForm: React.FC = () => {
     const { register, handleSubmit,  formState: { errors } } = useForm<BudgetFormData>();
     const { categories } = useData();
     const { closeModal } = useModal();
@@ -90,4 +90,4 @@ const BudgetCreateForm: React.FC = () => {
     );
 };
 
-export default BudgetCreateForm;
+export default BudgetForm;

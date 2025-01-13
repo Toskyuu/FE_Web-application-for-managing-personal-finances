@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
 import apiClient from "@/lib/apiClient.tsx";
 import {translateAccountType} from "@/utils/Translators.tsx";
-import {AccountCreateForm, DropDownMenu} from "@/components";
+import {AccountForm, DropDownMenu} from "@/components";
 import {useModal} from "@/hooks/useModal.tsx";
 import {useRefresh} from "@/hooks/useRefresh.tsx";
 
@@ -69,7 +69,7 @@ const AccountsPage: React.FC = () => {
         };
 
         const handleEditAccount = (id: number, name: string, initialBalance: number, type: string) => {
-            handleOpenModal(<AccountCreateForm id={id} name={name} initial_balance={initialBalance} type={type}/>)
+            handleOpenModal(<AccountForm id={id} name={name} initial_balance={initialBalance} type={type}/>)
         };
 
         const handleDeleteAccount = async (accountId: number) => {
@@ -151,7 +151,6 @@ const AccountsPage: React.FC = () => {
                                         {
                                             label: "Usuń konto",
                                             onClick: () => handleDeleteAccount(account.id),
-                                            className: "text-red-500",
                                         },
                                     ]}
                                 />
