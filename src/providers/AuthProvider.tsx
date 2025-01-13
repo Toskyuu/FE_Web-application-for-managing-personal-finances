@@ -26,7 +26,7 @@ export const AuthContext = createContext<AuthContextType>({
 export const AuthProvider = ({children}: { children: ReactNode }) => {
     const [token, setToken] = useState<string | null>(localStorage.getItem("token"));
     const navigate = useNavigate();
-    const { clearData, fetchData } = useData();
+    const {clearData, fetchData} = useData();
 
     const checkTokenExpiration = () => {
         if (!token) return false;
@@ -47,6 +47,8 @@ export const AuthProvider = ({children}: { children: ReactNode }) => {
             logOut();
         }
     }, [token]);
+
+
 
     const logIn = async (email: string, password: string) => {
         try {
@@ -76,7 +78,7 @@ export const AuthProvider = ({children}: { children: ReactNode }) => {
         localStorage.removeItem("token");
         clearData();
         console.log("Wylogowano usera")
-
+        navigate("/");
     };
 
     const register = async (username: string, email: string, password: string) => {

@@ -154,7 +154,7 @@ const TransactionsPage: React.FC = () => {
                         </div>
                         <div className="flex flex-col items-end">
                             <p className={`text-lg font-semibold ${transaction.type === "Outcome" ? "text-red-500" : "text-green-500"}`}>
-                                {`${transaction.amount} PLN`}
+                                {`${transaction.amount.toFixed(2)} PLN`}
                             </p>
                             <p className="mt-2 text-sm text-gray-500">
                                 {new Date(transaction.date).toLocaleDateString()}

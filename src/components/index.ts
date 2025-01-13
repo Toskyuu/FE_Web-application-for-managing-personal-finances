@@ -1,9 +1,9 @@
 export { default as Header } from './Elements/Header/UserHeader/Header.tsx';
 export { default as AnonHeader } from './Elements/Header/AnonHeader/AnonHeader.tsx';
-export { default as FloatingButtons } from '@/components/Elements/Buttons/FloatingButton/FloatingButtons/FloatingButtons.tsx';
-export { default as FloatingActionButton } from '@/components/Elements/Buttons/FloatingButton/FloatingActionButton/FloatingActionButton.tsx'
-export { default as FloatingButtonLabel } from '@/components/Elements/Buttons/FloatingButton/FloatingButtonLabel/FloatingButtonLabel.tsx'
-export { default as DefaultButton } from '@/components/Elements/Buttons/DefaultButton/DefaultButton.tsx'
+export { default as FloatingButtons } from './Elements/Buttons/FloatingButton/FloatingButtons/FloatingButtons.tsx';
+export { default as FloatingActionButton } from './Elements/Buttons/FloatingButton/FloatingActionButton/FloatingActionButton.tsx'
+export { default as FloatingButtonLabel } from './Elements/Buttons/FloatingButton/FloatingButtonLabel/FloatingButtonLabel.tsx'
+export { default as DefaultButton } from './Elements/Buttons/DefaultButton/DefaultButton.tsx'
 export { default as UserLayout } from './Layout/UserLayout/UserLayout.tsx'
 export { default as AnonLayout } from './Layout/AnonLayout/AnonLayout.tsx'
 export { default as MainCard } from './Elements/Card/MainCard.tsx'
@@ -19,3 +19,4 @@ export { default as RecurringTransactionCreateForm } from './Elements/Forms/Recu
 export { default as CategoryCreateForm } from './Elements/Forms/CategoryCreateForm.tsx'
 export { default as FilterTransactionForm } from './Elements/Forms/FilterTransactionForm.tsx'
 export { default as CheckboxGroup } from './Elements/Forms/CheckboxGroup.tsx'
+export { default as DropDownMenu } from './Elements/DropDownMenu/DropDownMenu.tsx'

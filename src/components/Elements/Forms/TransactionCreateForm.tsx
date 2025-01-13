@@ -18,7 +18,7 @@ interface FormData {
 
 const TransactionCreateForm: React.FC = () => {
     const {register, handleSubmit, setValue, formState: {errors}} = useForm<FormData>();
-    const [type, setType] = useState<string>("Outcome");
+    const [type, setType] = useState<string>("Income");
     const {accounts, categories} = useData();
     const {closeModal} = useModal();
 
