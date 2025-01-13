@@ -89,7 +89,7 @@ const Header: React.FC = () => {
                         </li>
                         <li>
                             <a
-                                href="#konta"
+                                href="/accounts"
                                 className="flex items-center px-4 py-2 text-text-dark hover:bg-gray-200 transition-colors"
                             >
                                 <FontAwesomeIcon icon={faCreditCard} className="mr-2"/>

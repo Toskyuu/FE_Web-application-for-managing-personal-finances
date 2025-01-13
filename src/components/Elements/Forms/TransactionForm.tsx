@@ -1,10 +1,11 @@
-import React, {useState, useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {useForm} from "react-hook-form";
-import {useData} from "@/hooks/useData.tsx";
 import apiClient from "@/lib/apiClient.tsx";
 import {useModal} from "@/hooks/useModal.tsx";
 import {DefaultButton, FormField} from "@/components";
+import {useData} from "@/hooks/useData.tsx";
 import {translateTransactionType} from "@/utils/Translators.tsx";
+import {useRefresh} from "@/hooks/useRefresh.tsx";
 
 interface FormData {
     description: string;
@@ -16,11 +17,42 @@ interface FormData {
     account_id_2?: number;
 }
 
-const TransactionCreateForm: React.FC = () => {
-    const {register, handleSubmit, setValue, formState: {errors}} = useForm<FormData>();
-    const [type, setType] = useState<string>("Outcome");
+interface TransactionFormProps {
+    id?: number;
+    description?: string;
+    amount?: number;
+    date?: string;
+    category_id?: number;
+    account_id?: number;
+    type?: string;
+    account_id_2?: number;
+}
+
+const TransactionForm: React.FC<TransactionFormProps> = ({
+                                                             id,
+                                                             description,
+                                                             amount,
+                                                             date,
+                                                             category_id,
+                                                             account_id,
+                                                             type,
+                                                             account_id_2,
+                                                         }) => {
+    const {register, handleSubmit, setValue, formState: {errors}} = useForm<FormData>({
+        defaultValues: {
+            description: description || "",
+            amount: amount || 0,
+            date: date || new Date().toISOString().split("T")[0],
+            category_id: category_id || undefined,
+            account_id: account_id || undefined,
+            type: type || "Income",
+            account_id_2: account_id_2 || undefined,
+        },
+    });
     const {accounts, categories} = useData();
     const {closeModal} = useModal();
+    const {forceRefresh} = useRefresh();
+    const [transactionType, setTransactionType] = useState<string>(type || "Income");
 
     const TransactionTypes = [
         {value: "Income", label: translateTransactionType("Income")},
@@ -29,9 +61,16 @@ const TransactionCreateForm: React.FC = () => {
     ];
 
     useEffect(() => {
-        const today = new Date().toISOString().split("T")[0];
-        setValue("date", today);
-    }, [setValue]);
+        if (id && description && amount && date && category_id && account_id && type) {
+            setValue("description", description);
+            setValue("amount", amount);
+            setValue("date", date);
+            setValue("category_id", category_id);
+            setValue("account_id", account_id);
+            setValue("type", type);
+            setValue("account_id_2", account_id_2 || undefined);
+        }
+    }, [id, description, amount, date, category_id, account_id, type, account_id_2, setValue]);
 
     const onSubmit = async (data: FormData) => {
         try {
@@ -40,12 +79,18 @@ const TransactionCreateForm: React.FC = () => {
                 account_id_2: data.account_id_2 || null,
             };
 
-            const response = await apiClient.post("/transactions", requestBody);
+            if (id) {
+                const response = await apiClient.put(`/transactions/${id}`, requestBody);
+                console.log("Transaction successfully updated:", response.data);
+            } else {
+                const response = await apiClient.post("/transactions", requestBody);
+                console.log("Transaction successfully created:", response.data);
+            }
 
-            console.log("Transaction successfully created:", response.data);
+            forceRefresh();
             closeModal();
         } catch (error) {
-            console.error("Error creating transaction:", error);
+            console.error("Error saving transaction:", error);
         }
     };
 
@@ -93,15 +138,15 @@ const TransactionCreateForm: React.FC = () => {
             label: "Typ transakcji",
             type: "select",
             options: TransactionTypes,
-            value: type,
+            value: transactionType,
             onChange: (value: string) => {
-                setType(value);
+                setTransactionType(value);
                 setValue("type", value);
             },
         },
     ];
 
-    if (type === "Internal") {
+    if (transactionType === "Internal") {
         fields.push({
             id: "account_id_2",
             label: "Drugie konto",
@@ -129,8 +174,7 @@ const TransactionCreateForm: React.FC = () => {
                     fontSize="text-2xl"
                     color="text-text-dark"
                     bgColor="bg-success"
-                    onClick={() => onSubmit}
-                    text={"Dodaj transakcję"}
+                    text={id ? "Zapisz zmiany" : "Dodaj transakcję"}
                     padding="p-4"
                     radius="rounded-2xl"
                     minwidth="min-w-30"
@@ -140,4 +184,4 @@ const TransactionCreateForm: React.FC = () => {
     );
 };
 
-export default TransactionCreateForm;
+export default TransactionForm;

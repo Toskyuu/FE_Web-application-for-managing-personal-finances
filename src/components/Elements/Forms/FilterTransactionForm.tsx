@@ -91,7 +91,7 @@ const FilterTransactionForm: React.FC = ({}) => {
                     value: account.id.toString(),
                     label: account.name,
                 }))}
-                control={control} // Przekazujemy control do CheckboxGroup
+                control={control}
                 errors={errors}
             />
 
@@ -102,7 +102,7 @@ const FilterTransactionForm: React.FC = ({}) => {
                     value: category.id.toString(),
                     label: category.name,
                 }))}
-                control={control} // Przekazujemy control do CheckboxGroup
+                control={control}
                 errors={errors}
             />
             <CheckboxGroup
