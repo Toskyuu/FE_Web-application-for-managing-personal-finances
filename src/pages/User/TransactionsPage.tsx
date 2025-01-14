@@ -131,10 +131,10 @@ const TransactionsPage: React.FC = () => {
                         onClick={async () => {
                             try {
                                 await apiClient.delete(`/transactions/${transactionId}`);
-                                console.log(`Transakcja o ID ${transactionId} zostało usunięte`);
+                                console.log(`Transakcja o ID ${transactionId} została usunięta`);
                                 forceRefresh();
                             } catch (error) {
-                                console.error("Błąd podczas usuwania konta:", error);
+                                console.error("Błąd podczas usuwania transakcji:", error);
                             } finally {
                                 closeModal();
                             }

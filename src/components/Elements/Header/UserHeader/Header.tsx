@@ -80,7 +80,7 @@ const Header: React.FC = () => {
                         </li>
                         <li>
                             <a
-                                href="#cyklicznetransakcje"
+                                href="/recurring-transactions"
                                 className="flex items-center px-4 py-2 text-text-dark hover:bg-gray-200 transition-colors"
                             >
                                 <FontAwesomeIcon icon={faClock} className="mr-2"/>
@@ -98,7 +98,7 @@ const Header: React.FC = () => {
                         </li>
                         <li>
                             <a
-                                href="#budzety"
+                                href="/budgets"
                                 className="flex items-center px-4 py-2 text-text-dark hover:bg-gray-200 transition-colors"
                             >
                                 <FontAwesomeIcon icon={faChartPie} className="mr-2"/>

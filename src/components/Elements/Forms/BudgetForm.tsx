@@ -1,37 +1,69 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import apiClient from "@/lib/apiClient.tsx";
 import { useData } from "@/hooks/useData.tsx";
 import { useModal } from "@/hooks/useModal.tsx";
-import {DefaultButton, FormField} from "@/components";
+import { DefaultButton, FormField } from "@/components";
+import {useRefresh} from "@/hooks/useRefresh.tsx";
 
 interface BudgetFormData {
     category_id: number;
     limit: number;
-    month: string;
+    month_year: string;
 }
 
-const BudgetForm: React.FC = () => {
-    const { register, handleSubmit,  formState: { errors } } = useForm<BudgetFormData>();
+interface BudgetFormProps {
+    id?: number;
+    category_id?: number;
+    limit?: number;
+    month_year?: string;
+}
+
+const BudgetForm: React.FC<BudgetFormProps> = ({ id, category_id, limit, month_year }) => {
+    const { register, handleSubmit, setValue, formState: { errors } } = useForm<BudgetFormData>({
+        defaultValues: {
+            category_id: category_id || undefined,
+            limit: limit || 0,
+            month_year: month_year || new Date().toISOString().split("T")[0],
+        },
+    });
+
     const { categories } = useData();
     const { closeModal } = useModal();
+    const {forceRefresh} = useRefresh();
+
+
+    useEffect(() => {
+        if (id && category_id && limit && month_year) {
+            setValue("category_id", category_id);
+            setValue("limit", limit);
+            setValue("month_year", month_year);
+        }
+    }, [id, category_id, limit, month_year, setValue]);
 
     const onSubmit = async (data: BudgetFormData) => {
         try {
-            const [month, year] = data.month.split("-");
+            const [year, month] = data.month_year.split("-");
             const formattedDate = `${year}-${month}-01`;
 
             const requestBody = {
                 category_id: data.category_id,
                 limit: data.limit,
-                month: formattedDate,
+                month_year: formattedDate,
             };
 
-            const response = await apiClient.post("/budgets", requestBody);
-            console.log("Budget successfully created:", response.data);
+            let response;
+            if (id) {
+                response = await apiClient.put(`/budgets/${id}`, requestBody);
+                console.log("Budget successfully updated:", response.data);
+            } else {
+                response = await apiClient.post("/budgets", requestBody);
+                console.log("Budget successfully created:", response.data);
+            }
+            forceRefresh();
             closeModal();
         } catch (error) {
-            console.error("Error creating budget:", error);
+            console.error("Error saving budget:", error);
         }
     };
 
@@ -56,7 +88,7 @@ const BudgetForm: React.FC = () => {
             },
         },
         {
-            id: "month",
+            id: "month_year",
             label: "Miesiąc obowiązywania",
             type: "month",
             validation: { required: "Miesiąc obowiązywania jest wymagany" },
@@ -79,8 +111,7 @@ const BudgetForm: React.FC = () => {
                     fontSize="text-2xl"
                     color="text-text-dark"
                     bgColor="bg-success"
-                    onClick={() => onSubmit}
-                    text={"Dodaj budżet"}
+                    text={id ? "Zapisz zmiany" : "Dodaj budżet"}
                     padding="p-4"
                     radius="rounded-2xl"
                     minwidth="min-w-30"
