@@ -1,91 +1,100 @@
 import React, {useState, useEffect} from "react";
 import apiClient from "@/lib/apiClient.tsx";
-import {translateAccountType} from "@/utils/Translators.tsx";
-import {AccountForm, DropDownMenu} from "@/components";
+import { BudgetForm, DropDownMenu} from "@/components";
 import {useModal} from "@/hooks/useModal.tsx";
 import {useRefresh} from "@/hooks/useRefresh.tsx";
+import {useData} from "@/hooks/useData.tsx";
 
-interface Account {
+interface Budget {
     id: number;
-    name: string;
+    limit: number;
     user_id: number;
-    balance: number;
-    initial_balance: number;
-    type: string;
+    month_year: string;
+    category_id: number;
+    spent_in_budget: number;
 }
 
-const AccountsPage: React.FC = () => {
-        const [accounts, setAccounts] = useState<Account[]>([]);
+const BudgetsPage: React.FC = () => {
+        const [budgets, setBudgets] = useState<Budget[]>([]);
+        const [page, setPage] = useState(1);
         const [isLoading, setIsLoading] = useState(false);
-        const [sortBy, setSortBy] = useState<string>("id");
+        const [sortBy, setSortBy] = useState<string>("month_year");
         const [order, setOrder] = useState<"asc" | "desc">("desc");
         const {openModal, closeModal} = useModal();
         const {refreshKey} = useRefresh();
         const {forceRefresh} = useRefresh();
 
 
+        const size = 10;
+        const {categories} = useData();
+
         const handleOpenModal = (content: React.ReactNode) => {
             openModal(content);
         };
 
 
-        const fetchAccounts = async (
+        const fetchBudgets = async (
+            page: number,
             sortBy: string,
             order: "asc" | "desc"
         ) => {
             setIsLoading(true);
             try {
-                const response = await apiClient.post("/accounts/accounts", {
+                const response = await apiClient.post("/budgets/budgets", {
+                    page: page,
+                    size: size,
                     sort_by: sortBy,
                     order,
                 });
-                setAccounts(() =>
-                    response.data
-                );
+                setBudgets((prev) => (page === 1 ? response.data : [...prev, ...response.data]));
             } catch (error) {
-                console.error("Błąd podczas pobierania kont:", error);
+                console.error("Błąd podczas pobierania budżetów:", error);
             } finally {
                 setIsLoading(false);
             }
         };
 
         useEffect(() => {
-            fetchAccounts(sortBy, order);
-        }, [sortBy, order]);
+            fetchBudgets(page, sortBy, order);
+        }, [page, sortBy, order, refreshKey]);
 
-        useEffect(() => {
-            fetchAccounts(sortBy, order);
-        }, [refreshKey]);
+
+        const loadMore = () => {
+            setPage((prevPage) => prevPage + 1);
+        };
 
 
         const toggleSortOrder = () => {
             setOrder((prevOrder) => (prevOrder === "asc" ? "desc" : "asc"));
-            setAccounts([]);
+            setPage(1);
         };
 
         const getSortIcon = () => {
             return order === "asc" ? "Rosnąco" : "Malejąco";
         };
 
-        const handleEditAccount = (id: number, name: string, initialBalance: number, type: string) => {
-            handleOpenModal(<AccountForm id={id} name={name} initial_balance={initialBalance} type={type}/>)
+        const getCategoryName = (id: number) => categories.find((cat) => cat.id === id)?.name || "Nieznana kategoria";
+
+
+        const handleEditBudget = (id: number, limit: number, month_year: string, category_id: number) => {
+            handleOpenModal(<BudgetForm id={id} limit={limit} month_year={month_year} category_id={category_id}/>)
         };
 
-        const handleDeleteAccount = async (accountId: number) => {
+        const handleDeleteBudget = async (budgetId: number) => {
             openModal(
                 <div className="flex flex-col items-center space-y-4">
-                    <h2 className="text-xl font-bold">Czy na pewno chcesz usunąć to konto?</h2>
+                    <h2 className="text-xl font-bold">Czy na pewno chcesz usunąć ten budżet?</h2>
                     <div className="flex space-x-4">
                         <button
                             className="px-6 py-2 bg-error text-white rounded-lg hover:bg-error-dark"
                             onClick={async () => {
                                 try {
-                                    await apiClient.delete(`/accounts/${accountId}`);
-                                    setAccounts((prev) => prev.filter((account) => account.id !== accountId));
-                                    console.log(`Konto o ID ${accountId} zostało usunięte`);
+                                    await apiClient.delete(`/budget/${budgetId}`);
+                                    setBudgets((prev) => prev.filter((budget) => budget.id !== budgetId));
+                                    console.log(`Budżet o ID ${budgetId} został usunięty`);
                                     forceRefresh();
                                 } catch (error) {
-                                    console.error("Błąd podczas usuwania konta:", error);
+                                    console.error("Błąd podczas usuwania budżetu:", error);
                                 } finally {
                                     closeModal();
                                 }
@@ -107,7 +116,7 @@ const AccountsPage: React.FC = () => {
 
         return (
             <div className="p-4 space-y-6">
-                <h1 className="text-4xl font-bold text-center mb-4 ">Konta</h1>
+                <h1 className="text-4xl font-bold text-center mb-4 ">Budżety</h1>
 
                 <div className="flex justify-end items-center w-full sm:w-3/4 mx-auto space-x-4">
                     <select
@@ -115,15 +124,13 @@ const AccountsPage: React.FC = () => {
                         value={sortBy}
                         onChange={(e) => {
                             setSortBy(e.target.value);
-                            setAccounts([]);
+                            setBudgets([]);
                         }}
                         className="p-3 rounded-2xl shadow-2xl bg-surface-light dark:bg-surface-dark text-text-light dark:text-text-dark"
                     >
-                        <option value="id">ID</option>
-                        <option value="name">Nazwa</option>
-                        <option value="type">Typ</option>
-                        <option value="balance">Saldo</option>
-                        <option value="initial_balance">Saldo początkowe</option>
+                        <option value="month_year">Data</option>
+                        <option value="spent_in_budget">Zapełnienie budżetu</option>
+                        <option value="limit">Limit</option>
 
                     </select>
                     <button
@@ -135,44 +142,51 @@ const AccountsPage: React.FC = () => {
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full sm:w-3/4 mx-auto">
-                    {accounts.map((account) => (
+                    {budgets.map((budget) => (
                         <div
-                            key={account.id}
+                            key={budget.id}
                             className="relative flex flex-col items-start p-6 bg-surface-light dark:bg-surface-dark text-text-light dark:text-text-dark shadow-2xl rounded-2xl space-y-4"
                         >
                             <div className="absolute top-0 right-4">
                                 <DropDownMenu
                                     options={[
                                         {
-                                            label: "Edytuj konto",
-                                            onClick: () => handleEditAccount(account.id, account.name, account.initial_balance, account.type),
+                                            label: "Edytuj budżet",
+                                            onClick: () => handleEditBudget(budget.id, budget.limit, budget.month_year.slice(0, 7), budget.category_id),
                                         },
                                         {
-                                            label: "Usuń konto",
-                                            onClick: () => handleDeleteAccount(account.id),
+                                            label: "Usuń budżet",
+                                            onClick: () => handleDeleteBudget(budget.id),
                                         },
                                     ]}
                                 />
                             </div>
 
-                            <p className="text-2xl font-bold">{account.name}</p>
+                            <p className="text-2xl font-bold">{budget.month_year.slice(0, 7)}</p>
                             <hr className="w-full"/>
                             <div className="py-3">
-                                <p className="text-md">{translateAccountType(account.type)}</p>
-                                <p className="text-md text-success">Saldo: {`${account.balance.toFixed(2)} PLN`}</p>
-                                <p className="text-md">Saldo początkowe: {`${account.initial_balance.toFixed(2)} PLN`}</p>
+                                <p className="text-md">{getCategoryName(budget.category_id)}</p>
+                                <p className="text-md text-success">Limit: {`${budget.limit.toFixed(2)} PLN`}</p>
+                                <p className="text-md">Zapełnienie budżetu: {`${budget.spent_in_budget.toFixed(2)} PLN`}</p>
                             </div>
                         </div>
                     ))}
 
                 </div>
 
-                {isLoading && (
+                {isLoading ? (
                     <p className="text-center">Ładowanie...</p>
+                ) : (
+                    <button
+                        onClick={loadMore}
+                        className="block mx-auto mt-4 px-6 py-2 bg-primary text-white rounded-lg shadow hover:bg-primary-dark"
+                    >
+                        Załaduj więcej
+                    </button>
                 )}
             </div>
         );
     }
 ;
 
-export default AccountsPage;
+export default BudgetsPage;
