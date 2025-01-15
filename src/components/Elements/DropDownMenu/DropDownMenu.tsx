@@ -3,7 +3,7 @@ import React, { useState, useRef, useEffect } from "react";
 interface MenuOption {
     label: string;
     onClick: () => void;
-    className?: string; // Opcjonalne klasy, np. dla stylizacji "Usuń"
+    className?: string;
 }
 
 interface DropDownMenuProps {

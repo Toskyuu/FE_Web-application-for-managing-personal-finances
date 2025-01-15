@@ -1,12 +1,28 @@
-import { Meta, StoryFn } from '@storybook/react';
+import {Meta, StoryObj} from '@storybook/react';
 import DefaultButton from "./DefaultButton.tsx";
 
-export default {
+const meta: Meta<typeof DefaultButton> = {
     title: 'Components/DefaultButton',
     component: DefaultButton,
-} as Meta<typeof DefaultButton>;
+    parameters: {
+        layout: 'centered',
+        controls: {expanded: true},
+    },
+    tags: ['autodocs'],
+};
+export default meta;
 
-const Template: StoryFn<typeof DefaultButton> = (args) => <DefaultButton {...args} />;
+type Story = StoryObj<typeof DefaultButton>;
 
-export const Default = Template.bind({});
-Default.args = {};
+export const BasicUsage: Story = {
+    args: {
+        text: 'Click Me',
+        onClick: () => alert('Button clicked!'),
+        color: 'text-text-dark',
+        bgColor: 'bg-success',
+        fontSize: 'text-lg',
+        padding: 'p-3',
+        radius: 'rounded-xl',
+        minwidth: 'min-w-40',
+    },
+};
