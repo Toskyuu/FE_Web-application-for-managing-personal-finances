@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from "react";
 import {useForm} from "react-hook-form";
-import apiClient from "@/lib/apiClient.tsx";
 import {useModal} from "@/hooks/useModal.tsx";
 import {DefaultButton, FormField} from "@/components";
 import {useData} from "@/hooks/useData.tsx";
 import {translateTransactionType} from "@/utils/Translators.tsx";
 import {useRefresh} from "@/hooks/useRefresh.tsx";
+import {useToast} from "@/hooks/useToast.tsx";
+import {addTransaction, updateTransaction} from "@/API/TransactionAPI.tsx";
 
 interface FormData {
     description: string;
@@ -52,6 +53,7 @@ const TransactionForm: React.FC<TransactionFormProps> = ({
     const {accounts, categories} = useData();
     const {closeModal} = useModal();
     const {forceRefresh} = useRefresh();
+    const {showToast} = useToast();
     const [transactionType, setTransactionType] = useState<string>(type || "Income");
 
     const TransactionTypes = [
@@ -74,23 +76,18 @@ const TransactionForm: React.FC<TransactionFormProps> = ({
 
     const onSubmit = async (data: FormData) => {
         try {
-            const requestBody = {
-                ...data,
-                account_id_2: data.account_id_2 || null,
-            };
+            let successMessage: string;
 
             if (id) {
-                const response = await apiClient.put(`/transactions/${id}`, requestBody);
-                console.log("Transaction successfully updated:", response.data);
+                successMessage = await updateTransaction(id, data);
             } else {
-                const response = await apiClient.post("/transactions", requestBody);
-                console.log("Transaction successfully created:", response.data);
+                successMessage = await addTransaction(data);
             }
-
+            showToast(successMessage, "success");
             forceRefresh();
             closeModal();
         } catch (error) {
-            console.error("Error saving transaction:", error);
+            showToast(`Wystąpił błąd. Spróbuj ponownie.`, "error");
         }
     };
 

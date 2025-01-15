@@ -1,9 +1,10 @@
 import React, {useState, useEffect} from "react";
-import apiClient from "@/lib/apiClient.tsx";
-import { BudgetForm, DropDownMenu} from "@/components";
+import {BudgetForm, DropDownMenu} from "@/components";
 import {useModal} from "@/hooks/useModal.tsx";
 import {useRefresh} from "@/hooks/useRefresh.tsx";
 import {useData} from "@/hooks/useData.tsx";
+import {deleteBudget, fetchBudgets} from "@/API/BudgetAPI.tsx";
+import {useToast} from "@/hooks/useToast.tsx";
 
 interface Budget {
     id: number;
@@ -23,7 +24,7 @@ const BudgetsPage: React.FC = () => {
         const {openModal, closeModal} = useModal();
         const {refreshKey} = useRefresh();
         const {forceRefresh} = useRefresh();
-
+        const {showToast} = useToast();
 
         const size = 10;
         const {categories} = useData();
@@ -33,30 +34,26 @@ const BudgetsPage: React.FC = () => {
         };
 
 
-        const fetchBudgets = async (
+        const loadBudgets = async (
             page: number,
+            size: number,
             sortBy: string,
             order: "asc" | "desc"
         ) => {
             setIsLoading(true);
             try {
-                const response = await apiClient.post("/budgets/budgets", {
-                    page: page,
-                    size: size,
-                    sort_by: sortBy,
-                    order,
-                });
-                setBudgets((prev) => (page === 1 ? response.data : [...prev, ...response.data]));
-            } catch (error) {
-                console.error("Błąd podczas pobierania budżetów:", error);
+                const data = await fetchBudgets(page, size, sortBy, order);
+                setBudgets((prev) => (page === 1 ? data : [...prev, ...data]));
+            } catch (error: any) {
+                showToast(error, "error")
             } finally {
                 setIsLoading(false);
             }
         };
 
         useEffect(() => {
-            fetchBudgets(page, sortBy, order);
-        }, [page, sortBy, order, refreshKey]);
+            loadBudgets(page, size, sortBy, order);
+        }, [page, size, sortBy, order, refreshKey]);
 
 
         const loadMore = () => {
@@ -89,12 +86,11 @@ const BudgetsPage: React.FC = () => {
                             className="px-6 py-2 bg-error text-white rounded-lg hover:bg-error-dark"
                             onClick={async () => {
                                 try {
-                                    await apiClient.delete(`/budget/${budgetId}`);
-                                    setBudgets((prev) => prev.filter((budget) => budget.id !== budgetId));
-                                    console.log(`Budżet o ID ${budgetId} został usunięty`);
+                                    let response = await deleteBudget(budgetId);
+                                    showToast(response, "success");
                                     forceRefresh();
-                                } catch (error) {
-                                    console.error("Błąd podczas usuwania budżetu:", error);
+                                } catch (error: any) {
+                                    showToast(error, "error");
                                 } finally {
                                     closeModal();
                                 }

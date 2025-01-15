@@ -1,10 +1,11 @@
 import React, {useState, useEffect} from "react";
 import {DropDownMenu, FilterTransactionForm, TransactionForm} from "@/components";
-import apiClient from "@/lib/apiClient.tsx";
 import {useData} from "@/hooks/useData.tsx";
 import {useModal} from "@/hooks/useModal.tsx";
 import {useFilters} from "@/hooks/useFilters";
 import {useRefresh} from "@/hooks/useRefresh.tsx";
+import {useToast} from "@/hooks/useToast.tsx";
+import {deleteTransaction, fetchTransactions} from "@/API/TransactionAPI.tsx";
 
 interface Transaction {
     id: number;
@@ -27,40 +28,35 @@ const TransactionsPage: React.FC = () => {
     const {openModal, closeModal} = useModal();
     const {filters} = useFilters();
     const {forceRefresh, refreshKey} = useRefresh();
+    const {showToast} = useToast();
+
 
     const size = 10;
     const {categories, accounts} = useData();
 
-    const fetchTransactions = async (
+    const loadTransactions = async (
         page: number,
+        size: number,
         sortBy: string,
         order: "asc" | "desc",
         filters: any
     ) => {
         setIsLoading(true);
         try {
-            const response = await apiClient.post("/transactions/transactions", {
-                page,
-                size,
-                sort_by: sortBy,
-                order,
-                ...filters,
-            });
-            setTransactions((prev) => (page === 1 ? response.data : [...prev, ...response.data]));
-        } catch (error) {
-            console.error("Błąd podczas pobierania transakcji:", error);
+            const data = await fetchTransactions(page, size, sortBy, order, filters);
+            setTransactions((prev) => (page === 1 ? data : [...prev, ...data]));
+        } catch (error: any) {
+            showToast(error, "error")
         } finally {
             setIsLoading(false);
         }
     };
 
     useEffect(() => {
-        fetchTransactions(page, sortBy, order, filters);
-    }, [page, sortBy, order, filters]);
+        loadTransactions(page, size, sortBy, order, filters);
+    }, [page, size, sortBy, order, filters, refreshKey]);
 
-    useEffect(() => {
-        fetchTransactions(page, sortBy, order, filters);
-    }, [refreshKey]);
+
 
     const loadMore = () => {
         setPage((prevPage) => prevPage + 1);
@@ -130,11 +126,11 @@ const TransactionsPage: React.FC = () => {
                         className="px-6 py-2 bg-error text-white rounded-lg hover:bg-error-dark"
                         onClick={async () => {
                             try {
-                                await apiClient.delete(`/transactions/${transactionId}`);
-                                console.log(`Transakcja o ID ${transactionId} została usunięta`);
+                                let response = await deleteTransaction(transactionId);
+                                showToast(response, "success");
                                 forceRefresh();
-                            } catch (error) {
-                                console.error("Błąd podczas usuwania transakcji:", error);
+                            } catch (error: any) {
+                                showToast(error, "error");
                             } finally {
                                 closeModal();
                             }

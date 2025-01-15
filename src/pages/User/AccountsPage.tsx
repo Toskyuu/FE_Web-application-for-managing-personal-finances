@@ -1,9 +1,10 @@
 import React, {useState, useEffect} from "react";
-import apiClient from "@/lib/apiClient.tsx";
 import {translateAccountType} from "@/utils/Translators.tsx";
 import {AccountForm, DropDownMenu} from "@/components";
 import {useModal} from "@/hooks/useModal.tsx";
 import {useRefresh} from "@/hooks/useRefresh.tsx";
+import {deleteAccount, fetchAccounts} from "@/API/AccountAPI.tsx";
+import {useToast} from "@/hooks/useToast.tsx";
 
 interface Account {
     id: number;
@@ -22,40 +23,28 @@ const AccountsPage: React.FC = () => {
         const {openModal, closeModal} = useModal();
         const {refreshKey} = useRefresh();
         const {forceRefresh} = useRefresh();
+        const {showToast} = useToast();
 
 
         const handleOpenModal = (content: React.ReactNode) => {
             openModal(content);
         };
 
-
-        const fetchAccounts = async (
-            sortBy: string,
-            order: "asc" | "desc"
-        ) => {
+        const loadAccounts = async () => {
             setIsLoading(true);
             try {
-                const response = await apiClient.post("/accounts/accounts", {
-                    sort_by: sortBy,
-                    order,
-                });
-                setAccounts(() =>
-                    response.data
-                );
-            } catch (error) {
-                console.error("Błąd podczas pobierania kont:", error);
+                const data = await fetchAccounts(sortBy, order);
+                setAccounts(data);
+            } catch (error: any) {
+                showToast(error, "error")
             } finally {
                 setIsLoading(false);
             }
         };
 
         useEffect(() => {
-            fetchAccounts(sortBy, order);
-        }, [sortBy, order]);
-
-        useEffect(() => {
-            fetchAccounts(sortBy, order);
-        }, [refreshKey]);
+            loadAccounts();
+        }, [sortBy, order, refreshKey]);
 
 
         const toggleSortOrder = () => {
@@ -80,12 +69,11 @@ const AccountsPage: React.FC = () => {
                             className="px-6 py-2 bg-error text-white rounded-lg hover:bg-error-dark"
                             onClick={async () => {
                                 try {
-                                    await apiClient.delete(`/accounts/${accountId}`);
-                                    setAccounts((prev) => prev.filter((account) => account.id !== accountId));
-                                    console.log(`Konto o ID ${accountId} zostało usunięte`);
+                                    let response = await deleteAccount(accountId);
+                                    showToast(response, "success");
                                     forceRefresh();
-                                } catch (error) {
-                                    console.error("Błąd podczas usuwania konta:", error);
+                                } catch (error: any) {
+                                    showToast(error, "error");
                                 } finally {
                                     closeModal();
                                 }

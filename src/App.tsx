@@ -4,18 +4,21 @@ import {BrowserRouter} from "react-router-dom";
 import {AuthProvider} from '@/providers/AuthProvider'
 import {DataProvider} from "@/providers/DataProvider.tsx";
 import {FilterProvider} from "@/providers/FilterProvider.tsx";
+import {ToastProvider} from "@/providers/ToastProvider.tsx";
 
 
 const App: React.FC = () => {
     return (
         <BrowserRouter>
-            <DataProvider>
-                <AuthProvider>
-                    <FilterProvider>
-                        <AppRoutes/>
-                    </FilterProvider>
-                </AuthProvider>
-            </DataProvider>
+            <ToastProvider>
+                <DataProvider>
+                    <AuthProvider>
+                        <FilterProvider>
+                            <AppRoutes/>
+                        </FilterProvider>
+                    </AuthProvider>
+                </DataProvider>
+            </ToastProvider>
         </BrowserRouter>
 
     )

@@ -1,10 +1,11 @@
 import React, {useEffect} from "react";
 import {useForm} from "react-hook-form";
-import apiClient from "@/lib/apiClient.tsx";
 import {useModal} from "@/hooks/useModal.tsx";
 import {DefaultButton, FormField} from "@/components";
 import {translateAccountType} from "@/utils/Translators";
 import {useRefresh} from "@/hooks/useRefresh.tsx";
+import {useToast} from "@/hooks/useToast.tsx";
+import {addAccount, updateAccount} from "@/API/AccountAPI.tsx";
 
 interface AccountFormData {
     name: string;
@@ -28,6 +29,7 @@ const AccountForm: React.FC<AccountFormProps> = ({id, name, initial_balance, typ
             type: type || "Cheking",
         },
     });
+    const {showToast} = useToast();
 
     const {closeModal} = useModal();
     const { forceRefresh } = useRefresh();
@@ -41,20 +43,18 @@ const AccountForm: React.FC<AccountFormProps> = ({id, name, initial_balance, typ
 
     const onSubmit = async (data: AccountFormData) => {
         try {
+            let successMessage: string;
+
             if (id) {
-                const response = await apiClient.put(`/accounts/${id}`, data);
-                console.log("Account successfully updated:", response.data);
-                forceRefresh();
+                successMessage = await updateAccount(id, data);
             } else {
-                const response = await apiClient.post("/accounts", data);
-                console.log("Account successfully created:", response.data);
-                forceRefresh();
+                successMessage = await addAccount(data);
             }
-
-
+            showToast(successMessage, "success");
+            forceRefresh();
             closeModal();
         } catch (error) {
-            console.error("Error saving account:", error);
+            showToast(`Wystąpił błąd. Spróbuj ponownie.`, "error");
         }
     };
 

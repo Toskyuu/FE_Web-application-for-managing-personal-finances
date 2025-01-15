@@ -1,49 +1,49 @@
 import React, {useEffect} from "react";
-import { useForm } from "react-hook-form";
-import apiClient from "@/lib/apiClient.tsx";
-import { useModal } from "@/hooks/useModal.tsx";
+import {useForm} from "react-hook-form";
+import {useModal} from "@/hooks/useModal.tsx";
 import {DefaultButton, FormField} from "@/components";
 import {useRefresh} from "@/hooks/useRefresh.tsx";
+import {useToast} from "@/hooks/useToast.tsx";
+import {addCategory, updateCategory} from "@/API/CategoryAPI.tsx";
 
 interface CategoryFormData {
     name: string;
     description: string;
 }
 
-interface CategoryFormProps{
+interface CategoryFormProps {
     id?: number;
     name?: string;
     description?: string;
 }
 
 const CategoryForm: React.FC<CategoryFormProps> = ({id, name, description}) => {
-    const { register, handleSubmit, formState: { errors }, setValue } =useForm<CategoryFormData>({
+    const {register, handleSubmit, formState: {errors}, setValue} = useForm<CategoryFormData>({
         defaultValues: {
             name: name || "",
             description: description || "",
         },
     });
-    const { closeModal } = useModal();
-    const { forceRefresh } = useRefresh();
+    const {closeModal} = useModal();
+    const {forceRefresh} = useRefresh();
+    const {showToast} = useToast();
 
 
     const onSubmit = async (data: CategoryFormData) => {
         try {
+            let successMessage: string;
+
             if (id) {
-                const response = await apiClient.put(`/categories/${id}`, data);
-                console.log("Category successfully updated:", response.data);
-                forceRefresh();
+                successMessage = await updateCategory(id, data);
             } else {
-                const response = await apiClient.post("/categories", data);
-                console.log("Category successfully created:", response.data);
-                forceRefresh();
+                successMessage = await addCategory(data);
             }
 
-
+            showToast(successMessage, "success");
+            forceRefresh();
             closeModal();
-
         } catch (error) {
-            console.error("Error saving category:", error);
+            showToast(`Wystąpił błąd. Spróbuj ponownie.`, "error");
         }
     };
 
@@ -52,13 +52,13 @@ const CategoryForm: React.FC<CategoryFormProps> = ({id, name, description}) => {
             id: "name",
             label: "Nazwa kategorii",
             type: "text",
-            validation: { required: "Nazwa kategorii jest wymagana" },
+            validation: {required: "Nazwa kategorii jest wymagana"},
         },
         {
             id: "description",
             label: "Opis kategorii",
             type: "text",
-            validation: { required: "Opis kategorii jest wymagany" },
+            validation: {required: "Opis kategorii jest wymagany"},
         },
     ];
 
