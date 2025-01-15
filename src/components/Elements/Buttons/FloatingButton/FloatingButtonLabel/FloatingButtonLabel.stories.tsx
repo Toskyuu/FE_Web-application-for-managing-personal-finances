@@ -1,14 +1,23 @@
-import { Meta, StoryFn } from '@storybook/react';
-import Label from "./FloatingButtonLabel.tsx";
+import {Meta, StoryObj} from '@storybook/react';
+import FloatingButtonLabel from "./FloatingButtonLabel.tsx";
 
-export default {
-    title: 'Components/Label',
-    component: Label,
-} as Meta<typeof Label>;
+const meta: Meta<typeof FloatingButtonLabel> = {
+    title: 'Components/FloatingButtonLabel',
+    component: FloatingButtonLabel,
+    parameters: {
+        layout: 'centered',
+        controls: {expanded: true},
+    },
+    tags: ['autodocs'],
+};
+export default meta;
 
-const Template: StoryFn<typeof Label> = (args) => <Label {...args} />;
+type Story = StoryObj<typeof FloatingButtonLabel>;
 
-export const Default = Template.bind({});
-Default.args = {
-    label: 'Sample Label',
+export const BasicUsage: Story = {
+    args: {
+        label: 'text',
+        color: 'text-text-dark',
+        bgColor: 'bg-primary',
+    },
 };

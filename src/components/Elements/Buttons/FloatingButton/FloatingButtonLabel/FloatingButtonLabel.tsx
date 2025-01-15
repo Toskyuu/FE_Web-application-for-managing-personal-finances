@@ -9,7 +9,7 @@ interface FloatingButtonLabelProps {
 const FloatingButtonLabel: React.FC<FloatingButtonLabelProps> = ({ label, color, bgColor }) => {
     return (
         <div
-            className={`text-white text-lg py-1 px-3 rounded-full text-${color} bg-${bgColor} absolute right-full mr-2
+            className={`text-white text-lg py-1 px-3 rounded-full ${color} ${bgColor} absolute right-full mr-2
                         whitespace-nowrap overflow-hidden text-ellipsis max-w-xs `}
         >
             {label}

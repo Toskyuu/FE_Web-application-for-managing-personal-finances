@@ -1,12 +1,26 @@
-import { Meta, StoryFn } from '@storybook/react';
-import MainCard from "@/components/Elements/Card/MainCard.tsx";
+import {Meta, StoryObj} from '@storybook/react';
+import MainCard from "./MainCard.tsx";
 
-export default {
+
+const meta: Meta<typeof MainCard> = {
     title: 'Components/MainCard',
     component: MainCard,
-} as Meta<typeof MainCard>;
+    parameters: {
+        layout: 'centered',
+        controls: {expanded: true},
+    },
+    tags: ['autodocs'],
+};
+export default meta;
 
-const Template: StoryFn<typeof MainCard> = (args) => <MainCard {...args} />;
+type Story = StoryObj<typeof MainCard>;
 
-export const Default = Template.bind({});
-Default.args = {};
+export const BasicUsage: Story = {
+    args: {
+        fontSize: 'text-lg',
+        padding: 'p-3',
+        height: 'h-auto',
+        width: 'w-auto',
+        children: 'Hello World',
+    }
+};

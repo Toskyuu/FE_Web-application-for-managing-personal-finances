@@ -1,13 +1,14 @@
-import { Meta, StoryFn } from '@storybook/react';
 import AnonHeader from "./AnonHeader.tsx";
+import {Meta, StoryObj} from '@storybook/react';
 
-export default {
+
+const meta: Meta<typeof AnonHeader> = {
     title: 'Components/AnonHeader',
     component: AnonHeader,
-} as Meta;
-
-const Template: StoryFn = (args) => <AnonHeader {...args} />;
-
-export const Default = Template.bind({});
-Default.args = {
+    tags: ['autodocs'],
 };
+export default meta;
+
+type Story = StoryObj<typeof AnonHeader>;
+
+export const BasicUsage: Story = {};

@@ -47,36 +47,36 @@ const FloatingButtons: React.FC = () => {
                     icon={faCreditCard}
                     label="Dodaj konto"
                     onClick={() => handleOpenModal(<AccountForm/>)}
-                    color="text-dark"
-                    bgColor="primary"
+                    color="text-text-dark"
+                    bgColor="bg-primary"
                 />
                 <FloatingActionButton
                     icon={faChartPie}
                     label="Dodaj budżet"
                     onClick={() => handleOpenModal(<BudgetForm/>)}
-                    color="text-dark"
-                    bgColor="primary"
+                    color="text-text-dark"
+                    bgColor="bg-primary"
                 />
                 <FloatingActionButton
                     icon={faMoneyBillTransfer}
                     label="Dodaj transakcje"
                     onClick={() => handleOpenModal(<TransactionForm/>)}
-                    color="text-dark"
-                    bgColor="primary"
+                    color="text-text-dark"
+                    bgColor="bg-primary"
                 />
                 <FloatingActionButton
                     icon={faClock}
                     label="Dodaj cykliczną transakcję"
                     onClick={() => handleOpenModal(<RecurringTransactionForm/>)}
-                    color="text-dark"
-                    bgColor="primary"
+                    color="text-text-dark"
+                    bgColor="bg-primary"
                 />
                 <FloatingActionButton
                     icon={faList}
                     label="Dodaj kategorię"
                     onClick={() => handleOpenModal(<CategoryCreateForm/>)}
-                    color="text-dark"
-                    bgColor="primary"
+                    color="text-text-dark"
+                    bgColor="bg-primary"
                 />
             </div>
 

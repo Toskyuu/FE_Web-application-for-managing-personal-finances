@@ -1,13 +1,14 @@
-import { Meta, StoryFn } from '@storybook/react';
+import {Meta, StoryObj} from '@storybook/react';
 import Header from './Header.tsx';
 
-export default {
+const meta: Meta<typeof Header> = {
     title: 'Components/Header',
     component: Header,
-} as Meta;
-
-const Template: StoryFn = (args) => <Header {...args} />;
-
-export const Default = Template.bind({});
-Default.args = {
+    tags: ['autodocs'],
 };
+export default meta;
+
+type Story = StoryObj<typeof Header>;
+
+export const BasicUsage: Story = {};
+
