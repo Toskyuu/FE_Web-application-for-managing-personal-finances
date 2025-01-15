@@ -16,7 +16,7 @@ import {
     BudgetForm,
     TransactionForm,
     RecurringTransactionForm,
-    CategoryCreateForm
+    CategoryForm
 } from "@/components";
 
 const FloatingButtons: React.FC = () => {
@@ -74,7 +74,7 @@ const FloatingButtons: React.FC = () => {
                 <FloatingActionButton
                     icon={faList}
                     label="Dodaj kategorię"
-                    onClick={() => handleOpenModal(<CategoryCreateForm/>)}
+                    onClick={() => handleOpenModal(<CategoryForm/>)}
                     color="text-text-dark"
                     bgColor="bg-primary"
                 />

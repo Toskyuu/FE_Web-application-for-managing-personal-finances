@@ -16,7 +16,7 @@ export { default as TransactionForm } from './Elements/Forms/TransactionForm.tsx
 export { default as AccountForm } from './Elements/Forms/AccountForm.tsx'
 export { default as BudgetForm } from './Elements/Forms/BudgetForm.tsx'
 export { default as RecurringTransactionForm } from './Elements/Forms/RecurringTransactionForm.tsx'
-export { default as CategoryCreateForm } from './Elements/Forms/CategoryCreateForm.tsx'
+export { default as CategoryForm } from './Elements/Forms/CategoryForm.tsx'
 export { default as FilterTransactionForm } from './Elements/Forms/FilterTransactionForm.tsx'
 export { default as CheckboxGroup } from './Elements/Forms/CheckboxGroup.tsx'
 export { default as DropDownMenu } from './Elements/DropDownMenu/DropDownMenu.tsx'
