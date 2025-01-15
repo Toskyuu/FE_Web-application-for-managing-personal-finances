@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from "react";
 import {useForm} from "react-hook-form";
-import apiClient from "@/lib/apiClient.tsx";
 import {useModal} from "@/hooks/useModal.tsx";
 import {DefaultButton, FormField} from "@/components";
 import {useData} from "@/hooks/useData.tsx";
 import {translateRecurringType, translateTransactionType} from "@/utils/Translators.tsx";
 import {useRefresh} from "@/hooks/useRefresh.tsx";
+import {addRecurringTransaction, updateRecurringTransaction} from "@/API/RecurringTransactionAPI.tsx";
+import {useToast} from "@/hooks/useToast.tsx";
 
 interface RecurringTransactionFormData {
     description: string;
@@ -60,6 +61,7 @@ const RecurringTransactionForm: React.FC<RecurringTransactionFormProps> = ({
     const {accounts, categories} = useData();
     const {closeModal} = useModal();
     const {forceRefresh} = useRefresh();
+    const {showToast} = useToast();
     const [transactionType, setTransactionType] = useState<string>(type || "Income");
 
     const RecurringTypes = [
@@ -91,23 +93,20 @@ const RecurringTransactionForm: React.FC<RecurringTransactionFormProps> = ({
 
     const onSubmit = async (data: RecurringTransactionFormData) => {
         try {
-            const requestBody = {
-                ...data,
-                account_id_2: data.account_id_2 || null,
-            };
+            let successMessage: string;
 
             if (id) {
-                const response = await apiClient.put(`/recurring-transactions/${id}`, requestBody);
-                console.log("Recurring transaction successfully updated:", response.data);
+                successMessage = await updateRecurringTransaction(id, data);
             } else {
-                const response = await apiClient.post("/recurring-transactions", requestBody);
-                console.log("Recurring transaction successfully created:", response.data);
+                successMessage = await addRecurringTransaction(data);
             }
 
+            showToast(successMessage, "success");
             forceRefresh();
             closeModal();
-        } catch (error) {
-            console.error("Error saving recurring transaction:", error);
+        } catch
+            (error) {
+            showToast(`Wystąpił błąd. Spróbuj ponownie.`, "error");
         }
     };
 

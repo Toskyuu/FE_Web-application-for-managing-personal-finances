@@ -1,10 +1,11 @@
 import React, {useState, useEffect} from "react";
 import {DropDownMenu, RecurringTransactionForm} from "@/components";
-import apiClient from "@/lib/apiClient.tsx";
 import {useData} from "@/hooks/useData.tsx";
 import {useModal} from "@/hooks/useModal.tsx";
 import {useRefresh} from "@/hooks/useRefresh.tsx";
 import {translateRecurringType} from "@/utils/Translators.tsx";
+import {useToast} from "@/hooks/useToast.tsx";
+import {deleteRecurringTransaction, fetchRecurringTransactions} from "@/API/RecurringTransactionAPI.tsx";
 
 interface RecurringTransactions {
     id: number;
@@ -28,38 +29,32 @@ const RecurringTransactionsPage: React.FC = () => {
     const [order, setOrder] = useState<"asc" | "desc">("desc");
     const {openModal, closeModal} = useModal();
     const {forceRefresh, refreshKey} = useRefresh();
+    const {showToast} = useToast();
 
     const size = 10;
     const {categories, accounts} = useData();
 
-    const fetchRecurringTransactions = async (
+    const loadRecurringTransactions = async (
         page: number,
+        size: number,
         sortBy: string,
         order: "asc" | "desc",
     ) => {
         setIsLoading(true);
         try {
-            const response = await apiClient.post("/recurring-transactions/recurring-transactions", {
-                page,
-                size,
-                sort_by: sortBy,
-                order,
-            });
-            setRecurringTransactions((prev) => (page === 1 ? response.data : [...prev, ...response.data]));
-        } catch (error) {
-            console.error("Błąd podczas pobierania transakcji cyklicznych:", error);
+            const data = await fetchRecurringTransactions(page, size, sortBy, order);
+            setRecurringTransactions((prev) => (page === 1 ? data : [...prev, ...data]));
+        } catch (error: any) {
+            showToast(error, "error")
         } finally {
             setIsLoading(false);
         }
     };
 
     useEffect(() => {
-        fetchRecurringTransactions(page, sortBy, order);
-    }, [page, sortBy, order]);
+        loadRecurringTransactions(page, size, sortBy, order);
+    }, [page, size, sortBy, order, refreshKey]);
 
-    useEffect(() => {
-        fetchRecurringTransactions(page, sortBy, order);
-    }, [refreshKey]);
 
     const loadMore = () => {
         setPage((prevPage) => prevPage + 1);
@@ -134,11 +129,11 @@ const RecurringTransactionsPage: React.FC = () => {
                         className="px-6 py-2 bg-error text-white rounded-lg hover:bg-error-dark"
                         onClick={async () => {
                             try {
-                                await apiClient.delete(`/recurring-transactions/${recurringTransactionId}`);
-                                console.log(`Transakcja cykliczna o ID ${recurringTransactionId} została usunięta`);
+                                let response = await deleteRecurringTransaction(recurringTransactionId);
+                                showToast(response, "success");
                                 forceRefresh();
-                            } catch (error) {
-                                console.error("Błąd podczas usuwania transakcji:", error);
+                            } catch (error: any) {
+                                showToast(error, "error");
                             } finally {
                                 closeModal();
                             }

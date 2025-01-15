@@ -3,6 +3,7 @@ import apiClient from "@/lib/apiClient.tsx";
 import {useNavigate} from "react-router-dom";
 import {useData} from "@/hooks/useData.tsx";
 import {jwtDecode, JwtPayload} from "jwt-decode";
+import {useToast} from "@/hooks/useToast.tsx";
 
 interface AuthContextType {
     token: string | null;
@@ -27,8 +28,9 @@ export const AuthProvider = ({children}: { children: ReactNode }) => {
     const [token, setToken] = useState<string | null>(localStorage.getItem("token"));
     const navigate = useNavigate();
     const {clearData, fetchData} = useData();
+    const {showToast} = useToast();
 
-    const checkTokenExpiration = () => {
+    const isTokenExpired = () => {
         if (!token) return false;
 
         try {
@@ -43,11 +45,10 @@ export const AuthProvider = ({children}: { children: ReactNode }) => {
     };
 
     useEffect(() => {
-        if (!checkTokenExpiration()) {
+        if (token && !isTokenExpired()) {
             logOut();
         }
     }, [token]);
-
 
 
     const logIn = async (email: string, password: string) => {
@@ -67,8 +68,10 @@ export const AuthProvider = ({children}: { children: ReactNode }) => {
             fetchData();
 
             navigate('/');
+            showToast(`Zalogowano pomyślnie.`, "success");
+
         } catch (error) {
-            console.error("Login failed", error);
+            showToast(`Nie udało się zalogować: ${error}.`, "error");
             throw error;
         }
     };
@@ -77,8 +80,8 @@ export const AuthProvider = ({children}: { children: ReactNode }) => {
         setToken(null);
         localStorage.removeItem("token");
         clearData();
-        console.log("Wylogowano usera")
         navigate("/");
+        showToast(`Wylogowano pomyślnie.`, "success");
     };
 
     const register = async (username: string, email: string, password: string) => {
@@ -88,7 +91,7 @@ export const AuthProvider = ({children}: { children: ReactNode }) => {
             formData.set("email", email);
             formData.set("password", password);
 
-            const response = await apiClient.post(
+            await apiClient.post(
                 "/users/register",
                 {
                     username,
@@ -97,10 +100,11 @@ export const AuthProvider = ({children}: { children: ReactNode }) => {
                 }
             );
 
-            console.log(response);
             navigate('/');
+            showToast(`Udało się zarejestrować użytkownika. Zaloguj się.`, "success");
+
         } catch (error) {
-            console.error("Registration failed", error);
+            showToast(`Nie udało się zarejestrować użytkownika: ${error}.`, "error");
             throw error;
         }
     };

@@ -1,8 +1,9 @@
 import React, {useState, useEffect} from "react";
-import apiClient from "@/lib/apiClient.tsx";
 import {CategoryForm, DropDownMenu} from "@/components";
 import {useModal} from "@/hooks/useModal.tsx";
 import {useRefresh} from "@/hooks/useRefresh.tsx";
+import {useToast} from "@/hooks/useToast.tsx";
+import {deleteCategory, fetchCategories} from "@/API/CategoryAPI.tsx";
 
 interface Category {
     id: number;
@@ -18,6 +19,7 @@ const CategoriesPage: React.FC = () => {
         const {openModal, closeModal} = useModal();
         const {refreshKey} = useRefresh();
         const {forceRefresh} = useRefresh();
+        const {showToast} = useToast();
 
 
         const handleOpenModal = (content: React.ReactNode) => {
@@ -25,33 +27,24 @@ const CategoriesPage: React.FC = () => {
         };
 
 
-        const fetchCategories = async (
+        const loadCategories = async (
             sortBy: string,
             order: "asc" | "desc"
         ) => {
             setIsLoading(true);
             try {
-                const response = await apiClient.post("/categories/categories", {
-                    sort_by: sortBy,
-                    order,
-                });
-                setCategories(() =>
-                    response.data
-                );
-            } catch (error) {
-                console.error("Błąd podczas pobierania kategorii:", error);
+                const data = await fetchCategories(sortBy, order);
+                setCategories(data);
+            } catch (error: any) {
+                showToast(error, "error")
             } finally {
                 setIsLoading(false);
             }
         };
 
         useEffect(() => {
-            fetchCategories(sortBy, order);
-        }, [sortBy, order]);
-
-        useEffect(() => {
-            fetchCategories(sortBy, order);
-        }, [refreshKey]);
+            loadCategories(sortBy, order);
+        }, [sortBy, order, refreshKey]);
 
 
         const toggleSortOrder = () => {
@@ -76,12 +69,11 @@ const CategoriesPage: React.FC = () => {
                             className="px-6 py-2 bg-error text-white rounded-lg hover:bg-error-dark"
                             onClick={async () => {
                                 try {
-                                    await apiClient.delete(`/categories/${categoryId}`);
-                                    setCategories((prev) => prev.filter((category) => category.id !== categoryId));
-                                    console.log(`Kategoria o ID ${categoryId} została usunięta`);
+                                    let response = await deleteCategory(categoryId);
+                                    showToast(response, "success");
                                     forceRefresh();
-                                } catch (error) {
-                                    console.error("Błąd podczas usuwania kategorii:", error);
+                                } catch (error: any) {
+                                    showToast(error, "error");
                                 } finally {
                                     closeModal();
                                 }
@@ -152,7 +144,7 @@ const CategoriesPage: React.FC = () => {
                             <hr className="w-full"/>
                             <div className="py-3">
                                 <p className="text-md">{category.description}</p>
-                                  </div>
+                            </div>
                         </div>
                     ))}
 

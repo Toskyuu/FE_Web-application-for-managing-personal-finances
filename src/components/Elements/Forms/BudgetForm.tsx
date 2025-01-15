@@ -1,10 +1,11 @@
-import React, { useEffect } from "react";
-import { useForm } from "react-hook-form";
-import apiClient from "@/lib/apiClient.tsx";
-import { useData } from "@/hooks/useData.tsx";
-import { useModal } from "@/hooks/useModal.tsx";
-import { DefaultButton, FormField } from "@/components";
+import React, {useEffect} from "react";
+import {useForm} from "react-hook-form";
+import {useData} from "@/hooks/useData.tsx";
+import {useModal} from "@/hooks/useModal.tsx";
+import {DefaultButton, FormField} from "@/components";
 import {useRefresh} from "@/hooks/useRefresh.tsx";
+import {useToast} from "@/hooks/useToast.tsx";
+import {addBudget, updateBudget} from "@/API/BudgetAPI.tsx";
 
 interface BudgetFormData {
     category_id: number;
@@ -19,8 +20,8 @@ interface BudgetFormProps {
     month_year?: string;
 }
 
-const BudgetForm: React.FC<BudgetFormProps> = ({ id, category_id, limit, month_year }) => {
-    const { register, handleSubmit, setValue, formState: { errors } } = useForm<BudgetFormData>({
+const BudgetForm: React.FC<BudgetFormProps> = ({id, category_id, limit, month_year}) => {
+    const {register, handleSubmit, setValue, formState: {errors}} = useForm<BudgetFormData>({
         defaultValues: {
             category_id: category_id || undefined,
             limit: limit || 0,
@@ -28,9 +29,10 @@ const BudgetForm: React.FC<BudgetFormProps> = ({ id, category_id, limit, month_y
         },
     });
 
-    const { categories } = useData();
-    const { closeModal } = useModal();
+    const {categories} = useData();
+    const {closeModal} = useModal();
     const {forceRefresh} = useRefresh();
+    const {showToast} = useToast();
 
 
     useEffect(() => {
@@ -52,18 +54,19 @@ const BudgetForm: React.FC<BudgetFormProps> = ({ id, category_id, limit, month_y
                 month_year: formattedDate,
             };
 
-            let response;
+            let successMessage: string;
+
             if (id) {
-                response = await apiClient.put(`/budgets/${id}`, requestBody);
-                console.log("Budget successfully updated:", response.data);
+                successMessage = await updateBudget(id, requestBody);
             } else {
-                response = await apiClient.post("/budgets", requestBody);
-                console.log("Budget successfully created:", response.data);
+                successMessage = await addBudget(requestBody);
             }
+
+            showToast(successMessage, "success");
             forceRefresh();
             closeModal();
         } catch (error) {
-            console.error("Error saving budget:", error);
+            showToast(`Wystąpił nieoczekiwany błąd. Spróbuj ponownie}`, "error");
         }
     };
 
@@ -76,7 +79,7 @@ const BudgetForm: React.FC<BudgetFormProps> = ({ id, category_id, limit, month_y
                 value: category.id,
                 label: category.name,
             })),
-            validation: { required: "Kategoria jest wymagana" },
+            validation: {required: "Kategoria jest wymagana"},
         },
         {
             id: "limit",
@@ -84,14 +87,14 @@ const BudgetForm: React.FC<BudgetFormProps> = ({ id, category_id, limit, month_y
             type: "number",
             validation: {
                 required: "Limit budżetu jest wymagany",
-                min: { value: 0, message: "Limit nie może być mniejszy niż 0" },
+                min: {value: 0, message: "Limit nie może być mniejszy niż 0"},
             },
         },
         {
             id: "month_year",
             label: "Miesiąc obowiązywania",
             type: "month",
-            validation: { required: "Miesiąc obowiązywania jest wymagany" },
+            validation: {required: "Miesiąc obowiązywania jest wymagany"},
         },
     ];
 
