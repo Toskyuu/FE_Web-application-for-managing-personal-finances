@@ -6,7 +6,7 @@ import {
     faChartSimple,
     faClock,
     faCreditCard,
-    faLandmark,
+    faLandmark, faList,
     faMoneyBillTransfer,
     faTable,
 } from "@fortawesome/free-solid-svg-icons";
@@ -103,6 +103,15 @@ const Header: React.FC = () => {
                             >
                                 <FontAwesomeIcon icon={faChartPie} className="mr-2"/>
                                 Budżety
+                            </a>
+                        </li>
+                        <li>
+                            <a
+                                href="/categories"
+                                className="flex items-center px-4 py-2 text-text-dark hover:bg-gray-200 transition-colors"
+                            >
+                                <FontAwesomeIcon icon={faList} className="mr-2"/>
+                                Kategorie
                             </a>
                         </li>
                         <li>

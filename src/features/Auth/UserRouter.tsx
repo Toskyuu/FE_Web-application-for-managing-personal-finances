@@ -5,6 +5,7 @@ import TransactionPage from "@/pages/User/TransactionsPage.tsx";
 import AccountsPage from "@/pages/User/AccountsPage.tsx";
 import RecurringTransactionsPage from "@/pages/User/RecurringTransactionPage.tsx";
 import BudgetsPage from "@/pages/User/BudgetsPage.tsx";
+import CategoriesPage from "@/pages/User/CategoriesPage.tsx";
 
 export const UserRouter = () => {
     return (
@@ -15,6 +16,7 @@ export const UserRouter = () => {
                 <Route path="/Accounts" element={<AccountsPage/>}/>
                 <Route path="/recurring-transactions" element={<RecurringTransactionsPage/>}/>
                 <Route path="/budgets" element={<BudgetsPage/>}/>
+                <Route path="/categories" element={<CategoriesPage/>}/>
                 <Route path="*" element={<Navigate to="/" replace/>}/>
             </Route>
         </Routes>
