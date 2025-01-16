@@ -45,7 +45,7 @@ const RecurringTransactionsPage: React.FC = () => {
             const data = await fetchRecurringTransactions(page, size, sortBy, order);
             setRecurringTransactions((prev) => (page === 1 ? data : [...prev, ...data]));
         } catch (error: any) {
-            showToast(error, "error")
+            showToast(error.message, "error")
         } finally {
             setIsLoading(false);
         }
@@ -133,7 +133,7 @@ const RecurringTransactionsPage: React.FC = () => {
                                 showToast(response, "success");
                                 forceRefresh();
                             } catch (error: any) {
-                                showToast(error, "error");
+                                showToast(error.message, "error");
                             } finally {
                                 closeModal();
                             }

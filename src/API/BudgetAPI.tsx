@@ -1,8 +1,12 @@
 import apiClient from "@/lib/apiClient";
+import {useData} from "@/hooks/useData.tsx";
+
+const {fetchData} = useData();
 
 export const updateBudget = async (id: number, requestBody: any) => {
     try {
         await apiClient.put(`/budgets/${id}`, requestBody);
+        fetchData();
         return "Budżet został zaktualizowany.";
     } catch (error: any) {
         throw new Error(`Wystąpił błąd podczas aktualizacji budżetu: ${error.response?.data?.message || error.message}`);
@@ -12,6 +16,7 @@ export const updateBudget = async (id: number, requestBody: any) => {
 export const addBudget = async (requestBody: any) => {
     try {
         await apiClient.post(`/budgets`, requestBody);
+        fetchData();
         return "Budżet został dodany.";
     } catch (error: any) {
         throw new Error(`Wystąpił błąd podczas dodawania budżetu: ${error.response?.data?.message || error.message}`);
@@ -42,6 +47,7 @@ export const fetchBudgets = async (
 export const deleteBudget = async (budgetId: number) => {
     try {
         await apiClient.delete(`/budget/${budgetId}`);
+        fetchData();
         return "Budżet został usunięty";
     } catch (error: any) {
         throw new Error(

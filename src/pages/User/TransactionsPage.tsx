@@ -13,7 +13,7 @@ interface Transaction {
     account_id: number;
     account_id_2?: number;
     user_id: number;
-    date: string;
+    transaction_date: string;
     type: "Outcome" | "Income" | "Internal";
     amount: number;
     description: string;
@@ -23,7 +23,7 @@ const TransactionsPage: React.FC = () => {
     const [transactions, setTransactions] = useState<Transaction[]>([]);
     const [page, setPage] = useState(1);
     const [isLoading, setIsLoading] = useState(false);
-    const [sortBy, setSortBy] = useState<string>("date");
+    const [sortBy, setSortBy] = useState<string>("transaction_date");
     const [order, setOrder] = useState<"asc" | "desc">("desc");
     const {openModal, closeModal} = useModal();
     const {filters} = useFilters();
@@ -46,7 +46,7 @@ const TransactionsPage: React.FC = () => {
             const data = await fetchTransactions(page, size, sortBy, order, filters);
             setTransactions((prev) => (page === 1 ? data : [...prev, ...data]));
         } catch (error: any) {
-            showToast(error, "error")
+            showToast(error.message, "error")
         } finally {
             setIsLoading(false);
         }
@@ -96,7 +96,7 @@ const TransactionsPage: React.FC = () => {
         id: number,
         description: string,
         amount: number,
-        date: string,
+        transaction_date: string,
         category_id: number,
         account_id: number,
         type: string,
@@ -107,7 +107,7 @@ const TransactionsPage: React.FC = () => {
                 id={id}
                 description={description}
                 amount={amount}
-                date={date}
+                transaction_date={transaction_date}
                 category_id={category_id}
                 account_id={account_id}
                 type={type}
@@ -130,7 +130,7 @@ const TransactionsPage: React.FC = () => {
                                 showToast(response, "success");
                                 forceRefresh();
                             } catch (error: any) {
-                                showToast(error, "error");
+                                showToast(error.message, "error");
                             } finally {
                                 closeModal();
                             }
@@ -175,7 +175,7 @@ const TransactionsPage: React.FC = () => {
                         }}
                         className="p-3 rounded-2xl shadow-2xl bg-surface-light dark:bg-surface-dark text-text-light dark:text-text-dark"
                     >
-                        <option value="date">Data</option>
+                        <option value="transaction_date">Data</option>
                         <option value="amount">Kwota</option>
                     </select>
                     <button
@@ -203,7 +203,7 @@ const TransactionsPage: React.FC = () => {
                                                 transaction.id,
                                                 transaction.description,
                                                 transaction.amount,
-                                                transaction.date,
+                                                transaction.transaction_date,
                                                 transaction.category_id,
                                                 transaction.account_id,
                                                 transaction.type,
@@ -236,7 +236,7 @@ const TransactionsPage: React.FC = () => {
                             >
                                 {`${transaction.amount.toFixed(2)} PLN`}
                             </p>
-                            <p className="text-sm text-gray-500">{new Date(transaction.date).toLocaleDateString()}</p>
+                            <p className="text-sm text-gray-500">{new Date(transaction.transaction_date).toLocaleDateString()}</p>
                         </div>
                     </div>
                 ))}

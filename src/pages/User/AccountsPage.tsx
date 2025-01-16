@@ -36,7 +36,7 @@ const AccountsPage: React.FC = () => {
                 const data = await fetchAccounts(sortBy, order);
                 setAccounts(data);
             } catch (error: any) {
-                showToast(error, "error")
+                showToast(error.message, "error")
             } finally {
                 setIsLoading(false);
             }
@@ -73,7 +73,7 @@ const AccountsPage: React.FC = () => {
                                     showToast(response, "success");
                                     forceRefresh();
                                 } catch (error: any) {
-                                    showToast(error, "error");
+                                    showToast(error.message, "error");
                                 } finally {
                                     closeModal();
                                 }
