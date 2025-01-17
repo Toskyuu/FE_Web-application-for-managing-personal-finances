@@ -45,7 +45,7 @@ const BudgetsPage: React.FC = () => {
                 const data = await fetchBudgets(page, size, sortBy, order);
                 setBudgets((prev) => (page === 1 ? data : [...prev, ...data]));
             } catch (error: any) {
-                showToast(error, "error")
+                showToast(error.message, "error")
             } finally {
                 setIsLoading(false);
             }
@@ -90,7 +90,7 @@ const BudgetsPage: React.FC = () => {
                                     showToast(response, "success");
                                     forceRefresh();
                                 } catch (error: any) {
-                                    showToast(error, "error");
+                                    showToast(error.message, "error");
                                 } finally {
                                     closeModal();
                                 }

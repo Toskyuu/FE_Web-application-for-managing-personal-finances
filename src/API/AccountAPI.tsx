@@ -1,17 +1,19 @@
 import apiClient from "@/lib/apiClient";
 
-export const updateAccount = async (id: number, data: any) => {
+export const updateAccount = async (id: number, data: any, fetchData: () => void) => {
     try {
         await apiClient.put(`/accounts/${id}`, data);
+        fetchData();
         return "Konto zostało zaktualizowane.";
     } catch (error: any) {
         throw new Error(`Wystąpił błąd podczas aktualizacji konta: ${error.response?.data?.message || error.message}`);
     }
 };
 
-export const addAccount = async (data: any) => {
+export const addAccount = async (data: any, fetchData: () => void) => {
     try {
         await apiClient.post("/accounts", data);
+        fetchData();
         return "Konto zostało dodane.";
     } catch (error: any) {
         throw new Error(`Wystąpił błąd podczas dodawania konta: ${error.response?.data?.message || error.message}`);
@@ -30,9 +32,10 @@ export const fetchAccounts = async (sortBy: string, order: "asc" | "desc") => {
     }
 };
 
-export const deleteAccount = async (accountId: number) => {
+export const deleteAccount = async (accountId: number, fetchData: () => void) => {
     try {
         await apiClient.delete(`/accounts/${accountId}`);
+        fetchData();
         return "Konto zostało usunięte";
     } catch (error: any) {
         throw new Error(`Błąd podczas usuwania konta: ${error.response?.data?.message || error.message}`);

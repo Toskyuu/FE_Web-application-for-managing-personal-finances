@@ -5,6 +5,7 @@ import {DefaultButton, FormField} from "@/components";
 import {useRefresh} from "@/hooks/useRefresh.tsx";
 import {useToast} from "@/hooks/useToast.tsx";
 import {addCategory, updateCategory} from "@/API/CategoryAPI.tsx";
+import {useData} from "@/hooks/useData.tsx";
 
 interface CategoryFormData {
     name: string;
@@ -27,6 +28,7 @@ const CategoryForm: React.FC<CategoryFormProps> = ({id, name, description}) => {
     const {closeModal} = useModal();
     const {forceRefresh} = useRefresh();
     const {showToast} = useToast();
+    const {fetchData} = useData();
 
 
     const onSubmit = async (data: CategoryFormData) => {
@@ -34,9 +36,9 @@ const CategoryForm: React.FC<CategoryFormProps> = ({id, name, description}) => {
             let successMessage: string;
 
             if (id) {
-                successMessage = await updateCategory(id, data);
+                successMessage = await updateCategory(id, data, fetchData);
             } else {
-                successMessage = await addCategory(data);
+                successMessage = await addCategory(data, fetchData);
             }
 
             showToast(successMessage, "success");

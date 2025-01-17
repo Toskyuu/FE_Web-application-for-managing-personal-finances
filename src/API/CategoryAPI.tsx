@@ -1,19 +1,19 @@
 import apiClient from "@/lib/apiClient";
 
-export const updateCategory = async (id: number, data: any) => {
+export const updateCategory = async (id: number, data: any, fetchData: () => void) => {
     try {
-        const response = await apiClient.put(`/categories/${id}`, data);
-        console.log("Category successfully updated:", response.data);
+        await apiClient.put(`/categories/${id}`, data);
+        fetchData();
         return "Kategoria została zaktualizowana.";
     } catch (error: any) {
         throw new Error(`Wystąpił błąd podczas aktualizacji kategorii: ${error.response?.data?.message || error.message}`);
     }
 };
 
-export const addCategory = async (data: any) => {
+export const addCategory = async (data: any, fetchData: () => void) => {
     try {
-        const response = await apiClient.post("/categories", data);
-        console.log("Category successfully created:", response.data);
+        await apiClient.post("/categories", data);
+        fetchData();
         return "Kategoria została dodana.";
     } catch (error: any) {
         throw new Error(`Wystąpił błąd podczas dodawania kategorii: ${error.response?.data?.message || error.message}`);
@@ -37,9 +37,10 @@ export const fetchCategories = async (
     }
 };
 
-export const deleteCategory = async (categoryId: number) => {
+export const deleteCategory = async (categoryId: number, fetchData: () => void) => {
     try {
         await apiClient.delete(`/categories/${categoryId}`);
+        fetchData();
         return "Kategoria została usunięta";
     } catch (error: any) {
         throw new Error(

@@ -11,7 +11,7 @@ import {addTransaction, updateTransaction} from "@/API/TransactionAPI.tsx";
 interface FormData {
     description: string;
     amount: number;
-    date: string;
+    transaction_date: string;
     category_id: number;
     account_id: number;
     type: string;
@@ -22,7 +22,7 @@ interface TransactionFormProps {
     id?: number;
     description?: string;
     amount?: number;
-    date?: string;
+    transaction_date?: string;
     category_id?: number;
     account_id?: number;
     type?: string;
@@ -33,7 +33,7 @@ const TransactionForm: React.FC<TransactionFormProps> = ({
                                                              id,
                                                              description,
                                                              amount,
-                                                             date,
+                                                             transaction_date,
                                                              category_id,
                                                              account_id,
                                                              type,
@@ -43,7 +43,7 @@ const TransactionForm: React.FC<TransactionFormProps> = ({
         defaultValues: {
             description: description || "",
             amount: amount || 0,
-            date: date || new Date().toISOString().split("T")[0],
+            transaction_date: transaction_date || new Date().toISOString().split("T")[0],
             category_id: category_id || undefined,
             account_id: account_id || undefined,
             type: type || "Income",
@@ -63,16 +63,16 @@ const TransactionForm: React.FC<TransactionFormProps> = ({
     ];
 
     useEffect(() => {
-        if (id && description && amount && date && category_id && account_id && type) {
+        if (id && description && amount && transaction_date && category_id && account_id && type) {
             setValue("description", description);
             setValue("amount", amount);
-            setValue("date", date);
+            setValue("transaction_date", transaction_date);
             setValue("category_id", category_id);
             setValue("account_id", account_id);
             setValue("type", type);
             setValue("account_id_2", account_id_2 || undefined);
         }
-    }, [id, description, amount, date, category_id, account_id, type, account_id_2, setValue]);
+    }, [id, description, amount, transaction_date, category_id, account_id, type, account_id_2, setValue]);
 
     const onSubmit = async (data: FormData) => {
         try {
@@ -105,7 +105,7 @@ const TransactionForm: React.FC<TransactionFormProps> = ({
             validation: {required: "Kwota jest wymagana", min: 0},
         },
         {
-            id: "date",
+            id: "transaction_date",
             label: "Data",
             type: "date",
             validation: {required: "Data jest wymagana"},

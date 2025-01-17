@@ -1,5 +1,6 @@
 import apiClient from "@/lib/apiClient";
 
+
 export const updateBudget = async (id: number, requestBody: any) => {
     try {
         await apiClient.put(`/budgets/${id}`, requestBody);

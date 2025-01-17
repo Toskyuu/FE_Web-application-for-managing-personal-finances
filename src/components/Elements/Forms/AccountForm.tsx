@@ -6,6 +6,7 @@ import {translateAccountType} from "@/utils/Translators";
 import {useRefresh} from "@/hooks/useRefresh.tsx";
 import {useToast} from "@/hooks/useToast.tsx";
 import {addAccount, updateAccount} from "@/API/AccountAPI.tsx";
+import {useData} from "@/hooks/useData.tsx";
 
 interface AccountFormData {
     name: string;
@@ -30,9 +31,9 @@ const AccountForm: React.FC<AccountFormProps> = ({id, name, initial_balance, typ
         },
     });
     const {showToast} = useToast();
-
     const {closeModal} = useModal();
-    const { forceRefresh } = useRefresh();
+    const {forceRefresh} = useRefresh();
+    const {fetchData} = useData();
 
     const accountTypes = [
         {value: "Savings", label: translateAccountType("Savings")},
@@ -46,9 +47,9 @@ const AccountForm: React.FC<AccountFormProps> = ({id, name, initial_balance, typ
             let successMessage: string;
 
             if (id) {
-                successMessage = await updateAccount(id, data);
+                successMessage = await updateAccount(id, data, fetchData);
             } else {
-                successMessage = await addAccount(data);
+                successMessage = await addAccount(data, fetchData);
             }
             showToast(successMessage, "success");
             forceRefresh();

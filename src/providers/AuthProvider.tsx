@@ -70,8 +70,8 @@ export const AuthProvider = ({children}: { children: ReactNode }) => {
             navigate('/');
             showToast(`Zalogowano pomyślnie.`, "success");
 
-        } catch (error) {
-            showToast(`Nie udało się zalogować: ${error}.`, "error");
+        } catch (error:any) {
+            showToast(`Nie udało się zalogować: ${error.message}.`, "error");
             throw error;
         }
     };
@@ -103,8 +103,8 @@ export const AuthProvider = ({children}: { children: ReactNode }) => {
             navigate('/');
             showToast(`Udało się zarejestrować użytkownika. Zaloguj się.`, "success");
 
-        } catch (error) {
-            showToast(`Nie udało się zarejestrować użytkownika: ${error}.`, "error");
+        } catch (error: any) {
+            showToast(`Nie udało się zarejestrować użytkownika: ${error.message}.`, "error");
             throw error;
         }
     };
