@@ -191,7 +191,7 @@ const RecurringTransactionsPage: React.FC = () => {
                             <DropDownMenu
                                 options={[
                                     {
-                                        label: "Edytuj transakcję",
+                                        label: "Edytuj transakcję cykliczną",
                                         onClick: () =>
                                             handleEditRecurringTransaction(
                                                 recurringTransaction.id,

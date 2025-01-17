@@ -4,6 +4,7 @@ import {useModal} from "@/hooks/useModal.tsx";
 import {useRefresh} from "@/hooks/useRefresh.tsx";
 import {useToast} from "@/hooks/useToast.tsx";
 import {deleteCategory, fetchCategories} from "@/API/CategoryAPI.tsx";
+import {useData} from "@/hooks/useData.tsx";
 
 interface Category {
     id: number;
@@ -20,6 +21,7 @@ const CategoriesPage: React.FC = () => {
         const {refreshKey} = useRefresh();
         const {forceRefresh} = useRefresh();
         const {showToast} = useToast();
+        const {fetchData} = useData();
 
 
         const handleOpenModal = (content: React.ReactNode) => {
@@ -69,7 +71,7 @@ const CategoriesPage: React.FC = () => {
                             className="px-6 py-2 bg-error text-white rounded-lg hover:bg-error-dark"
                             onClick={async () => {
                                 try {
-                                    let response = await deleteCategory(categoryId);
+                                    let response = await deleteCategory(categoryId, fetchData);
                                     showToast(response, "success");
                                     forceRefresh();
                                 } catch (error: any) {

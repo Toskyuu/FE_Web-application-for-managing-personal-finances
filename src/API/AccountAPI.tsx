@@ -1,8 +1,6 @@
 import apiClient from "@/lib/apiClient";
-import {useData} from "@/hooks/useData.tsx";
 
-const {fetchData} = useData();
-export const updateAccount = async (id: number, data: any) => {
+export const updateAccount = async (id: number, data: any, fetchData: () => void) => {
     try {
         await apiClient.put(`/accounts/${id}`, data);
         fetchData();
@@ -12,7 +10,7 @@ export const updateAccount = async (id: number, data: any) => {
     }
 };
 
-export const addAccount = async (data: any) => {
+export const addAccount = async (data: any, fetchData: () => void) => {
     try {
         await apiClient.post("/accounts", data);
         fetchData();
@@ -34,7 +32,7 @@ export const fetchAccounts = async (sortBy: string, order: "asc" | "desc") => {
     }
 };
 
-export const deleteAccount = async (accountId: number) => {
+export const deleteAccount = async (accountId: number, fetchData: () => void) => {
     try {
         await apiClient.delete(`/accounts/${accountId}`);
         fetchData();

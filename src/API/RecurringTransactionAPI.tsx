@@ -6,8 +6,7 @@ export const updateRecurringTransaction = async (id: number, data: any) => {
             ...data,
             account_id_2: data.account_id_2 || null,
         };
-        const response = await apiClient.put(`/recurring-transactions/${id}`, requestBody);
-        console.log("Recurring transaction successfully updated:", response.data);
+        await apiClient.put(`/recurring-transactions/${id}`, requestBody);
         return "Transakcja cykliczna została zaktualizowana.";
     } catch (error: any) {
         throw new Error(`Wystąpił błąd podczas aktualizacji transakcji cyklicznej: ${error.response?.data?.message || error.message}`);
@@ -20,8 +19,7 @@ export const addRecurringTransaction = async (data: any) => {
             ...data,
             account_id_2: data.account_id_2 || null,
         };
-        const response = await apiClient.post("/recurring-transactions", requestBody);
-        console.log("Recurring transaction successfully created:", response.data);
+        await apiClient.post("/recurring-transactions", requestBody);
         return "Transakcja cykliczna została dodana.";
     } catch (error: any) {
         throw new Error(`Wystąpił błąd podczas dodawania transakcji cyklicznej: ${error.response?.data?.message || error.message}`);
