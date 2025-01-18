@@ -2,7 +2,6 @@ import React, {useState, useEffect} from "react";
 import {BudgetForm, DropDownMenu} from "@/components";
 import {useModal} from "@/hooks/useModal.tsx";
 import {useRefresh} from "@/hooks/useRefresh.tsx";
-import {useData} from "@/hooks/useData.tsx";
 import {deleteBudget, fetchBudgets} from "@/API/BudgetAPI.tsx";
 import {useToast} from "@/hooks/useToast.tsx";
 
@@ -12,6 +11,7 @@ interface Budget {
     user_id: number;
     month_year: string;
     category_id: number;
+    category_name: string;
     spent_in_budget: number;
 }
 
@@ -27,7 +27,6 @@ const BudgetsPage: React.FC = () => {
         const {showToast} = useToast();
 
         const size = 10;
-        const {categories} = useData();
 
         const handleOpenModal = (content: React.ReactNode) => {
             openModal(content);
@@ -70,11 +69,15 @@ const BudgetsPage: React.FC = () => {
             return order === "asc" ? "Rosnąco" : "Malejąco";
         };
 
-        const getCategoryName = (id: number) => categories.find((cat) => cat.id === id)?.name || "Nieznana kategoria";
 
-
-        const handleEditBudget = (id: number, limit: number, month_year: string, category_id: number) => {
-            handleOpenModal(<BudgetForm id={id} limit={limit} month_year={month_year} category_id={category_id}/>)
+        const handleEditBudget = (
+            id: number,
+            limit: number,
+            month_year: string,
+            category_id: number,
+            category_name: string) => {
+            handleOpenModal(<BudgetForm id={id} limit={limit} month_year={month_year}
+                                        category_id={category_id} category_name={category_name}/>)
         };
 
         const handleDeleteBudget = async (budgetId: number) => {
@@ -148,7 +151,7 @@ const BudgetsPage: React.FC = () => {
                                     options={[
                                         {
                                             label: "Edytuj budżet",
-                                            onClick: () => handleEditBudget(budget.id, budget.limit, budget.month_year.slice(0, 7), budget.category_id),
+                                            onClick: () => handleEditBudget(budget.id, budget.limit, budget.month_year.slice(0, 7), budget.category_id, budget.category_name),
                                         },
                                         {
                                             label: "Usuń budżet",
@@ -161,7 +164,7 @@ const BudgetsPage: React.FC = () => {
                             <p className="text-2xl font-bold">{budget.month_year.slice(0, 7)}</p>
                             <hr className="w-full"/>
                             <div className="py-3">
-                                <p className="text-md">{getCategoryName(budget.category_id)}</p>
+                                <p className="text-md">{budget.category_name}</p>
                                 <p className="text-md text-success">Limit: {`${budget.limit.toFixed(2)} PLN`}</p>
                                 <p className="text-md">Zapełnienie budżetu: {`${budget.spent_in_budget.toFixed(2)} PLN`}</p>
                             </div>

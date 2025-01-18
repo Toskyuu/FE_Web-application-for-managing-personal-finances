@@ -240,7 +240,7 @@ const TransactionsPage: React.FC = () => {
                         <div className="flex flex-col items-end w-full">
                             <p
                                 className={`text-lg font-semibold ${
-                                    transaction.type === "Outcome" ? "text-red-500" : "text-green-500"
+                                    transaction.type === "Outcome" ? "text-error" : "text-success"
                                 }`}
                             >
                                 {`${transaction.amount.toFixed(2)} PLN`}
