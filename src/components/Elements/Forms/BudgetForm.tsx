@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useMemo} from "react";
 import {useForm} from "react-hook-form";
 import {useData} from "@/hooks/useData.tsx";
 import {useModal} from "@/hooks/useModal.tsx";
@@ -16,11 +16,12 @@ interface BudgetFormData {
 interface BudgetFormProps {
     id?: number;
     category_id?: number;
+    category_name?: string;
     limit?: number;
     month_year?: string;
 }
 
-const BudgetForm: React.FC<BudgetFormProps> = ({id, category_id, limit, month_year}) => {
+const BudgetForm: React.FC<BudgetFormProps> = ({id, category_id, limit, month_year, category_name}) => {
     const {register, handleSubmit, setValue, formState: {errors}} = useForm<BudgetFormData>({
         defaultValues: {
             category_id: category_id || undefined,
@@ -33,6 +34,15 @@ const BudgetForm: React.FC<BudgetFormProps> = ({id, category_id, limit, month_ye
     const {closeModal} = useModal();
     const {forceRefresh} = useRefresh();
     const {showToast} = useToast();
+
+
+    const extendedCategories = useMemo(() => {
+        const categoryExists = categories.some((cat: any) => cat.name === category_name);
+        if (!categoryExists && category_id && category_name) {
+            return [...categories, {id: category_id, name: category_name}];
+        }
+        return categories;
+    }, [categories, category_id, category_name]);
 
 
     useEffect(() => {
@@ -75,7 +85,7 @@ const BudgetForm: React.FC<BudgetFormProps> = ({id, category_id, limit, month_ye
             id: "category_id",
             label: "Kategoria",
             type: "select",
-            options: categories.map((category: any) => ({
+            options: extendedCategories.map((category: any) => ({
                 value: category.id,
                 label: category.name,
             })),

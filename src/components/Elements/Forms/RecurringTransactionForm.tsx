@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import {useForm} from "react-hook-form";
 import {useModal} from "@/hooks/useModal.tsx";
 import {DefaultButton, FormField} from "@/components";
@@ -27,8 +27,11 @@ interface RecurringTransactionFormProps {
     recurring_frequency?: string;
     start_date?: string;
     category_id?: number;
+    category_name?: string;
     account_id?: number;
+    account_name?: string;
     account_id_2?: number;
+    account_2_name?: string;
     type?: string;
     next_occurrence?: string;
 }
@@ -40,8 +43,11 @@ const RecurringTransactionForm: React.FC<RecurringTransactionFormProps> = ({
                                                                                recurring_frequency,
                                                                                start_date,
                                                                                category_id,
+                                                                               category_name,
                                                                                account_id,
+                                                                               account_name,
                                                                                account_id_2,
+                                                                               account_2_name,
                                                                                type,
                                                                                next_occurrence,
                                                                            }) => {
@@ -63,6 +69,32 @@ const RecurringTransactionForm: React.FC<RecurringTransactionFormProps> = ({
     const {forceRefresh} = useRefresh();
     const {showToast} = useToast();
     const [transactionType, setTransactionType] = useState<string>(type || "Income");
+
+    const extendedCategories = useMemo(() => {
+        const categoryExists = categories.some((cat: any) => cat.name === category_name);
+        if (!categoryExists && category_id && category_name) {
+            return [...categories, {id: category_id, name: category_name}];
+        }
+        return categories;
+    }, [categories, category_id, category_name]);
+
+    const extendedAccounts = useMemo(() => {
+        const accountExists = (name: string | undefined, id: number | undefined) =>
+            accounts.some((acc: any) => acc.name === name || acc.id === id);
+
+        const newAccounts = [...accounts];
+
+        if (!accountExists(account_name, account_id) && account_id && account_name) {
+            newAccounts.push({id: account_id, name: account_name});
+        }
+
+        if (!accountExists(account_2_name, account_id_2) && account_id_2 && account_2_name) {
+            newAccounts.push({id: account_id_2, name: account_2_name});
+        }
+
+        return newAccounts;
+    }, [accounts, account_id, account_name, account_id_2, account_2_name]);
+
 
     const RecurringTypes = [
         {value: "Daily", label: translateRecurringType("Daily")},
@@ -140,7 +172,7 @@ const RecurringTransactionForm: React.FC<RecurringTransactionFormProps> = ({
             id: "category_id",
             label: "Kategoria",
             type: "select",
-            options: categories.map((category: any) => ({
+            options: extendedCategories.map((category: any) => ({
                 value: category.id,
                 label: category.name,
             })),
@@ -150,7 +182,7 @@ const RecurringTransactionForm: React.FC<RecurringTransactionFormProps> = ({
             id: "account_id",
             label: "Konto",
             type: "select",
-            options: accounts.map((account: any) => ({
+            options: extendedAccounts.map((account: any) => ({
                 value: account.id,
                 label: account.name,
             })),
@@ -174,7 +206,7 @@ const RecurringTransactionForm: React.FC<RecurringTransactionFormProps> = ({
             id: "account_id_2",
             label: "Drugie konto",
             type: "select",
-            options: accounts.map((account: any) => ({
+            options: extendedAccounts.map((account: any) => ({
                 value: account.id,
                 label: account.name,
             })),

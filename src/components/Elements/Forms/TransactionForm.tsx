@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import {useForm} from "react-hook-form";
 import {useModal} from "@/hooks/useModal.tsx";
 import {DefaultButton, FormField} from "@/components";
@@ -24,9 +24,12 @@ interface TransactionFormProps {
     amount?: number;
     transaction_date?: string;
     category_id?: number;
+    category_name?: string;
     account_id?: number;
+    account_name?: string;
     type?: string;
     account_id_2?: number;
+    account_2_name?: string;
 }
 
 const TransactionForm: React.FC<TransactionFormProps> = ({
@@ -35,9 +38,12 @@ const TransactionForm: React.FC<TransactionFormProps> = ({
                                                              amount,
                                                              transaction_date,
                                                              category_id,
+                                                             category_name,
                                                              account_id,
+                                                             account_name,
                                                              type,
                                                              account_id_2,
+                                                             account_2_name
                                                          }) => {
     const {register, handleSubmit, setValue, formState: {errors}} = useForm<FormData>({
         defaultValues: {
@@ -55,6 +61,32 @@ const TransactionForm: React.FC<TransactionFormProps> = ({
     const {forceRefresh} = useRefresh();
     const {showToast} = useToast();
     const [transactionType, setTransactionType] = useState<string>(type || "Income");
+
+    const extendedCategories = useMemo(() => {
+        const categoryExists = categories.some((cat: any) => cat.name === category_name);
+        if (!categoryExists && category_id && category_name) {
+            return [...categories, {id: category_id, name: category_name}];
+        }
+        return categories;
+    }, [categories, category_id, category_name]);
+
+    const extendedAccounts = useMemo(() => {
+        const accountExists = (name: string | undefined, id: number | undefined) =>
+            accounts.some((acc: any) => acc.name === name || acc.id === id);
+
+        const newAccounts = [...accounts];
+
+        if (!accountExists(account_name, account_id) && account_id && account_name) {
+            newAccounts.push({id: account_id, name: account_name});
+        }
+
+        if (!accountExists(account_2_name, account_id_2) && account_id_2 && account_2_name) {
+            newAccounts.push({id: account_id_2, name: account_2_name});
+        }
+
+        return newAccounts;
+    }, [accounts, account_id, account_name, account_id_2, account_2_name]);
+
 
     const TransactionTypes = [
         {value: "Income", label: translateTransactionType("Income")},
@@ -114,7 +146,7 @@ const TransactionForm: React.FC<TransactionFormProps> = ({
             id: "category_id",
             label: "Kategoria",
             type: "select",
-            options: categories.map((category: any) => ({
+            options: extendedCategories.map((category: any) => ({
                 value: category.id,
                 label: category.name,
             })),
@@ -124,7 +156,7 @@ const TransactionForm: React.FC<TransactionFormProps> = ({
             id: "account_id",
             label: "Konto",
             type: "select",
-            options: accounts.map((account: any) => ({
+            options: extendedAccounts.map((account: any) => ({
                 value: account.id,
                 label: account.name,
             })),
@@ -148,11 +180,11 @@ const TransactionForm: React.FC<TransactionFormProps> = ({
             id: "account_id_2",
             label: "Drugie konto",
             type: "select",
-            options: accounts.map((account: any) => ({
+            options: extendedAccounts.map((account: any) => ({
                 value: account.id,
                 label: account.name,
             })),
-            validation: {required: "Drugie konto jest wymagane"},
+            validation: {required: "Drugie konto jest wymagane, jeśli transakcja jest przelewem wewnętrznym"},
         });
     }
 

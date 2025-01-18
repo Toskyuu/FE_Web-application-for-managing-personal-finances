@@ -42,7 +42,7 @@ export const fetchBudgets = async (
 
 export const deleteBudget = async (budgetId: number) => {
     try {
-        await apiClient.delete(`/budget/${budgetId}`);
+        await apiClient.delete(`/budgets/${budgetId}`);
         return "Budżet został usunięty";
     } catch (error: any) {
         throw new Error(

@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from "react";
 import {DropDownMenu, RecurringTransactionForm} from "@/components";
-import {useData} from "@/hooks/useData.tsx";
 import {useModal} from "@/hooks/useModal.tsx";
 import {useRefresh} from "@/hooks/useRefresh.tsx";
 import {translateRecurringType} from "@/utils/Translators.tsx";
@@ -10,8 +9,11 @@ import {deleteRecurringTransaction, fetchRecurringTransactions} from "@/API/Recu
 interface RecurringTransactions {
     id: number;
     category_id: number;
+    category_name: string;
     account_id: number;
+    account_name: string;
     account_id_2?: number;
+    account_2_name?: string;
     user_id: number;
     type: string;
     amount: number;
@@ -32,7 +34,6 @@ const RecurringTransactionsPage: React.FC = () => {
     const {showToast} = useToast();
 
     const size = 10;
-    const {categories, accounts} = useData();
 
     const loadRecurringTransactions = async (
         page: number,
@@ -66,8 +67,6 @@ const RecurringTransactionsPage: React.FC = () => {
         setRecurringTransactions([]);
     };
 
-    const getCategoryName = (id: number) => categories.find((cat) => cat.id === id)?.name || "Nieznana kategoria";
-    const getAccountName = (id: number) => accounts.find((acc) => acc.id === id)?.name || "Nieznane konto";
 
     const getBorderColor = (type: string) => {
         switch (type) {
@@ -95,12 +94,15 @@ const RecurringTransactionsPage: React.FC = () => {
             description: string,
             amount: number,
             category_id: number,
+            category_name: string,
             account_id: number,
+            account_name: string,
             type: string,
             start_date: string,
             next_occurrence: string,
             recurring_frequency: string,
-            account_id_2 ?: number
+            account_id_2 ?: number,
+            account_2_name?: string
         ) => {
             handleOpenModal(
                 <RecurringTransactionForm
@@ -108,12 +110,16 @@ const RecurringTransactionsPage: React.FC = () => {
                     description={description}
                     amount={amount}
                     category_id={category_id}
+                    category_name={category_name}
                     account_id={account_id}
+                    account_name={account_name}
                     type={type}
                     start_date={start_date}
                     next_occurrence={next_occurrence}
                     recurring_frequency={recurring_frequency}
                     account_id_2={account_id_2}
+                    account_2_name={account_2_name}
+
                 />
             );
         }
@@ -186,7 +192,6 @@ const RecurringTransactionsPage: React.FC = () => {
                         key={recurringTransaction.id}
                         className={`relative flex flex-col items-start p-6 bg-surface-light dark:bg-surface-dark text-text-light dark:text-text-dark shadow-2xl rounded-2xl space-y-4 border-l-4 border-t-4 ${getBorderColor(recurringTransaction.type)}`}
                     >
-                        {/* Menu opcji */}
                         <div className="absolute top-4 right-4">
                             <DropDownMenu
                                 options={[
@@ -198,13 +203,17 @@ const RecurringTransactionsPage: React.FC = () => {
                                                 recurringTransaction.description,
                                                 recurringTransaction.amount,
                                                 recurringTransaction.category_id,
+                                                recurringTransaction.category_name,
                                                 recurringTransaction.account_id,
+                                                recurringTransaction.account_name,
                                                 recurringTransaction.type,
                                                 recurringTransaction.start_date,
                                                 recurringTransaction.next_occurrence,
                                                 recurringTransaction.recurring_frequency,
-                                                recurringTransaction.account_id_2 ? recurringTransaction.account_id_2 : undefined
-                                            ),
+                                                recurringTransaction.account_id_2 ? recurringTransaction.account_id_2 : undefined,
+                                                recurringTransaction.account_2_name ? recurringTransaction.account_2_name: undefined
+
+                                    ),
                                     },
                                     {
                                         label: "Usuń transakcję cykliczną",
@@ -215,26 +224,23 @@ const RecurringTransactionsPage: React.FC = () => {
                             />
                         </div>
 
-                        {/* Kategoria */}
                         <p className="text-sm font-bold uppercase text-gray-500">
-                            {getCategoryName(recurringTransaction.category_id)}
+                            {recurringTransaction.category_name}
                         </p>
 
-                        {/* Opis i konta */}
                         <div className="w-full space-y-2">
                             {recurringTransaction.type === "Internal" ? (
                                 <p className="text-md font-semibold">
-                                    {getAccountName(recurringTransaction.account_id)}
+                                    {recurringTransaction.account_name}
                                     <span className="text-gray-400 mx-1">→</span>
-                                    {getAccountName(recurringTransaction.account_id_2!)}
+                                    {recurringTransaction.account_2_name}
                                 </p>
                             ) : (
-                                <p className="text-md font-semibold">{getAccountName(recurringTransaction.account_id)}</p>
+                                <p className="text-md font-semibold">{recurringTransaction.account_name}</p>
                             )}
                             <p className="text-sm text-gray-700 dark:text-gray-400">{recurringTransaction.description}</p>
                         </div>
 
-                        {/* Kwota */}
                         <p
                             className={`text-lg font-bold ${
                                 recurringTransaction.type === "Outcome" ? "text-red-500" : "text-green-500"
@@ -243,7 +249,6 @@ const RecurringTransactionsPage: React.FC = () => {
                             {`${recurringTransaction.amount.toFixed(2)} PLN`}
                         </p>
 
-                        {/* Szczegóły transakcji */}
                         <div className="w-full mt-4 border-t border-gray-300 dark:border-gray-700 pt-4 space-y-2">
                             <p className="text-sm text-gray-600">
                                 <span className="font-semibold">Data rozpoczęcia:</span>{" "}

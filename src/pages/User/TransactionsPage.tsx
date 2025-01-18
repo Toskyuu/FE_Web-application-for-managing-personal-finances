@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from "react";
 import {DropDownMenu, FilterTransactionForm, TransactionForm} from "@/components";
-import {useData} from "@/hooks/useData.tsx";
 import {useModal} from "@/hooks/useModal.tsx";
 import {useFilters} from "@/hooks/useFilters";
 import {useRefresh} from "@/hooks/useRefresh.tsx";
@@ -10,8 +9,11 @@ import {deleteTransaction, fetchTransactions} from "@/API/TransactionAPI.tsx";
 interface Transaction {
     id: number;
     category_id: number;
+    category_name: string;
     account_id: number;
+    account_name: string;
     account_id_2?: number;
+    account_2_name?: string;
     user_id: number;
     transaction_date: string;
     type: "Outcome" | "Income" | "Internal";
@@ -32,7 +34,6 @@ const TransactionsPage: React.FC = () => {
 
 
     const size = 10;
-    const {categories, accounts} = useData();
 
     const loadTransactions = async (
         page: number,
@@ -68,8 +69,6 @@ const TransactionsPage: React.FC = () => {
         setTransactions([]);
     };
 
-    const getCategoryName = (id: number) => categories.find((cat) => cat.id === id)?.name || "Nieznana kategoria";
-    const getAccountName = (id: number) => accounts.find((acc) => acc.id === id)?.name || "Nieznane konto";
 
     const getBorderColor = (type: string) => {
         switch (type) {
@@ -98,9 +97,12 @@ const TransactionsPage: React.FC = () => {
         amount: number,
         transaction_date: string,
         category_id: number,
+        category_name: string,
         account_id: number,
+        account_name: string,
         type: string,
-        account_id_2?: number
+        account_id_2?: number,
+        account_2_name?: string
     ) => {
         handleOpenModal(
             <TransactionForm
@@ -109,9 +111,12 @@ const TransactionsPage: React.FC = () => {
                 amount={amount}
                 transaction_date={transaction_date}
                 category_id={category_id}
+                category_name={category_name}
                 account_id={account_id}
+                account_name={account_name}
                 type={type}
                 account_id_2={account_id_2}
+                account_2_name={account_2_name}
             />
         );
     };
@@ -205,9 +210,13 @@ const TransactionsPage: React.FC = () => {
                                                 transaction.amount,
                                                 transaction.transaction_date,
                                                 transaction.category_id,
+                                                transaction.category_name,
                                                 transaction.account_id,
+                                                transaction.account_name,
                                                 transaction.type,
-                                                transaction.account_id_2 ? transaction.account_id_2 : undefined
+                                                transaction.account_id_2 ? transaction.account_id_2 : undefined,
+                                                transaction.account_2_name ? transaction.account_2_name: undefined
+
                                             ),
                                     },
                                     {
@@ -219,19 +228,19 @@ const TransactionsPage: React.FC = () => {
                             />
                         </div>
 
-                        <p className="font-semibold text-sm">{getCategoryName(transaction.category_id)}</p>
+                        <p className="font-semibold text-sm">{transaction.category_name}</p>
                         {transaction.type === "Internal" ? (
                             <p className="text-md font-semibold">
-                                {getAccountName(transaction.account_id)} &rarr; {getAccountName(transaction.account_id_2!)}
+                                {transaction.account_name} &rarr; {transaction.account_2_name!}
                             </p>
                         ) : (
-                            <p className="text-md font-semibold">{getAccountName(transaction.account_id)}</p>
+                            <p className="text-md font-semibold">{transaction.account_name}</p>
                         )}
                         <p className="text-sm">{transaction.description}</p>
                         <div className="flex flex-col items-end w-full">
                             <p
                                 className={`text-lg font-semibold ${
-                                    transaction.type === "Outcome" ? "text-red-500" : "text-green-500"
+                                    transaction.type === "Outcome" ? "text-error" : "text-success"
                                 }`}
                             >
                                 {`${transaction.amount.toFixed(2)} PLN`}
