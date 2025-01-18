@@ -9,6 +9,7 @@ import {
     faLandmark, faList,
     faMoneyBillTransfer,
     faTable,
+    faUser,
 } from "@fortawesome/free-solid-svg-icons";
 import YourFinance from "@/assets/YourFinance.png";
 import {DefaultButton} from "@/components";
@@ -130,6 +131,15 @@ const Header: React.FC = () => {
                             >
                                 <FontAwesomeIcon icon={faTable} className="mr-2"/>
                                 Statystyki
+                            </a>
+                        </li>
+                        <li>
+                            <a
+                                href="/user"
+                                className="flex items-center px-4 py-2 text-text-dark hover:bg-gray-200 transition-colors"
+                            >
+                                <FontAwesomeIcon icon={faUser} className="mr-2"/>
+                                Użytkownik
                             </a>
                         </li>
                     </ul>
