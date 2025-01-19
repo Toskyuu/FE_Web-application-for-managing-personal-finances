@@ -24,11 +24,6 @@ const CategoriesPage: React.FC = () => {
         const {fetchData} = useData();
 
 
-        const handleOpenModal = (content: React.ReactNode) => {
-            openModal(content);
-        };
-
-
         const loadCategories = async (
             sortBy: string,
             order: "asc" | "desc"
@@ -59,7 +54,7 @@ const CategoriesPage: React.FC = () => {
         };
 
         const handleEditCategory = (id: number, name: string, description: string) => {
-            handleOpenModal(<CategoryForm id={id} name={name} description={description}/>)
+            openModal(<CategoryForm id={id} name={name} description={description}/>)
         };
 
         const handleDeleteCategory = async (categoryId: number) => {
