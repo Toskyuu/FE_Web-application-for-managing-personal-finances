@@ -6,7 +6,7 @@ export const updateTransaction = async (id: number, data: any) => {
             ...data,
             account_id_2: data.account_id_2 || null,
         };
-        await apiClient.put(`/transactions/${id}`, requestBody);
+        await apiClient.patch(`/transactions/${id}`, requestBody);
         return "Transakcja została zaktualizowana.";
     } catch (error: any) {
         throw new Error(`Wystąpił błąd podczas aktualizacji transakcji: ${error.response?.data?.message || error.message}`);
@@ -39,7 +39,7 @@ export const fetchTransactions = async (
             size: size,
             sort_by: sortBy,
             order,
-            ... filters
+            ...filters
         });
         return response.data;
     } catch (error: any) {

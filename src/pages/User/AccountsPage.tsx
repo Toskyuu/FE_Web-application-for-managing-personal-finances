@@ -28,10 +28,6 @@ const AccountsPage: React.FC = () => {
         const {fetchData} = useData();
 
 
-        const handleOpenModal = (content: React.ReactNode) => {
-            openModal(content);
-        };
-
         const loadAccounts = async () => {
             setIsLoading(true);
             try {
@@ -59,7 +55,7 @@ const AccountsPage: React.FC = () => {
         };
 
         const handleEditAccount = (id: number, name: string, initialBalance: number, type: string) => {
-            handleOpenModal(<AccountForm id={id} name={name} initial_balance={initialBalance} type={type}/>)
+            openModal(<AccountForm id={id} name={name} initial_balance={initialBalance} type={type}/>)
         };
 
         const handleDeleteAccount = async (accountId: number) => {

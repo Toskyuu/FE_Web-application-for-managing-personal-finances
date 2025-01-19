@@ -58,7 +58,6 @@ const TransactionsPage: React.FC = () => {
     }, [page, size, sortBy, order, filters, refreshKey]);
 
 
-
     const loadMore = () => {
         setPage((prevPage) => prevPage + 1);
     };
@@ -87,10 +86,6 @@ const TransactionsPage: React.FC = () => {
         return order === "asc" ? "Rosnąco" : "Malejąco";
     };
 
-    const handleOpenModal = (content: React.ReactNode) => {
-        openModal(content);
-    };
-
     const handleEditTransaction = (
         id: number,
         description: string,
@@ -104,7 +99,7 @@ const TransactionsPage: React.FC = () => {
         account_id_2?: number,
         account_2_name?: string
     ) => {
-        handleOpenModal(
+        openModal(
             <TransactionForm
                 id={id}
                 description={description}
@@ -215,8 +210,7 @@ const TransactionsPage: React.FC = () => {
                                                 transaction.account_name,
                                                 transaction.type,
                                                 transaction.account_id_2 ? transaction.account_id_2 : undefined,
-                                                transaction.account_2_name ? transaction.account_2_name: undefined
-
+                                                transaction.account_2_name ? transaction.account_2_name : undefined
                                             ),
                                     },
                                     {

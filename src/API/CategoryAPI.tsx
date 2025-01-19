@@ -2,7 +2,7 @@ import apiClient from "@/lib/apiClient";
 
 export const updateCategory = async (id: number, data: any, fetchData: () => void) => {
     try {
-        await apiClient.put(`/categories/${id}`, data);
+        await apiClient.patch(`/categories/${id}`, data);
         fetchData();
         return "Kategoria została zaktualizowana.";
     } catch (error: any) {

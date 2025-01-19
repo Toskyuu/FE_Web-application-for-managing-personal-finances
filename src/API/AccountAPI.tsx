@@ -2,7 +2,7 @@ import apiClient from "@/lib/apiClient";
 
 export const updateAccount = async (id: number, data: any, fetchData: () => void) => {
     try {
-        await apiClient.put(`/accounts/${id}`, data);
+        await apiClient.patch(`/accounts/${id}`, data);
         fetchData();
         return "Konto zostało zaktualizowane.";
     } catch (error: any) {

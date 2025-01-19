@@ -28,11 +28,6 @@ const BudgetsPage: React.FC = () => {
 
         const size = 10;
 
-        const handleOpenModal = (content: React.ReactNode) => {
-            openModal(content);
-        };
-
-
         const loadBudgets = async (
             page: number,
             size: number,
@@ -76,8 +71,8 @@ const BudgetsPage: React.FC = () => {
             month_year: string,
             category_id: number,
             category_name: string) => {
-            handleOpenModal(<BudgetForm id={id} limit={limit} month_year={month_year}
-                                        category_id={category_id} category_name={category_name}/>)
+            openModal(<BudgetForm id={id} limit={limit} month_year={month_year}
+                                  category_id={category_id} category_name={category_name}/>)
         };
 
         const handleDeleteBudget = async (budgetId: number) => {

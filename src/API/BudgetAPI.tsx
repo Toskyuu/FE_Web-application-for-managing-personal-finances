@@ -1,9 +1,9 @@
 import apiClient from "@/lib/apiClient";
 
 
-export const updateBudget = async (id: number, requestBody: any) => {
+export const updateBudget = async (id: number, data: any) => {
     try {
-        await apiClient.put(`/budgets/${id}`, requestBody);
+        await apiClient.patch(`/budgets/${id}`, data);
         return "Budżet został zaktualizowany.";
     } catch (error: any) {
         throw new Error(`Wystąpił błąd podczas aktualizacji budżetu: ${error.response?.data?.message || error.message}`);

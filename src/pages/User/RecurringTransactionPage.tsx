@@ -85,9 +85,6 @@ const RecurringTransactionsPage: React.FC = () => {
         return order === "asc" ? "Rosnąco" : "Malejąco";
     };
 
-    const handleOpenModal = (content: React.ReactNode) => {
-        openModal(content);
-    };
 
     const handleEditRecurringTransaction = (
             id: number,
@@ -104,7 +101,7 @@ const RecurringTransactionsPage: React.FC = () => {
             account_id_2 ?: number,
             account_2_name?: string
         ) => {
-            handleOpenModal(
+            openModal(
                 <RecurringTransactionForm
                     id={id}
                     description={description}
@@ -211,9 +208,8 @@ const RecurringTransactionsPage: React.FC = () => {
                                                 recurringTransaction.next_occurrence,
                                                 recurringTransaction.recurring_frequency,
                                                 recurringTransaction.account_id_2 ? recurringTransaction.account_id_2 : undefined,
-                                                recurringTransaction.account_2_name ? recurringTransaction.account_2_name: undefined
-
-                                    ),
+                                                recurringTransaction.account_2_name ? recurringTransaction.account_2_name : undefined
+                                            ),
                                     },
                                     {
                                         label: "Usuń transakcję cykliczną",
