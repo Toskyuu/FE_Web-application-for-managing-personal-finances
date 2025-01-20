@@ -7,7 +7,8 @@ import RecurringTransactionsPage from "@/pages/User/RecurringTransactionPage.tsx
 import BudgetsPage from "@/pages/User/BudgetsPage.tsx";
 import CategoriesPage from "@/pages/User/CategoriesPage.tsx";
 import UserPage from "@/pages/User/UserPage.tsx";
-import ConfirmEmail from "@/features/UserFeatures/ConfirmEmail.tsx";
+import ConfirmEmail from "@/pages/ConfirmEmail.tsx";
+import ResetPasswordPage from "@/pages/ResetPasswordPage.tsx";
 
 export const UserRouter = () => {
     return (
@@ -21,6 +22,7 @@ export const UserRouter = () => {
                 <Route path="/categories" element={<CategoriesPage/>}/>
                 <Route path="/user" element={<UserPage/>}/>
                 <Route path="confirm-email" element={<ConfirmEmail/>}/>
+                <Route path="reset-password" element={<ResetPasswordPage/>}/>
                 <Route path="*" element={<Navigate to="/" replace/>}/>
             </Route>
         </Routes>

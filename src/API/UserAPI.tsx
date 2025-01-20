@@ -1,5 +1,4 @@
 import apiClient from "@/lib/apiClient";
-import axios from "axios";
 
 export const fetchUser = async () => {
     try {
@@ -71,9 +70,24 @@ export const confirmEmail = async (token: string) => {
         const requestBody = {
             token
         };
-        await axios.post(`http://127.0.0.1:8000/users/verify`, requestBody);
+        await apiClient.post(`/users/verify`, requestBody);
         return "Twój email został potwierdzony.";
     } catch (error: any) {
         throw new Error(`Wystąpił błąd podczas potwierdzania emaila: ${error.response?.data?.message || error.message}`);
+    }
+};
+
+export const setNewPassword = async (token: string, password: string) => {
+    try {
+        const requestBody = {
+            token,
+            password
+        };
+        console.log(requestBody);
+        await apiClient.post(`/users/reset-password`, requestBody);
+        return "Twoje hasło zostało zmienione.";
+    } catch (error: any) {
+        console.log(error);
+        throw new Error(`Wystąpił błąd podczas zmieniania hasła: ${error.response?.data?.message || error.message}`);
     }
 };
