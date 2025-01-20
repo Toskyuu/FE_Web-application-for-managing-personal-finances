@@ -17,6 +17,14 @@ const RegisterForm: React.FC = () => {
         await register(data.username, data.email, data.password);
     };
 
+    const validatePassword = (password: string) => {
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_])(?!.*\s).{8,}$/;
+        if (!passwordRegex.test(password)) {
+            return "Hasło musi mieć co najmniej 8 znaków, zawierać małą i wielką literę, cyfrę, znak specjalny oraz nie może zawierać spacji.";
+        }
+        return true;
+    };
+
     return (
         <div className="flex flex-col items-center justify-center h-screen">
             <MainCard
@@ -61,7 +69,10 @@ const RegisterForm: React.FC = () => {
                         <input
                             type="password"
                             id="password"
-                            {...formRegister("password", { required: "Hasło nie może być puste" })}
+                            {...formRegister("password", {
+                                required: "Hasło jest wymagane.",
+                                validate: validatePassword
+                            })}
                             className={`mt-1 p-2 block w-full border rounded-md text-text-light ${errors.password ? "border-red-500" : "border-gray-300"}`}
                         />
                         {errors.password && <span className="text-md text-red-500">{errors.password.message}</span>}
