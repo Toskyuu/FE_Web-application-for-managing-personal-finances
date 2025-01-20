@@ -122,7 +122,7 @@ const UserPage: React.FC = () => {
                     )}
 
                     <div className="flex flex-col gap-4 md:w-1/2 lg:w-1/2">
-                        {user && (
+                        {user?.is_verified && (
                             <button
                                 onClick={() => onUpdateUserData(user.username, user.email)}
                                 className="bg-primary hover:bg-primary-dark text-white py-2 px-6 rounded-lg shadow-md transition-all"
@@ -138,12 +138,13 @@ const UserPage: React.FC = () => {
                                 Wyślij ponownie maila z potwierdzeniem
                             </button>
                         )}
-                        <button
-                            onClick={() => onResetPassword(user!.email)}
-                            className="bg-primary hover:bg-primary-dark text-white py-2 px-4 rounded-lg shadow-lg"
-                        >
-                            Zresetuj hasło
-                        </button>
+                        {user?.is_verified && (
+                            <button
+                                onClick={() => onResetPassword(user!.email)}
+                                className="bg-primary hover:bg-primary-dark text-white py-2 px-4 rounded-lg shadow-lg"
+                            >
+                                Zresetuj hasło
+                            </button>)}
                         <button
                             onClick={() => onDeleteUser()}
                             className="bg-error hover:bg-background-dark text-white py-2 px-4 rounded-lg shadow-lg"

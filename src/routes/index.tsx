@@ -1,19 +1,19 @@
-import { useRoutes } from 'react-router-dom';
+import {useRoutes} from 'react-router-dom';
 
-import { anonRoutes } from './anon';
-import { userRoutes } from './user';
+import {anonRoutes} from './anon';
+import {userRoutes} from './user';
 import {useAuth} from "@/hooks/useAuth.tsx";
 
 
 export const AppRoutes = () => {
-    const { isAuthenticated } = useAuth();
+    const {isAuthenticated} = useAuth();
 
     const commonRoutes = [
-        { path: '/*', element: <h1>404</h1> },
+        {path: '/*', element: <h1>404</h1>},
     ];
 
     const determineRoutes = () => {
-         if (!isAuthenticated) return anonRoutes;
+        if (!isAuthenticated) return anonRoutes;
 
         return userRoutes;
     };

@@ -1,4 +1,5 @@
 import apiClient from "@/lib/apiClient";
+import axios from "axios";
 
 export const fetchUser = async () => {
     try {
@@ -61,6 +62,18 @@ export const deleteUser = async () => {
         await apiClient.delete(`/users/me`);
         return "Twoje konto użytkownika zostało usunięte wraz ze wszystkimi danymi.";
     } catch (error: any) {
-        throw new Error(`Wystąpił błąd podczas usuwania konta użytkownika ${error.response?.data?.message || error.message}`);
+        throw new Error(`Wystąpił błąd podczas usuwania konta użytkownika: ${error.response?.data?.message || error.message}`);
+    }
+};
+
+export const confirmEmail = async (token: string) => {
+    try {
+        const requestBody = {
+            token
+        };
+        await axios.post(`http://127.0.0.1:8000/users/verify`, requestBody);
+        return "Twój email został potwierdzony.";
+    } catch (error: any) {
+        throw new Error(`Wystąpił błąd podczas potwierdzania emaila: ${error.response?.data?.message || error.message}`);
     }
 };
