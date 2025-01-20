@@ -3,7 +3,8 @@ import AnonLayout from "@/components/Layout/AnonLayout/AnonLayout";
 import LoginPage from "@/pages/Anon/LoginPage";
 import LandingPage from "@/pages/Anon/LandingPage.tsx";
 import RegisterPage from "@/pages/Anon/RegisterPage.tsx";
-import ConfirmEmail from "@/features/UserFeatures/ConfirmEmail.tsx";
+import ConfirmEmail from "@/pages/ConfirmEmail.tsx";
+import ResetPasswordPage from "@/pages/ResetPasswordPage.tsx";
 
 export const AuthRouter = () => {
     return (
@@ -13,6 +14,7 @@ export const AuthRouter = () => {
                 <Route path="register" element={<RegisterPage/>}/>
                 <Route path="" element={<LandingPage/>}/>
                 <Route path="confirm-email" element={<ConfirmEmail/>}/>
+                <Route path="reset-password" element={<ResetPasswordPage/>}/>
                 <Route path="*" element={<Navigate to="/" replace/>}/>
             </Route>
         </Routes>
