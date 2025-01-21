@@ -28,7 +28,7 @@ const TransactionsPage: React.FC = () => {
     const [sortBy, setSortBy] = useState<string>("transaction_date");
     const [order, setOrder] = useState<"asc" | "desc">("desc");
     const {openModal, closeModal} = useModal();
-    const {filters} = useFilters();
+    const {transactionFilters} = useFilters();
     const {forceRefresh, refreshKey} = useRefresh();
     const {showToast} = useToast();
 
@@ -54,8 +54,8 @@ const TransactionsPage: React.FC = () => {
     };
 
     useEffect(() => {
-        loadTransactions(page, size, sortBy, order, filters);
-    }, [page, size, sortBy, order, filters, refreshKey]);
+        loadTransactions(page, size, sortBy, order, transactionFilters);
+    }, [page, size, sortBy, order, transactionFilters, refreshKey]);
 
 
     const loadMore = () => {

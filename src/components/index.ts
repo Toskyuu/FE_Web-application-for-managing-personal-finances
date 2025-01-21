@@ -21,3 +21,6 @@ export { default as FilterTransactionForm } from './Elements/Forms/FilterTransac
 export { default as CheckboxGroup } from './Elements/Forms/CheckboxGroup.tsx'
 export { default as DropDownMenu } from './Elements/DropDownMenu/DropDownMenu.tsx'
 export { default as Toast } from './Elements/Notification/Toast.tsx'
+export { default as TransactionsOverTimeChart } from './Elements/Charts/TransactionsOverTimeChart.tsx'
+export { default as FilterTransactionOverTimeForm } from './Elements/Forms/FilterTransactionOverTimeForm.tsx'
+

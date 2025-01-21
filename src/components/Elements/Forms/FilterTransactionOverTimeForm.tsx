@@ -6,37 +6,49 @@ import {translateTransactionType} from "@/utils/Translators.tsx";
 import {useFilters} from "@/hooks/useFilters.tsx";
 import {useModal} from "@/hooks/useModal.tsx";
 
-interface FilterTransactionFormData {
+interface FilterTransactionOverTimeFormData {
     date_from: string | null;
     date_to: string | null;
-    min_amount: number | null;
-    max_amount: number | null;
     account_id: string[];
     category_id: string[];
     type: string[];
+    interval: string
 }
 
 
-const FilterTransactionForm: React.FC = ({}) => {
-    const {transactionFilters, setTransactionFilters, resetTransactionFilters} = useFilters();
+const FilterTransactionOverTimeForm: React.FC = ({}) => {
+    const {transactionOverTimeFilters, setTransactionOverTimeFilters, resetTransactionOverTimeFilters} = useFilters();
     const {closeModal} = useModal();
 
-    const {register, control, handleSubmit, formState: {errors}, setValue} = useForm<FilterTransactionFormData>({
-        defaultValues: transactionFilters
+    const {register, control, handleSubmit, formState: {errors}, setValue} = useForm<FilterTransactionOverTimeFormData>({
+        defaultValues: transactionOverTimeFilters
     });
     const {accounts, categories} = useData();
 
     useEffect(() => {
-        setValue("date_from", transactionFilters.date_from);
-        setValue("date_to", transactionFilters.date_to);
-        setValue("min_amount", transactionFilters.min_amount);
-        setValue("max_amount", transactionFilters.max_amount);
-        setValue("account_id", transactionFilters.account_id);
-        setValue("category_id", transactionFilters.category_id);
-        setValue("type", transactionFilters.type);
-    }, [transactionFilters, setValue]);
+        setValue("date_from", transactionOverTimeFilters.date_from);
+        setValue("date_to", transactionOverTimeFilters.date_to);
+        setValue("account_id", transactionOverTimeFilters.account_id);
+        setValue("category_id", transactionOverTimeFilters.category_id);
+        setValue("type", transactionOverTimeFilters.type);
+        setValue("interval", transactionOverTimeFilters.interval);
+    }, [transactionOverTimeFilters, setValue]);
+
+
+    const Intervalypes = [
+        {value: "Daily", label: "Dzienny"},
+        {value: "Monthly", label: "Miesięczny"},
+        {value: "Yearly", label: "Roczny"},
+    ];
 
     const fields = [
+        {
+            id: "interval",
+            label: "Czas interwału",
+            type: "select",
+            options: Intervalypes,
+            validation: {required: "Czas interwału jest wymagany"},
+        },
         {
             id: "date_from",
             label: "Data początkowa",
@@ -47,18 +59,6 @@ const FilterTransactionForm: React.FC = ({}) => {
             label: "Data końcowa",
             type: "date",
         },
-        {
-            id: "min_amount",
-            label: "Kwota minimalna",
-            type: "number",
-            step: "0.01",
-        },
-        {
-            id: "max_amount",
-            label: "Kwota maksymalna",
-            type: "number",
-            step: "0.01",
-        }
     ];
     const TransactionTypes = [
         {value: "Income", label: translateTransactionType("Income")},
@@ -66,8 +66,9 @@ const FilterTransactionForm: React.FC = ({}) => {
         {value: "Internal", label: translateTransactionType("Internal")},
     ];
 
-    const onSubmit = (data: FilterTransactionFormData) => {
-        setTransactionFilters(data);
+
+    const onSubmit = (data: FilterTransactionOverTimeFormData) => {
+        setTransactionOverTimeFilters(data);
         closeModal();
     };
 
@@ -112,6 +113,13 @@ const FilterTransactionForm: React.FC = ({}) => {
                 control={control}
                 errors={errors}
             />
+            <CheckboxGroup
+                id="interval"
+                label="Czas interwału"
+                options={Intervalypes}
+                control={control}
+                errors={errors}
+            />
 
             <div className="w-full flex justify-center items-center pt-5 space-x-8">
                 <DefaultButton
@@ -127,7 +135,7 @@ const FilterTransactionForm: React.FC = ({}) => {
                     color="text-white"
                     bgColor="bg-primary"
                     text="Wyczyść filtry"
-                    onClick={resetTransactionFilters}
+                    onClick={resetTransactionOverTimeFilters}
                     padding="p-3"
                     radius="rounded-md"
                 />
@@ -136,4 +144,4 @@ const FilterTransactionForm: React.FC = ({}) => {
     );
 };
 
-export default FilterTransactionForm;
+export default FilterTransactionOverTimeForm;
