@@ -1,6 +1,6 @@
 import React from 'react';
 import { Bar } from 'react-chartjs-2';
-import '@/utils/chartConfig.tsx';
+import '@/utils/ChartConfig.tsx';
 import { format, parseISO } from 'date-fns';
 
 interface TransactionsOverTimeChartProps {
@@ -12,7 +12,7 @@ interface TransactionsOverTimeChartProps {
     interval: string
 }
 
-const TransactionsOverTimeChart: React.FC<TransactionsOverTimeChartProps> = ({ data, interval }) => {
+const SummaryByTimeChart: React.FC<TransactionsOverTimeChartProps> = ({ data, interval }) => {
     const formattedLabels = data.map((item) => {
         const date = parseISO(item.time_group);
         if (interval === 'Monthly') {
@@ -76,4 +76,4 @@ const TransactionsOverTimeChart: React.FC<TransactionsOverTimeChartProps> = ({ d
     );
 };
 
-export default TransactionsOverTimeChart;
+export default SummaryByTimeChart;

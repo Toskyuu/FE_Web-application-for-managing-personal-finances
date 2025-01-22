@@ -1,25 +1,41 @@
-import React, {useEffect, useState} from 'react';
-import {MainCard, TransactionsOverTimeChart} from '@/components';
-import {fetchTransactionsOverTime} from '@/API/StatsAPI';
-import {useToast} from "@/hooks/useToast.tsx";
-import {useFilters} from "@/hooks/useFilters.tsx";
-import {useModal} from "@/hooks/useModal.tsx";
-import {FilterTransactionOverTimeForm} from "@/components";
+import React, { useEffect, useState } from 'react';
+import { MainCard } from '@/components';
+import { fetchSummaryByCategory } from '@/API/StatsAPI';
+import { useToast } from "@/hooks/useToast.tsx";
+import { useFilters } from "@/hooks/useFilters.tsx";
+import { useModal } from "@/hooks/useModal.tsx";
+import { FilterSummaryByCategoryForm } from "@/components";
+import SummaryByCategoryChart from "@/components/Elements/Charts/SummaryByCategoryChart.tsx";
 
-const Dashboard: React.FC = () => {
-    const [data, setData] = useState<
-        { time_group: string; expenses: number; incomes: number }[]
-    >([]);
+const DashboardPage: React.FC = () => {
+    const [data, setData] = useState<{
+        data: {
+            category: string;
+            expense_count: number;
+            expenses: number;
+            incomes_count: number;
+            incomes: number;
+        }[];
+        start_date: string;
+        end_date: string;
+        type: string;
+    }>({
+        data: [],
+        start_date: '',
+        end_date: '',
+        type: '',
+    });
+
     const [loading, setLoading] = useState<boolean>(true);
-    const {showToast} = useToast();
-    const {transactionOverTimeFilters} = useFilters();
-    const {openModal} = useModal();
+    const { showToast } = useToast();
+    const { transactionSummaryFilters } = useFilters();
+    const { openModal } = useModal();
 
-    const loadTransactionsOverTime = async (filters: any) => {
+    const loadSummaryByCategory = async (filters: any) => {
         try {
             setLoading(true);
-            const response = await fetchTransactionsOverTime(filters);
-            setData(response.data);
+            const response = await fetchSummaryByCategory(filters);
+            setData(response);
         } catch (error: any) {
             showToast(error.message, "error");
         } finally {
@@ -27,30 +43,33 @@ const Dashboard: React.FC = () => {
         }
     };
 
-
     useEffect(() => {
-
-        loadTransactionsOverTime(transactionOverTimeFilters);
-    }, [transactionOverTimeFilters]);
+        loadSummaryByCategory(transactionSummaryFilters);
+    }, [transactionSummaryFilters]);
 
     return (
-        <MainCard fontSize="text-lg" padding="p-6" height="h-auto" width="w-full">
-
+        <MainCard fontSize="text-lg" padding="p-6" height="h-1/2" width="w-auto">
             {loading ? (
                 <p>Loading chart data...</p>
-            ) : data.length ? (
+            ) : data.data.length ? (
                 <>
                     <button
                         onClick={() =>
-                            openModal(<FilterTransactionOverTimeForm/>)
+                            openModal(<FilterSummaryByCategoryForm />)
                         }
                         className="p-3 rounded-2xl shadow-2xl bg-secondary text-text-dark"
                     >
                         Filtry
                     </button>
-                    <TransactionsOverTimeChart data={data} interval={transactionOverTimeFilters.interval}/>
+                    <div className="flex items-center justify-center h-auto">
+                        <SummaryByCategoryChart
+                            data={data.data}
+                            start_date={data.start_date}
+                            end_date={data.end_date}
+                            type={data.type}
+                        />
+                    </div>
                 </>
-
             ) : (
                 <p>No data available for the selected filters.</p>
             )}
@@ -58,4 +77,4 @@ const Dashboard: React.FC = () => {
     );
 };
 
-export default Dashboard;
+export default DashboardPage;

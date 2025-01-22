@@ -20,6 +20,14 @@ interface TransactionOverTimeFilterFormData {
 
 }
 
+interface TransactionSummaryFormData {
+    date_from: string | null;
+    date_to: string | null;
+    account_id: string[];
+    category_id: string[];
+    type: string | null;
+}
+
 interface FilterContextType {
     transactionFilters: TransactionFilterFormData;
     setTransactionFilters: (filters: TransactionFilterFormData) => void;
@@ -27,6 +35,9 @@ interface FilterContextType {
     transactionOverTimeFilters: TransactionOverTimeFilterFormData;
     setTransactionOverTimeFilters: (filters: TransactionOverTimeFilterFormData) => void;
     resetTransactionOverTimeFilters: () => void;
+    transactionSummaryFilters: TransactionSummaryFormData;
+    setTransactionSummaryFilters: (filters: TransactionSummaryFormData) => void;
+    resetTransactionSummaryFilters: () => void;
 }
 
 export const FilterContext = createContext<FilterContextType | undefined>(undefined);
@@ -75,6 +86,23 @@ export const FilterProvider: React.FC<FilterProviderProps> = ({children}) => {
         });
     };
 
+    const [transactionSummaryFilters, setTransactionSummaryFilters] = useState<TransactionSummaryFormData>({
+        date_from: null,
+        date_to: null,
+        account_id: [],
+        category_id: [],
+        type: null,
+    });
+    const resetTransactionSummaryFilters = () => {
+        setTransactionSummaryFilters({
+            date_from: null,
+            date_to: null,
+            account_id: [],
+            category_id: [],
+            type: "Income",
+        });
+    };
+
     return (
         <FilterContext.Provider value={{
             transactionFilters,
@@ -82,7 +110,10 @@ export const FilterProvider: React.FC<FilterProviderProps> = ({children}) => {
             resetTransactionFilters,
             transactionOverTimeFilters,
             setTransactionOverTimeFilters,
-            resetTransactionOverTimeFilters
+            resetTransactionOverTimeFilters,
+            transactionSummaryFilters,
+            setTransactionSummaryFilters,
+            resetTransactionSummaryFilters
         }}>
             {children}
         </FilterContext.Provider>
