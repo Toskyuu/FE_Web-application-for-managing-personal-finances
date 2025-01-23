@@ -21,7 +21,9 @@ export { default as FilterTransactionForm } from './Elements/Forms/Filters/Filte
 export { default as CheckboxGroup } from './Elements/Forms/CheckboxGroup.tsx'
 export { default as DropDownMenu } from './Elements/DropDownMenu/DropDownMenu.tsx'
 export { default as Toast } from './Elements/Notification/Toast.tsx'
-export { default as TransactionsOverTimeChart } from './Elements/Charts/SummaryByTimeChart.tsx'
+export { default as SummaryByTimeChart } from './Elements/Charts/SummaryByTimeChart.tsx'
 export { default as FilterSummaryByTimeForm } from './Elements/Forms/Filters/FilterSummaryByTimeForm.tsx'
+export { default as SummaryByCategoryChart } from './Elements/Charts/SummaryByCategoryChart.tsx'
 export { default as FilterSummaryByCategoryForm } from './Elements/Forms/Filters/FilterSummaryByCategoryForm.tsx'
+export { default as SummaryChart } from './Elements/Charts/SummaryChart.tsx'
 

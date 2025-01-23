@@ -99,7 +99,7 @@ export const FilterProvider: React.FC<FilterProviderProps> = ({children}) => {
             date_to: null,
             account_id: [],
             category_id: [],
-            type: "Income",
+            type: null,
         });
     };
 

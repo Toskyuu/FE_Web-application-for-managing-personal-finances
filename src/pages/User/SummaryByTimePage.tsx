@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {MainCard, TransactionsOverTimeChart} from '@/components';
+import {MainCard, SummaryByTimeChart} from '@/components';
 import {fetchSummaryByTime} from '@/API/StatsAPI';
 import {useToast} from "@/hooks/useToast.tsx";
 import {useFilters} from "@/hooks/useFilters.tsx";
@@ -48,7 +48,7 @@ const SummaryByTimePage: React.FC = () => {
                     >
                         Filtry
                     </button>
-                    <TransactionsOverTimeChart data={data} interval={transactionOverTimeFilters.interval}/>
+                    <SummaryByTimeChart data={data} interval={transactionOverTimeFilters.interval}/>
                 </>
 
             ) : (
