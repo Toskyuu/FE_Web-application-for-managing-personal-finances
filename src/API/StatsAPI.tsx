@@ -44,6 +44,7 @@ export const fetchCumulative = async (filters: any
         });
         return response.data;
     } catch (error: any) {
+        console.log(error);
         throw new Error(`Wystąpił błąd podczas pobierania statystyk: ${error.response?.data?.message || error.message}`);
     }
 };

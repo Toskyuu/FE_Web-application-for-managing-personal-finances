@@ -26,4 +26,5 @@ export { default as FilterSummaryByTimeForm } from './Elements/Forms/Filters/Fil
 export { default as SummaryByCategoryChart } from './Elements/Charts/SummaryByCategoryChart.tsx'
 export { default as FilterSummaryByCategoryForm } from './Elements/Forms/Filters/FilterSummaryByCategoryForm.tsx'
 export { default as SummaryChart } from './Elements/Charts/SummaryChart.tsx'
+export { default as CumulativeChart } from './Elements/Charts/CumulativeChart.tsx'
 

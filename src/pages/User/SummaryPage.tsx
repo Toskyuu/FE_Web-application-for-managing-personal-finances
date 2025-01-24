@@ -16,7 +16,7 @@ interface SummaryData {
     end_date: string;
 }
 
-const DashboardPage: React.FC = () => {
+const SummaryPage: React.FC = () => {
     const [data, setData] = useState<SummaryData | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
 
@@ -70,4 +70,4 @@ const DashboardPage: React.FC = () => {
     );
 };
 
-export default DashboardPage;
+export default SummaryPage;

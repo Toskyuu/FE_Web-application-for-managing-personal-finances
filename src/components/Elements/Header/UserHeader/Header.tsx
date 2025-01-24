@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, {useState, useEffect} from "react";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {
     faBars,
     faChartPie,
@@ -14,12 +14,12 @@ import {
     faCaretUp,
 } from "@fortawesome/free-solid-svg-icons";
 import YourFinance from "@/assets/YourFinance.png";
-import { DefaultButton } from "@/components";
-import { useAuth } from "@/hooks/useAuth.tsx";
+import {DefaultButton} from "@/components";
+import {useAuth} from "@/hooks/useAuth.tsx";
 
 const Header: React.FC = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const { logOut } = useAuth();
+    const {logOut} = useAuth();
     const [isStatsOpen, setIsStatsOpen] = useState(false);
 
     useEffect(() => {
@@ -48,11 +48,11 @@ const Header: React.FC = () => {
                         onClick={() => setIsMenuOpen(!isMenuOpen)}
                         aria-label="Open navigation"
                     >
-                        <FontAwesomeIcon icon={faBars} size="lg" />
+                        <FontAwesomeIcon icon={faBars} size="lg"/>
                     </button>
 
                     <div className="flex items-center h-10">
-                        <img src={YourFinance} alt="Logo" className="h-full w-auto object-contain" />
+                        <img src={YourFinance} alt="Logo" className="h-full w-auto object-contain"/>
                     </div>
                 </div>
             </header>
@@ -135,26 +135,34 @@ const Header: React.FC = () => {
                                     <ul className="pl-8 space-y-2 mt-2">
                                         <li>
                                             <a
-                                                href="#stat1"
+                                                href="/summary-by-time"
                                                 className="flex items-center px-4 py-2 text-text-dark hover:bg-gray-200 transition-colors"
                                             >
-                                                Statystyka 1
+                                                Transakcje według czasu
                                             </a>
                                         </li>
                                         <li>
                                             <a
-                                                href="#stat2"
+                                                href="/summary-by-category"
                                                 className="flex items-center px-4 py-2 text-text-dark hover:bg-gray-200 transition-colors"
                                             >
-                                                Statystyka 2
+                                                Transakcje według kategorii
                                             </a>
                                         </li>
                                         <li>
                                             <a
-                                                href="#stat3"
+                                                href="/summary"
                                                 className="flex items-center px-4 py-2 text-text-dark hover:bg-gray-200 transition-colors"
                                             >
-                                                Statystyka 3
+                                                Ogólne podsumowanie
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a
+                                                href="/cumulative"
+                                                className="flex items-center px-4 py-2 text-text-dark hover:bg-gray-200 transition-colors"
+                                            >
+                                                Transakcje skumulowane
                                             </a>
                                         </li>
                                     </ul>

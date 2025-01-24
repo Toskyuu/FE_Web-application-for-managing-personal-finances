@@ -7,7 +7,9 @@ import {
     Tooltip,
     Legend,
     LineElement,
-    ArcElement
+    ArcElement,
+    PointElement,
+    Filler
 } from 'chart.js';
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, LineElement, ArcElement);
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, LineElement, ArcElement, PointElement, Filler);

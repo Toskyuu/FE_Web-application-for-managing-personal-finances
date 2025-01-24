@@ -60,7 +60,12 @@ const FilterSummaryByCategoryForm: React.FC = ({}) => {
 
 
     const onSubmit = (data: FilterSummaryByCategoryFormData) => {
-        setTransactionSummaryFilters(data);
+        const processedData = {
+            ...data,
+            type: data.type === "" ? null : data.type,
+        };
+
+        setTransactionSummaryFilters(processedData);
         closeModal();
     };
 
