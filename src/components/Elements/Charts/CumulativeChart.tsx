@@ -20,7 +20,9 @@ const CumulativeChart: React.FC<CumulativeChartProps> = ({
                                                              start_date,
                                                              end_date,
                                                          }) => {
-    const formattedLabels = data.map((item) => format(parseISO(item.date), 'dd.MM.yyyy'));
+    const formattedLabels = data.map((item) =>
+        format(parseISO(item.date), 'dd.MM.yyyy')
+    );
 
     const chartData = {
         labels: formattedLabels,
@@ -31,6 +33,7 @@ const CumulativeChart: React.FC<CumulativeChartProps> = ({
                 backgroundColor: 'rgba(255, 99, 132, 0.2)',
                 borderColor: 'rgba(255, 99, 132, 1)',
                 fill: true,
+                count: data.map((item) => item.cumulative_expense_count), // Liczba transakcji
             },
             {
                 label: 'Przychody',
@@ -38,36 +41,41 @@ const CumulativeChart: React.FC<CumulativeChartProps> = ({
                 backgroundColor: 'rgba(75, 192, 192, 0.2)',
                 borderColor: 'rgba(75, 192, 192, 1)',
                 fill: true,
+                count: data.map((item) => item.cumulative_income_count), // Liczba transakcji
             },
         ],
     };
 
     const options = {
         responsive: true,
+        maintainAspectRatio: false,
         plugins: {
             title: {
+                align: 'end' as const,
                 display: true,
-                text: `Wydatki i przychody na przestrzeni czasu (${format(parseISO(start_date), 'dd.MM.yyyy')} - ${format(parseISO(end_date), 'dd.MM.yyyy')})`,
+                text: [
+                    `Okres`,
+                    `(${format(parseISO(start_date), 'dd.MM.yyyy')} - ${format(
+                        parseISO(end_date),
+                        'dd.MM.yyyy'
+                    )})`,
+                ],
+            },
+            legend: {
+                display: false,
             },
             tooltip: {
                 callbacks: {
                     label: function (tooltipItem: any) {
                         const dataset = tooltipItem.dataset;
-                        const dataIndex = tooltipItem.dataIndex;
+                        const label = dataset.label; // "Wydatki" lub "Przychody"
+                        const value = dataset.data[tooltipItem.dataIndex]; // Kwota
+                        const count = dataset.count[tooltipItem.dataIndex]; // Liczba transakcji
 
-                        // Find corresponding data point
-                        const currentData = data[dataIndex];
-                        let label = dataset.label;
-
-                        if (label === 'Wydatki') {
-                            return `${label}: ${currentData.cumulative_expense} zł (${currentData.cumulative_expense_count} transakcji)`;
-                        }
-
-                        if (label === 'Przychody') {
-                            return `${label}: ${currentData.cumulative_income} zł (${currentData.cumulative_income_count} transakcji)`;
-                        }
-
-                        return label;
+                        return [
+                            `${label}: ${value} zł`,
+                            `Liczba transakcji: ${count}`,
+                        ];
                     },
                 },
             },
@@ -83,9 +91,7 @@ const CumulativeChart: React.FC<CumulativeChartProps> = ({
         },
     };
 
-    return (
-        <Line data={chartData} options={options}/>
-    );
+    return <Line data={chartData} options={options}/>;
 };
 
 export default CumulativeChart;

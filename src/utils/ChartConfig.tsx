@@ -9,7 +9,7 @@ import {
     LineElement,
     ArcElement,
     PointElement,
-    Filler
+    Filler,
 } from 'chart.js';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, LineElement, ArcElement, PointElement, Filler);

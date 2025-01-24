@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Pie} from 'react-chartjs-2';
 import {format, parseISO} from 'date-fns';
 
@@ -24,16 +24,39 @@ const generateRandomColors = (count: number) => {
     });
 };
 
-const SummaryByCategoryChart: React.FC<SummaryByCategoryChartProps> = ({data, start_date, end_date, type}) => {
+const SummaryByCategoryChart: React.FC<SummaryByCategoryChartProps> = ({
+                                                                           data,
+                                                                           start_date,
+                                                                           end_date,
+                                                                           type,
+                                                                       }) => {
+    const [legendPosition, setLegendPosition] = useState<'top' | 'right'>('right');
+
     const mappedData = data.map((item) => ({
         category: item.category,
         value: type == 'Income' ? item.incomes : item.expenses,
         count: type == 'Income' ? item.income_count : item.expense_count,
     }));
 
+
+    useEffect(() => {
+        const mediaQuery = window.matchMedia('(max-width: 768px)');
+        const handleMediaQueryChange = (e: MediaQueryListEvent) => {
+            setLegendPosition(e.matches ? 'top' : 'right');
+        };
+        mediaQuery.addEventListener('change', handleMediaQueryChange);
+
+        setLegendPosition(mediaQuery.matches ? 'top' : 'right');
+
+        return () => {
+            mediaQuery.removeEventListener('change', handleMediaQueryChange);
+        };
+    }, []);
+
     const labels = mappedData.map((item) => item.category);
     const values = mappedData.map((item) => item.value);
     const counts = mappedData.map((item) => item.count);
+    const transactionTypes = mappedData.map((item) => item.transactionType);
 
     const colors = generateRandomColors(mappedData.length);
 
@@ -43,28 +66,38 @@ const SummaryByCategoryChart: React.FC<SummaryByCategoryChartProps> = ({data, st
             {
                 data: values,
                 backgroundColor: colors,
-                borderColor: colors.map((color) => color.replace('0.8', '1')),
-                borderWidth: 1,
+                borderColor: '#ffffff',
+                borderWidth: 2,
             },
+
         ],
     };
 
     const options = {
         responsive: true,
+        maintainAspectRatio: false,
         plugins: {
             title: {
+                align: 'end' as const,
                 display: true,
-                text: `Podsumowanie ${type == 'Income' ? 'przychodów' : 'wydatków'} w okresie ${format(parseISO(start_date), 'dd.MM.yyyy')} - ${format(parseISO(end_date), 'dd.MM.yyyy')}`,
+                text: [`${type == 'Income' ? 'Przychody' : 'Wydatki'}`,
+                    `Okres`,
+                    `${format(
+                        parseISO(start_date),
+                        'dd.MM.yyyy'
+                    )} - ${format(parseISO(end_date), 'dd.MM.yyyy')}`],
                 font: {
-                    size: 24
-                }
+                    size: 15,
+                },
             },
             legend: {
+                position: legendPosition,
                 labels: {
                     font: {
-                        size: 24
-                    }
-                }
+                        size: 26,
+                    },
+
+                },
             },
             tooltip: {
                 callbacks: {
@@ -73,22 +106,18 @@ const SummaryByCategoryChart: React.FC<SummaryByCategoryChartProps> = ({data, st
                         const value = tooltipItem.raw;
                         const index = tooltipItem.dataIndex;
                         const count = counts[index];
+                        const transactionType = transactionTypes[index];
 
                         return [
                             `Kategoria: ${category}`,
-                            `${type == 'Income' ? 'Przychody' : 'Wydatki'}: ${value} zł`,
+                            `${transactionType}: ${value} zł`,
                             `Liczba transakcji: ${count}`,
                         ];
                     },
                 },
             },
+
         },
-        elements: {
-            arc: {
-                borderWidth: 3,
-            },
-        },
-        cutout: '60%',
     };
 
     return <Pie data={chartData} options={options}/>;

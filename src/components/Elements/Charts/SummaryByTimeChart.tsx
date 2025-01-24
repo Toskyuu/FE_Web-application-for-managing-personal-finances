@@ -9,20 +9,19 @@ interface TransactionsOverTimeChartProps {
         expenses: number;
         incomes: number;
     }[];
-    interval: string
+    interval: string;
 }
 
 const SummaryByTimeChart: React.FC<TransactionsOverTimeChartProps> = ({ data, interval }) => {
     const formattedLabels = data.map((item) => {
         const date = parseISO(item.time_group);
         if (interval === 'Monthly') {
-            return format(date, 'MM.yyyy');
+            return format(date, 'MM.yy');
         } else if (interval === 'Yearly') {
-            return format(date, 'yyyy');
+            return format(date, 'yy');
         }
-        return format(date, 'dd.MM.yyyy');
+        return format(date, 'dd.MM');
     });
-
 
     const chartData = {
         labels: formattedLabels,
@@ -44,10 +43,10 @@ const SummaryByTimeChart: React.FC<TransactionsOverTimeChartProps> = ({ data, in
 
     const options = {
         responsive: true,
+        maintainAspectRatio: false,
         plugins: {
-            title: {
-                display: true,
-                text: 'Wydatki i przychody na przestrzeni czasu',
+            legend: {
+                display: false,
             },
             tooltip: {
                 callbacks: {
@@ -61,19 +60,25 @@ const SummaryByTimeChart: React.FC<TransactionsOverTimeChartProps> = ({ data, in
             },
         },
         scales: {
+            x: {
+                stacked: true,
+                grid: {
+                    drawOnChartArea: false,
+                    drawBorder: true,
+                },
+            },
             y: {
-                title: {
-                    display: true,
-                    text: 'Kwota (zł)',
+                stacked: true,
+                grid: {
+                    drawOnChartArea: false,
+                    drawBorder: true,
                 },
                 beginAtZero: true,
             },
         },
     };
 
-    return (
-            <Bar data={chartData} options={options} />
-    );
+    return <Bar data={chartData} options={options} />;
 };
 
 export default SummaryByTimeChart;

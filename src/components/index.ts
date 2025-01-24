@@ -24,7 +24,7 @@ export { default as Toast } from './Elements/Notification/Toast.tsx'
 export { default as SummaryByTimeChart } from './Elements/Charts/SummaryByTimeChart.tsx'
 export { default as FilterSummaryByTimeForm } from './Elements/Forms/Filters/FilterSummaryByTimeForm.tsx'
 export { default as SummaryByCategoryChart } from './Elements/Charts/SummaryByCategoryChart.tsx'
-export { default as FilterSummaryByCategoryForm } from './Elements/Forms/Filters/FilterSummaryByCategoryForm.tsx'
+export { default as FilterSummaryByCategoryForm } from './Elements/Forms/Filters/FilterSummaryStatsForm.tsx'
 export { default as SummaryChart } from './Elements/Charts/SummaryChart.tsx'
 export { default as CumulativeChart } from './Elements/Charts/CumulativeChart.tsx'
 

@@ -15,7 +15,7 @@ interface FilterSummaryByCategoryFormData {
 }
 
 
-const FilterSummaryByCategoryForm: React.FC = ({}) => {
+const FilterSummaryStatsForm: React.FC = ({}) => {
     const {transactionSummaryFilters, setTransactionSummaryFilters, resetTransactionSummaryFilters} = useFilters();
     const {closeModal} = useModal();
 
@@ -127,4 +127,4 @@ const FilterSummaryByCategoryForm: React.FC = ({}) => {
     );
 };
 
-export default FilterSummaryByCategoryForm;
+export default FilterSummaryStatsForm;

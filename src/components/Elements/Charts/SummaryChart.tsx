@@ -1,14 +1,6 @@
 import React from 'react';
-import {
-    BarChart,
-    Bar,
-    XAxis,
-    YAxis,
-    CartesianGrid,
-    Tooltip,
-    ResponsiveContainer,
-    Legend,
-} from 'recharts';
+import {Bar} from 'react-chartjs-2';
+import {format, parseISO} from 'date-fns';
 
 interface SummaryChartProps {
     expenses: number;
@@ -27,70 +19,70 @@ const SummaryChart: React.FC<SummaryChartProps> = ({
                                                        start_date,
                                                        end_date,
                                                    }) => {
-    const chartData = [
-        { name: 'Wydatki', value: expenses, count: expense_count, fill: 'red' },
-        { name: 'Przychody', value: incomes, count: income_count, fill: 'green' },
-    ];
+    const chartData = {
+        labels: ['Wydatki', 'Przychody'],
+        datasets: [
+            {
+                label: 'Kwota (zł)',
+                data: [expenses, incomes],
+                backgroundColor: ['rgba(255, 99, 132, 0.8)', 'rgba(75, 192, 192, 0.8)'],
+                borderRadius: 8,
+            },
+        ],
+    };
 
-    return (
-        <div
-            style={{
-                width: '100%',
-                height: '400px',
-                userSelect: 'none', // Wyłączenie zaznaczania
-            }}
-        >
-            <h3 style={{ textAlign: 'center', marginBottom: '20px' }}>
-                Podsumowanie wydatków i przychodów ({start_date} - {end_date})
-            </h3>
-            <ResponsiveContainer width="100%" height="100%">
-                <BarChart
-                    data={chartData}
-                    margin={{
-                        top: 20,
-                        right: 30,
-                        left: 20,
-                        bottom: 20,
-                    }}
-                >
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="name" />
-                    <YAxis />
-                    <Tooltip
-                        contentStyle={{
-                            backgroundColor: '#333', // Ciemne tło tooltipa
-                            borderRadius: '8px',
-                            color: '#fff',
-                            border: 'none',
-                        }}
-                        formatter={(value: number, name: string) =>
-                            name === 'value'
-                                ? [`${value} zł`, 'Kwota']
-                                : [`${value}`, 'Liczba']
-                        }
-                        labelFormatter={(label: string) => `Kategoria: ${label}`}
-                    />
-                    <Legend />
-                    <Bar
-                        dataKey="value"
-                        name="Kwota (zł)"
-                        radius={[10, 10, 0, 0]}
-                        label={{ position: 'top', fill: '#000' }}
-                        // Kolory ustawiane z danych
-                        isAnimationActive={false} // Wyłączenie animacji (opcjonalnie)
-                    >
-                        {chartData.map((entry, index) => (
-                            <Bar
-                                key={`bar-${index}`}
-                                dataKey="value"
-                                fill={entry.fill}
-                            />
-                        ))}
-                    </Bar>
-                </BarChart>
-            </ResponsiveContainer>
-        </div>
-    );
+    const options = {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            title: {
+                align: 'end' as const,
+                display: true,
+                text: [`Okres`, `${format(
+                    parseISO(start_date),
+                    'dd.MM.yyyy'
+                )} - ${format(parseISO(end_date), 'dd.MM.yyyy')}`],
+                font: {
+                    size: 15,
+                },
+            },
+            legend: {
+                display: false,
+            },
+            tooltip: {
+                callbacks: {
+                    label: function (tooltipItem: any) {
+                        const index = tooltipItem.dataIndex;
+                        const value = tooltipItem.raw;
+                        const count = index === 0 ? expense_count : income_count;
+                        return [
+                            `${tooltipItem.label}: ${value} zł`,
+                            `Liczba transakcji: ${count}`,
+                        ];
+                    },
+                },
+            },
+        },
+        scales: {
+            x: {
+                grid: {
+                    drawOnChartArea: false,
+                    drawBorder: true,
+                },
+
+            },
+            y: {
+                grid: {
+                    drawOnChartArea: false,
+                    drawBorder: true,
+                },
+
+                beginAtZero: true,
+            },
+        },
+    };
+
+    return <Bar data={chartData} options={options}/>;
 };
 
 export default SummaryChart;

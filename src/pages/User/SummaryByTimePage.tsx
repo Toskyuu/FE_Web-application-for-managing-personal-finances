@@ -6,10 +6,14 @@ import {useFilters} from "@/hooks/useFilters.tsx";
 import {useModal} from "@/hooks/useModal.tsx";
 import {FilterSummaryByTimeForm} from "@/components";
 
+interface SummaryByTimeData {
+    time_group: string;
+    expenses: number;
+    incomes: number;
+}
+
 const SummaryByTimePage: React.FC = () => {
-    const [data, setData] = useState<
-        { time_group: string; expenses: number; incomes: number }[]
-    >([]);
+    const [data, setData] = useState<SummaryByTimeData[] | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const {showToast} = useToast();
     const {transactionOverTimeFilters} = useFilters();
@@ -27,34 +31,37 @@ const SummaryByTimePage: React.FC = () => {
         }
     };
 
-
     useEffect(() => {
-
         loadTransactionsOverTime(transactionOverTimeFilters);
     }, [transactionOverTimeFilters]);
 
     return (
-        <MainCard fontSize="text-lg" padding="p-6" height="h-auto" width="w-full">
+        <div className="grid grid-cols-1 gap-6 w-full sm:w-3/4 mx-auto">
+            <h1 className="text-2xl font-bold text-center ">Wydatki i przychody na przestrzeni czasu</h1>
 
-            {loading ? (
-                <p>Loading chart data...</p>
-            ) : data.length ? (
-                <>
-                    <button
-                        onClick={() =>
-                            openModal(<FilterSummaryByTimeForm/>)
-                        }
-                        className="p-3 rounded-2xl shadow-2xl bg-secondary text-text-dark"
-                    >
-                        Filtry
-                    </button>
-                    <SummaryByTimeChart data={data} interval={transactionOverTimeFilters.interval}/>
-                </>
+            <div className="flex justify-end">
+                <button
+                    onClick={() =>
+                        openModal(<FilterSummaryByTimeForm/>)
+                    }
+                    className="p-3 rounded-2xl shadow-2xl bg-secondary text-text-dark hover:bg-secondary-dark"
+                >
+                    Filtry
+                </button>
+            </div>
 
-            ) : (
-                <p>No data available for the selected filters.</p>
-            )}
-        </MainCard>
+            <MainCard fontSize="text-lg" padding="p-5" height="h-auto" width="w-auto">
+                {loading ? (
+                    <p>Loading chart data...</p>
+                ) : data ? (
+                    <div className="h-[60vh] w-auto ">
+                        <SummaryByTimeChart data={data} interval={transactionOverTimeFilters.interval}/>
+                    </div>
+                ) : (
+                    <p>No data available for the selected filters.</p>
+                )}
+            </MainCard>
+        </div>
     );
 };
 

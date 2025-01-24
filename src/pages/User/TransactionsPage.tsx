@@ -153,7 +153,7 @@ const TransactionsPage: React.FC = () => {
         <div className="p-4 space-y-6">
             <h1 className="text-2xl font-bold text-center mb-4">Transakcje</h1>
 
-            <div className="flex justify-between items-center  w-full sm:w-3/4 mx-auto ">
+            <div className="flex justify-between items-center w-full sm:w-3/4 mx-auto ">
                 <div className="flex justify-end">
                     <button
                         onClick={() =>

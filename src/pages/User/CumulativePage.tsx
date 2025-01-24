@@ -43,29 +43,33 @@ const CumulativePage: React.FC = () => {
     }, [transactionSummaryFilters]);
 
     return (
-        <MainCard fontSize="text-lg" padding="p-5" height="h-auto" width="w-auto">
-            {loading ? (
-                <p>Loading chart data...</p>
-            ) : data ? (
-                <div className="p-3">
-                    <button
-                        onClick={() => openModal(<FilterSummaryByCategoryForm/>)}
-                        className="p-3 rounded-2xl shadow-2xl bg-secondary text-text-dark"
-                    >
-                        Filtry
-                    </button>
-                    <div className="flex items-center justify-center mb-20">
+        <div className="grid grid-cols-1 gap-6 w-full sm:w-3/4 mx-auto">
+            <h1 className="text-2xl font-bold text-center ">Wydatki i przychody na przestrzeni czasu</h1>
+
+            <div className="flex justify-end">
+                <button
+                    onClick={() => openModal(<FilterSummaryByCategoryForm/>)}
+                    className="p-3 rounded-2xl shadow-2xl bg-secondary text-text-dark"
+                >
+                    Filtry
+                </button>
+            </div>
+            <MainCard fontSize="text-lg" padding="p-5" height="h-auto" width="w-auto">
+                {loading ? (
+                    <p>Loading chart data...</p>
+                ) : data ? (
+                    <div className="h-[60vh] w-auto">
                         <CumulativeChart
                             data={data.data}
                             start_date={data.start_date}
                             end_date={data.end_date}
                         />
                     </div>
-                </div>
-            ) : (
-                <p>No data available for the selected filters.</p>
-            )}
-        </MainCard>
+                ) : (
+                    <p>No data available for the selected filters.</p>
+                )}
+            </MainCard>
+        </div>
     );
 };
 
