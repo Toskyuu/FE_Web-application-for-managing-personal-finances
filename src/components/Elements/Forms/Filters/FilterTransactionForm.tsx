@@ -1,6 +1,6 @@
 import React, {useEffect} from "react";
 import {useForm} from "react-hook-form";
-import {useData} from "@/hooks/useData";
+import {useData} from "@/hooks/useData.tsx";
 import {DefaultButton, FormField, CheckboxGroup} from "@/components";
 import {translateTransactionType} from "@/utils/Translators.tsx";
 import {useFilters} from "@/hooks/useFilters.tsx";
@@ -18,23 +18,23 @@ interface FilterTransactionFormData {
 
 
 const FilterTransactionForm: React.FC = ({}) => {
-    const {filters, setFilters, resetFilters} = useFilters();
+    const {transactionFilters, setTransactionFilters, resetTransactionFilters} = useFilters();
     const {closeModal} = useModal();
 
     const {register, control, handleSubmit, formState: {errors}, setValue} = useForm<FilterTransactionFormData>({
-        defaultValues: filters
+        defaultValues: transactionFilters
     });
     const {accounts, categories} = useData();
 
     useEffect(() => {
-        setValue("date_from", filters.date_from);
-        setValue("date_to", filters.date_to);
-        setValue("min_amount", filters.min_amount);
-        setValue("max_amount", filters.max_amount);
-        setValue("account_id", filters.account_id);
-        setValue("category_id", filters.category_id);
-        setValue("type", filters.type);
-    }, [filters, setValue]);
+        setValue("date_from", transactionFilters.date_from);
+        setValue("date_to", transactionFilters.date_to);
+        setValue("min_amount", transactionFilters.min_amount);
+        setValue("max_amount", transactionFilters.max_amount);
+        setValue("account_id", transactionFilters.account_id);
+        setValue("category_id", transactionFilters.category_id);
+        setValue("type", transactionFilters.type);
+    }, [transactionFilters, setValue]);
 
     const fields = [
         {
@@ -67,7 +67,7 @@ const FilterTransactionForm: React.FC = ({}) => {
     ];
 
     const onSubmit = (data: FilterTransactionFormData) => {
-        setFilters(data);
+        setTransactionFilters(data);
         closeModal();
     };
 
@@ -127,7 +127,7 @@ const FilterTransactionForm: React.FC = ({}) => {
                     color="text-white"
                     bgColor="bg-primary"
                     text="Wyczyść filtry"
-                    onClick={resetFilters}
+                    onClick={resetTransactionFilters}
                     padding="p-3"
                     radius="rounded-md"
                 />

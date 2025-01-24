@@ -28,7 +28,7 @@ const TransactionsPage: React.FC = () => {
     const [sortBy, setSortBy] = useState<string>("transaction_date");
     const [order, setOrder] = useState<"asc" | "desc">("desc");
     const {openModal, closeModal} = useModal();
-    const {filters} = useFilters();
+    const {transactionFilters} = useFilters();
     const {forceRefresh, refreshKey} = useRefresh();
     const {showToast} = useToast();
 
@@ -54,8 +54,8 @@ const TransactionsPage: React.FC = () => {
     };
 
     useEffect(() => {
-        loadTransactions(page, size, sortBy, order, filters);
-    }, [page, size, sortBy, order, filters, refreshKey]);
+        loadTransactions(page, size, sortBy, order, transactionFilters);
+    }, [page, size, sortBy, order, transactionFilters, refreshKey]);
 
 
     const loadMore = () => {
@@ -153,7 +153,7 @@ const TransactionsPage: React.FC = () => {
         <div className="p-4 space-y-6">
             <h1 className="text-2xl font-bold text-center mb-4">Transakcje</h1>
 
-            <div className="flex justify-between items-center  w-full sm:w-3/4 mx-auto ">
+            <div className="flex justify-between items-center w-full sm:w-3/4 mx-auto ">
                 <div className="flex justify-end">
                     <button
                         onClick={() =>
