@@ -12,26 +12,37 @@ interface Category {
     description: string;
 }
 
+interface CategoryResponse {
+    categories: Category[];
+    current_page: number;
+    total_pages: number;
+}
+
 const CategoriesPage: React.FC = () => {
         const [categories, setCategories] = useState<Category[]>([]);
         const [isLoading, setIsLoading] = useState(false);
+        const [page, setPage] = useState(1);
         const [sortBy, setSortBy] = useState<string>("id");
         const [order, setOrder] = useState<"asc" | "desc">("desc");
         const {openModal, closeModal} = useModal();
-        const {refreshKey} = useRefresh();
-        const {forceRefresh} = useRefresh();
+        const {refreshKey, forceRefresh} = useRefresh();
         const {showToast} = useToast();
         const {fetchData} = useData();
+        const [totalPages, setTotalPages] = useState<number>(1);
+        const size = 10;
 
 
         const loadCategories = async (
+            page: number,
+            size: number,
             sortBy: string,
             order: "asc" | "desc"
         ) => {
             setIsLoading(true);
             try {
-                const data = await fetchCategories(sortBy, order);
-                setCategories(data);
+                const data: CategoryResponse = await fetchCategories(page, size, sortBy, order);
+                setTotalPages(data.total_pages);
+                setCategories(data.categories);
             } catch (error: any) {
                 showToast(error.message, "error")
             } finally {
@@ -40,13 +51,17 @@ const CategoriesPage: React.FC = () => {
         };
 
         useEffect(() => {
-            loadCategories(sortBy, order);
-        }, [sortBy, order, refreshKey]);
+            loadCategories(page, size, sortBy, order);
+        }, [page, size, sortBy, order, refreshKey]);
 
+
+        const loadMore = () => {
+            setPage((prevPage) => prevPage + 1);
+        };
 
         const toggleSortOrder = () => {
             setOrder((prevOrder) => (prevOrder === "asc" ? "desc" : "asc"));
-            setCategories([]);
+            setPage(1);
         };
 
         const getSortIcon = () => {
@@ -101,6 +116,7 @@ const CategoriesPage: React.FC = () => {
                         onChange={(e) => {
                             setSortBy(e.target.value);
                             setCategories([]);
+                            setPage(1);
                         }}
                         className="p-3 rounded-2xl shadow-2xl bg-surface-light dark:bg-surface-dark text-text-light dark:text-text-dark"
                     >
@@ -147,8 +163,17 @@ const CategoriesPage: React.FC = () => {
 
                 </div>
 
-                {isLoading && (
-                    <p className="text-center">Ładowanie...</p>
+                {isLoading && <p className="text-center">Ładowanie...</p>}
+
+                {page < totalPages && !isLoading && (
+                    <div className="flex justify-center">
+                        <button
+                            onClick={loadMore}
+                            className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark"
+                        >
+                            Załaduj więcej
+                        </button>
+                    </div>
                 )}
             </div>
         );

@@ -21,6 +21,12 @@ interface Transaction {
     description: string;
 }
 
+interface TransactionResponse {
+    transactions: Transaction[];
+    current_page: number;
+    total_pages: number;
+}
+
 const TransactionsPage: React.FC = () => {
     const [transactions, setTransactions] = useState<Transaction[]>([]);
     const [page, setPage] = useState(1);
@@ -31,8 +37,7 @@ const TransactionsPage: React.FC = () => {
     const {transactionFilters} = useFilters();
     const {forceRefresh, refreshKey} = useRefresh();
     const {showToast} = useToast();
-
-
+    const [totalPages, setTotalPages] = useState<number>(1);
     const size = 10;
 
     const loadTransactions = async (
@@ -44,8 +49,9 @@ const TransactionsPage: React.FC = () => {
     ) => {
         setIsLoading(true);
         try {
-            const data = await fetchTransactions(page, size, sortBy, order, filters);
-            setTransactions((prev) => (page === 1 ? data : [...prev, ...data]));
+            const data: TransactionResponse = await fetchTransactions(page, size, sortBy, order, filters);
+            setTotalPages(data.total_pages)
+            setTransactions((prev) => (page === 1 ? data.transactions : [...prev, ...data.transactions]));
         } catch (error: any) {
             showToast(error.message, "error")
         } finally {
@@ -65,7 +71,6 @@ const TransactionsPage: React.FC = () => {
     const toggleSortOrder = () => {
         setOrder((prevOrder) => (prevOrder === "asc" ? "desc" : "asc"));
         setPage(1);
-        setTransactions([]);
     };
 
 
@@ -246,15 +251,17 @@ const TransactionsPage: React.FC = () => {
             </div>
 
 
-            {isLoading ? (
-                <p className="text-center">Ładowanie...</p>
-            ) : (
-                <button
-                    onClick={loadMore}
-                    className="block mx-auto mt-4 px-6 py-2 bg-primary text-white rounded-lg shadow hover:bg-primary-dark"
-                >
-                    Załaduj więcej
-                </button>
+            {isLoading && <p className="text-center">Ładowanie...</p>}
+
+            {page < totalPages && !isLoading && (
+                <div className="flex justify-center">
+                    <button
+                        onClick={loadMore}
+                        className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark"
+                    >
+                        Załaduj więcej
+                    </button>
+                </div>
             )}
         </div>
     );

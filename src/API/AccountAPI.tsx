@@ -20,9 +20,11 @@ export const addAccount = async (data: any, fetchData: () => void) => {
     }
 };
 
-export const fetchAccounts = async (sortBy: string, order: "asc" | "desc") => {
+export const fetchAccounts = async (page: number, size: number, sortBy: string, order: "asc" | "desc") => {
     try {
         const response = await apiClient.post("/accounts/accounts", {
+            page: page,
+            size: size,
             sort_by: sortBy,
             order,
         });

@@ -15,6 +15,12 @@ interface Budget {
     spent_in_budget: number;
 }
 
+interface BudgetResponse {
+    budgets: Budget[];
+    current_page: number;
+    total_pages: number;
+}
+
 const BudgetsPage: React.FC = () => {
         const [budgets, setBudgets] = useState<Budget[]>([]);
         const [page, setPage] = useState(1);
@@ -22,10 +28,9 @@ const BudgetsPage: React.FC = () => {
         const [sortBy, setSortBy] = useState<string>("month_year");
         const [order, setOrder] = useState<"asc" | "desc">("desc");
         const {openModal, closeModal} = useModal();
-        const {refreshKey} = useRefresh();
-        const {forceRefresh} = useRefresh();
+        const {forceRefresh, refreshKey} = useRefresh();
         const {showToast} = useToast();
-
+        const [totalPages, setTotalPages] = useState<number>(1);
         const size = 10;
 
         const loadBudgets = async (
@@ -36,8 +41,9 @@ const BudgetsPage: React.FC = () => {
         ) => {
             setIsLoading(true);
             try {
-                const data = await fetchBudgets(page, size, sortBy, order);
-                setBudgets((prev) => (page === 1 ? data : [...prev, ...data]));
+                const data: BudgetResponse = await fetchBudgets(page, size, sortBy, order);
+                setTotalPages(data.total_pages);
+                setBudgets((prev) => (page === 1 ? data.budgets : [...prev, ...data.budgets]));
             } catch (error: any) {
                 showToast(error.message, "error")
             } finally {
@@ -119,6 +125,7 @@ const BudgetsPage: React.FC = () => {
                         onChange={(e) => {
                             setSortBy(e.target.value);
                             setBudgets([]);
+                            setPage(1);
                         }}
                         className="p-3 rounded-2xl shadow-2xl bg-surface-light dark:bg-surface-dark text-text-light dark:text-text-dark"
                     >
@@ -168,15 +175,17 @@ const BudgetsPage: React.FC = () => {
 
                 </div>
 
-                {isLoading ? (
-                    <p className="text-center">Ładowanie...</p>
-                ) : (
-                    <button
-                        onClick={loadMore}
-                        className="block mx-auto mt-4 px-6 py-2 bg-primary text-white rounded-lg shadow hover:bg-primary-dark"
-                    >
-                        Załaduj więcej
-                    </button>
+                {isLoading && <p className="text-center">Ładowanie...</p>}
+
+                {page < totalPages && !isLoading && (
+                    <div className="flex justify-center">
+                        <button
+                            onClick={loadMore}
+                            className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark"
+                        >
+                            Załaduj więcej
+                        </button>
+                    </div>
                 )}
             </div>
         );

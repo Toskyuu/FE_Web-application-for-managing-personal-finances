@@ -23,6 +23,12 @@ interface RecurringTransactions {
     recurring_frequency: string;
 }
 
+interface RecurringTransactionResponse {
+    recurring_transactions: RecurringTransactions[];
+    current_page: number;
+    total_pages: number;
+}
+
 const RecurringTransactionsPage: React.FC = () => {
     const [recurringTransactions, setRecurringTransactions] = useState<RecurringTransactions[]>([]);
     const [page, setPage] = useState(1);
@@ -32,7 +38,7 @@ const RecurringTransactionsPage: React.FC = () => {
     const {openModal, closeModal} = useModal();
     const {forceRefresh, refreshKey} = useRefresh();
     const {showToast} = useToast();
-
+    const [totalPages, setTotalPages] = useState<number>(1);
     const size = 10;
 
     const loadRecurringTransactions = async (
@@ -43,8 +49,9 @@ const RecurringTransactionsPage: React.FC = () => {
     ) => {
         setIsLoading(true);
         try {
-            const data = await fetchRecurringTransactions(page, size, sortBy, order);
-            setRecurringTransactions((prev) => (page === 1 ? data : [...prev, ...data]));
+            const data: RecurringTransactionResponse = await fetchRecurringTransactions(page, size, sortBy, order);
+            setTotalPages(data.total_pages);
+            setRecurringTransactions((prev) => (page === 1 ? data.recurring_transactions : [...prev, ...data.recurring_transactions]));
         } catch (error: any) {
             showToast(error.message, "error")
         } finally {
@@ -64,7 +71,6 @@ const RecurringTransactionsPage: React.FC = () => {
     const toggleSortOrder = () => {
         setOrder((prevOrder) => (prevOrder === "asc" ? "desc" : "asc"));
         setPage(1);
-        setRecurringTransactions([]);
     };
 
 
@@ -265,15 +271,17 @@ const RecurringTransactionsPage: React.FC = () => {
             </div>
 
 
-            {isLoading ? (
-                <p className="text-center">Ładowanie...</p>
-            ) : (
-                <button
-                    onClick={loadMore}
-                    className="block mx-auto mt-4 px-6 py-2 bg-primary text-white rounded-lg shadow hover:bg-primary-dark"
-                >
-                    Załaduj więcej
-                </button>
+            {isLoading && <p className="text-center">Ładowanie...</p>}
+
+            {page < totalPages && !isLoading && (
+                <div className="flex justify-center">
+                    <button
+                        onClick={loadMore}
+                        className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark"
+                    >
+                        Załaduj więcej
+                    </button>
+                </div>
             )}
         </div>
     );
