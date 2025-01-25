@@ -25,8 +25,8 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
                 apiClient.post('/categories/categories',{}),
             ]);
 
-            setAccounts(accountsData.data);
-            setCategories(categoriesData.data);
+            setAccounts(accountsData.data.accounts);
+            setCategories(categoriesData.data.categories);
         } catch (error) {
             console.error('Błąd podczas pobierania danych', error);
         }

@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import {DropDownMenu, FilterTransactionForm, TransactionForm} from "@/components";
+import {DropDownMenu, FilterTransactionForm, RecurringTransactionForm, TransactionForm} from "@/components";
 import {useModal} from "@/hooks/useModal.tsx";
 import {useFilters} from "@/hooks/useFilters";
 import {useRefresh} from "@/hooks/useRefresh.tsx";
@@ -90,6 +90,34 @@ const TransactionsPage: React.FC = () => {
     const getSortIcon = () => {
         return order === "asc" ? "Rosnąco" : "Malejąco";
     };
+
+
+    const handleSetRecurringTransaction = (
+        description: string,
+        amount: number,
+        category_id: number,
+        category_name: string,
+        account_id: number,
+        account_name: string,
+        type: string,
+        account_id_2?: number,
+        account_2_name?: string
+    ) => {
+        openModal(
+            <RecurringTransactionForm
+                description={description}
+                amount={amount}
+                category_id={category_id}
+                category_name={category_name}
+                account_id={account_id}
+                account_name={account_name}
+                type={type}
+                account_id_2={account_id_2}
+                account_2_name={account_2_name}
+            />
+        );
+    };
+
 
     const handleEditTransaction = (
         id: number,
@@ -222,6 +250,21 @@ const TransactionsPage: React.FC = () => {
                                         label: "Usuń transakcję",
                                         onClick: () => handleDeleteTransaction(transaction.id),
                                         className: "text-red-500",
+                                    },
+                                    {
+                                        label: "Ustaw jako cykliczną",
+                                        onClick: () =>
+                                            handleSetRecurringTransaction(
+                                                transaction.description,
+                                                transaction.amount,
+                                                transaction.category_id,
+                                                transaction.category_name,
+                                                transaction.account_id,
+                                                transaction.account_name,
+                                                transaction.type,
+                                                transaction.account_id_2 ? transaction.account_id_2 : undefined,
+                                                transaction.account_2_name ? transaction.account_2_name : undefined
+                                            ),
                                     },
                                 ]}
                             />
