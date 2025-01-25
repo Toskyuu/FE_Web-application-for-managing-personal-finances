@@ -21,7 +21,7 @@ const CumulativeChart: React.FC<CumulativeChartProps> = ({
                                                              end_date,
                                                          }) => {
     const formattedLabels = data.map((item) =>
-        format(parseISO(item.date), 'dd.MM.yyyy')
+        format(parseISO(item.date), 'dd.MM')
     );
 
     const chartData = {

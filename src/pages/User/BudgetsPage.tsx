@@ -168,7 +168,9 @@ const BudgetsPage: React.FC = () => {
                             <div className="py-3">
                                 <p className="text-md">{budget.category_name}</p>
                                 <p className="text-md text-success">Limit: {`${budget.limit.toFixed(2)} PLN`}</p>
-                                <p className="text-md">Zapełnienie budżetu: {`${budget.spent_in_budget.toFixed(2)} PLN`}</p>
+                                <p className="text-md">Wydane pieniądze: {`${budget.spent_in_budget.toFixed(2)} PLN`}</p>
+                                <p className="text-md">Zapełnienie
+                                    budżetu: {`${(budget.spent_in_budget / budget.limit * 100).toFixed(2)} %`}</p>
                             </div>
                         </div>
                     ))}
