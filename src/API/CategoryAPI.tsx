@@ -21,11 +21,15 @@ export const addCategory = async (data: any, fetchData: () => void) => {
 };
 
 export const fetchCategories = async (
+    page: number,
+    size: number,
     sortBy: string,
     order: "asc" | "desc"
 ) => {
     try {
         const response = await apiClient.post("/categories/categories", {
+            page: page,
+            size: size,
             sort_by: sortBy,
             order,
         });

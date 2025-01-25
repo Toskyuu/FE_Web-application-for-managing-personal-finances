@@ -16,23 +16,37 @@ interface Account {
     type: string;
 }
 
+interface AccountResponse {
+    accounts: Account[];
+    current_page: number;
+    total_pages: number;
+}
+
 const AccountsPage: React.FC = () => {
         const [accounts, setAccounts] = useState<Account[]>([]);
         const [isLoading, setIsLoading] = useState(false);
+        const [page, setPage] = useState(1);
         const [sortBy, setSortBy] = useState<string>("id");
         const [order, setOrder] = useState<"asc" | "desc">("desc");
         const {openModal, closeModal} = useModal();
-        const {refreshKey} = useRefresh();
-        const {forceRefresh} = useRefresh();
+        const {refreshKey, forceRefresh} = useRefresh();
         const {showToast} = useToast();
         const {fetchData} = useData();
+        const [totalPages, setTotalPages] = useState<number>(1);
+        const size = 10;
 
 
-        const loadAccounts = async () => {
+        const loadAccounts = async (
+            page: number,
+            size: number,
+            sortBy: string,
+            order: "asc" | "desc"
+        ) => {
             setIsLoading(true);
             try {
-                const data = await fetchAccounts(sortBy, order);
-                setAccounts(data);
+                const data: AccountResponse = await fetchAccounts(page, size, sortBy, order);
+                setTotalPages(data.total_pages);
+                setAccounts((prev) => (page === 1 ? data.accounts : [...prev, ...data.accounts]));
             } catch (error: any) {
                 showToast(error.message, "error")
             } finally {
@@ -41,13 +55,17 @@ const AccountsPage: React.FC = () => {
         };
 
         useEffect(() => {
-            loadAccounts();
-        }, [sortBy, order, refreshKey]);
+            loadAccounts(page, size, sortBy, order);
+        }, [page, size, sortBy, order, refreshKey]);
 
+
+        const loadMore = () => {
+            setPage((prevPage) => prevPage + 1);
+        };
 
         const toggleSortOrder = () => {
             setOrder((prevOrder) => (prevOrder === "asc" ? "desc" : "asc"));
-            setAccounts([]);
+            setPage(1);
         };
 
         const getSortIcon = () => {
@@ -102,6 +120,7 @@ const AccountsPage: React.FC = () => {
                         onChange={(e) => {
                             setSortBy(e.target.value);
                             setAccounts([]);
+                            setPage(1);
                         }}
                         className="p-3 rounded-2xl shadow-2xl bg-surface-light dark:bg-surface-dark text-text-light dark:text-text-dark"
                     >
@@ -153,8 +172,17 @@ const AccountsPage: React.FC = () => {
 
                 </div>
 
-                {isLoading && (
-                    <p className="text-center">Ładowanie...</p>
+                {isLoading && <p className="text-center">Ładowanie...</p>}
+
+                {page < totalPages && !isLoading && (
+                    <div className="flex justify-center">
+                        <button
+                            onClick={loadMore}
+                            className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark"
+                        >
+                            Załaduj więcej
+                        </button>
+                    </div>
                 )}
             </div>
         );
