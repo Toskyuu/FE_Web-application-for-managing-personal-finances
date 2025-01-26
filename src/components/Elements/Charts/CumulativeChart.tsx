@@ -33,7 +33,7 @@ const CumulativeChart: React.FC<CumulativeChartProps> = ({
                 backgroundColor: 'rgba(255, 99, 132, 0.2)',
                 borderColor: 'rgba(255, 99, 132, 1)',
                 fill: true,
-                count: data.map((item) => item.cumulative_expense_count), // Liczba transakcji
+                count: data.map((item) => item.cumulative_expense_count),
             },
             {
                 label: 'Przychody',
@@ -41,7 +41,7 @@ const CumulativeChart: React.FC<CumulativeChartProps> = ({
                 backgroundColor: 'rgba(75, 192, 192, 0.2)',
                 borderColor: 'rgba(75, 192, 192, 1)',
                 fill: true,
-                count: data.map((item) => item.cumulative_income_count), // Liczba transakcji
+                count: data.map((item) => item.cumulative_income_count),
             },
         ],
     };

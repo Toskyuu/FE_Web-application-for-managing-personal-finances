@@ -91,7 +91,6 @@ const TransactionsPage: React.FC = () => {
         return order === "asc" ? "Rosnąco" : "Malejąco";
     };
 
-
     const handleSetRecurringTransaction = (
         description: string,
         amount: number,
