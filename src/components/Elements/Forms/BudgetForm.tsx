@@ -97,7 +97,7 @@ const BudgetForm: React.FC<BudgetFormProps> = ({id, category_id, limit, month_ye
             type: "number",
             validation: {
                 required: "Limit budżetu jest wymagany",
-                min: {value: 0, message: "Limit nie może być mniejszy niż 0"},
+                min: {value: 1, message: "Limit musi być większy niż 0"},
             },
         },
         {

@@ -21,7 +21,7 @@ const CumulativeChart: React.FC<CumulativeChartProps> = ({
                                                              end_date,
                                                          }) => {
     const formattedLabels = data.map((item) =>
-        format(parseISO(item.date), 'dd.MM.yyyy')
+        format(parseISO(item.date), 'dd.MM')
     );
 
     const chartData = {
@@ -33,7 +33,7 @@ const CumulativeChart: React.FC<CumulativeChartProps> = ({
                 backgroundColor: 'rgba(255, 99, 132, 0.2)',
                 borderColor: 'rgba(255, 99, 132, 1)',
                 fill: true,
-                count: data.map((item) => item.cumulative_expense_count), // Liczba transakcji
+                count: data.map((item) => item.cumulative_expense_count),
             },
             {
                 label: 'Przychody',
@@ -41,7 +41,7 @@ const CumulativeChart: React.FC<CumulativeChartProps> = ({
                 backgroundColor: 'rgba(75, 192, 192, 0.2)',
                 borderColor: 'rgba(75, 192, 192, 1)',
                 fill: true,
-                count: data.map((item) => item.cumulative_income_count), // Liczba transakcji
+                count: data.map((item) => item.cumulative_income_count),
             },
         ],
     };
@@ -81,11 +81,19 @@ const CumulativeChart: React.FC<CumulativeChartProps> = ({
             },
         },
         scales: {
-            y: {
-                title: {
-                    display: true,
-                    text: 'Kwota (zł)',
+            x: {
+                grid: {
+                    drawOnChartArea: false,
+                    drawBorder: true,
                 },
+
+            },
+            y: {
+                grid: {
+                    drawOnChartArea: false,
+                    drawBorder: true,
+                },
+
                 beginAtZero: true,
             },
         },

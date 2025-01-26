@@ -29,3 +29,14 @@ const RecurringTypeTranslations: { [key: string]: string } = {
 export const translateRecurringType = (type: string): string => {
     return RecurringTypeTranslations[type] || type;
 };
+
+const Months = [
+    'Styczeń', 'Luty', 'Marzec', 'Kwiecień', 'Maj', 'Czerwiec',
+    'Lipiec', 'Sierpień', 'Wrzesień', 'Październik', 'Listopad', 'Grudzień'
+];
+
+export const translateMonth = (monthYear: string): string => {
+    const monthIndex = parseInt(monthYear.slice(5, 7), 10) - 1;
+
+    return Months[monthIndex];
+};

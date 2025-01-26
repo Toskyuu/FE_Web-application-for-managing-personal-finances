@@ -6,8 +6,11 @@ export const updateTransaction = async (id: number, data: any) => {
             ...data,
             account_id_2: data.account_id_2 || null,
         };
-        await apiClient.patch(`/transactions/${id}`, requestBody);
-        return "Transakcja została zaktualizowana.";
+        const response = await apiClient.patch(`/transactions/${id}`, requestBody);
+        return {
+            spentInBudget: response.data.spent_in_budget,
+            message: "Transakcja została zaktualizowana."
+        };
     } catch (error: any) {
         throw new Error(`Wystąpił błąd podczas aktualizacji transakcji: ${error.response?.data?.message || error.message}`);
     }
@@ -19,8 +22,11 @@ export const addTransaction = async (data: any) => {
             ...data,
             account_id_2: data.account_id_2 || null,
         };
-        await apiClient.post("/transactions", requestBody);
-        return "Transakcja została dodana.";
+        const response = await apiClient.post("/transactions", requestBody);
+        return {
+            spentInBudget: response.data.spent_in_budget,
+            message: "Transakcja została dodana."
+        };
     } catch (error: any) {
         throw new Error(`Wystąpił błąd podczas dodawania transakcji: ${error.response?.data?.message || error.message}`);
     }
@@ -43,7 +49,6 @@ export const fetchTransactions = async (
         });
         return response.data;
     } catch (error: any) {
-        console.log(error);
         throw new Error(
             `Wystąpił błąd podczas pobierania transakcji: ${error.response?.data?.message || error.message}`
         );

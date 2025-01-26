@@ -7,6 +7,8 @@ import {translateTransactionType} from "@/utils/Translators.tsx";
 import {useRefresh} from "@/hooks/useRefresh.tsx";
 import {useToast} from "@/hooks/useToast.tsx";
 import {addTransaction, updateTransaction} from "@/API/TransactionAPI.tsx";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faTriangleExclamation} from "@fortawesome/free-solid-svg-icons";
 
 interface FormData {
     description: string;
@@ -57,7 +59,7 @@ const TransactionForm: React.FC<TransactionFormProps> = ({
         },
     });
     const {accounts, categories} = useData();
-    const {closeModal} = useModal();
+    const {closeModal, openModal} = useModal();
     const {forceRefresh} = useRefresh();
     const {showToast} = useToast();
     const [transactionType, setTransactionType] = useState<string>(type || "Income");
@@ -106,18 +108,65 @@ const TransactionForm: React.FC<TransactionFormProps> = ({
         }
     }, [id, description, amount, transaction_date, category_id, account_id, type, account_id_2, setValue]);
 
+    const getBudgetNotification = async (budgetUsage: number) => {
+        if (budgetUsage > 100) {
+            return openModal(
+                <div className="flex flex-col items-center justify-center p-4">
+                    <div className="flex flex-col items-center justify-center mb-4">
+                        <div className="text-4xl text-error mb-2"><FontAwesomeIcon icon={faTriangleExclamation}/>️</div>
+                        <div className="text-2xl font-bold">Przekroczono 100% budżetu!</div>
+                    </div>
+                    <p className="text-lg text-center">Ogranicz wydatki, aby uniknąć problemów finansowych.</p>
+                </div>
+            );
+
+        }
+        if (budgetUsage == 100) {
+            return openModal(
+                <div className="flex flex-col items-center justify-center p-4">
+                    <div className="flex flex-col items-center justify-center mb-4">
+                        <div className="text-4xl text-error mb-2"><FontAwesomeIcon icon={faTriangleExclamation}/>️</div>
+                        <div className="text-2xl font-bold">Osiągnięto 100% budżetu!</div>
+                    </div>
+                    <p className="text-lg text-center">Ogranicz wydatki, aby uniknąć problemów finansowych.</p>
+                </div>
+            );
+        }
+        if (budgetUsage >= 80) {
+            return openModal(
+                <div className="flex flex-col items-center justify-center p-4">
+                    <div className="flex flex-col items-center justify-center mb-4">
+                        <div className="text-4xl text-error mb-2"><FontAwesomeIcon icon={faTriangleExclamation}/>️</div>
+                        <div className="text-2xl font-bold">Osiągnięto 80% budżetu!</div>
+                    </div>
+                </div>
+            );
+        }
+        if (budgetUsage >= 50) {
+            return openModal(
+                <div className="flex flex-col items-center justify-center p-4">
+                    <div className="flex flex-col items-center justify-center mb-4">
+                        <div className="text-4xl text-error mb-2"><FontAwesomeIcon icon={faTriangleExclamation}/>️</div>
+                        <div className="text-2xl font-bold">Osiągnięto 50% budżetu!</div>
+                    </div>
+                </div>
+            );
+        }
+    }
+
     const onSubmit = async (data: FormData) => {
         try {
-            let successMessage: string;
+            let successMessage: { spentInBudget: number, message: string };
 
             if (id) {
                 successMessage = await updateTransaction(id, data);
             } else {
                 successMessage = await addTransaction(data);
             }
-            showToast(successMessage, "success");
+            showToast(successMessage.message, "success");
             forceRefresh();
             closeModal();
+            getBudgetNotification(successMessage.spentInBudget)
         } catch (error) {
             showToast(`Wystąpił błąd. Spróbuj ponownie.`, "error");
         }
