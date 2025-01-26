@@ -48,7 +48,7 @@ const AccountsPage: React.FC = () => {
                 setTotalPages(data.total_pages);
                 setAccounts((prev) => (page === 1 ? data.accounts : [...prev, ...data.accounts]));
             } catch (error: any) {
-                showToast(error.message, "error")
+                showToast(error, "error")
             } finally {
                 setIsLoading(false);
             }
@@ -89,7 +89,7 @@ const AccountsPage: React.FC = () => {
                                     showToast(response, "success");
                                     forceRefresh();
                                 } catch (error: any) {
-                                    showToast(error.message, "error");
+                                    showToast(error, "error");
                                 } finally {
                                     closeModal();
                                 }

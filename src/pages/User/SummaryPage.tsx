@@ -30,7 +30,7 @@ const SummaryPage: React.FC = () => {
             const response = await fetchSummary(filters);
             setData(response);
         } catch (error: any) {
-            showToast(error.message, "error");
+            showToast(error, "error");
         } finally {
             setLoading(false);
         }

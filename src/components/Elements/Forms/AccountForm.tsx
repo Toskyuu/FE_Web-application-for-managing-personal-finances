@@ -54,8 +54,8 @@ const AccountForm: React.FC<AccountFormProps> = ({id, name, initial_balance, typ
             showToast(successMessage, "success");
             forceRefresh();
             closeModal();
-        } catch (error) {
-            showToast(`Wystąpił błąd. Spróbuj ponownie.`, "error");
+        } catch (error: any) {
+            showToast(error, "error");
         }
     };
 

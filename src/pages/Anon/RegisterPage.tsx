@@ -14,10 +14,7 @@ const RegisterPage: React.FC = () => {
     }, [isAuthenticated, navigate]);
 
     return (
-
-        <div>
-            <RegisterForm/>
-        </div>
+         <RegisterForm/>
     );
 };
 export default RegisterPage;

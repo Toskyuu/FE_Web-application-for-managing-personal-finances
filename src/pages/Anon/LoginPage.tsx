@@ -14,9 +14,7 @@ const LoginPage: React.FC = () => {
     }, [isAuthenticated, navigate]);
 
     return (
-        <div>
             <LoginForm/>
-        </div>
     );
 };
 export default LoginPage;

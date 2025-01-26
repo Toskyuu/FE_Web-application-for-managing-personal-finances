@@ -5,7 +5,7 @@ interface CheckboxGroupProps {
     id: string;
     label: string;
     options: { value: string | number; label: string }[];
-    control: any; // Zmieniamy na `control` z `useForm`
+    control: any;
     errors: any;
     validation?: object;
 }

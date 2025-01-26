@@ -44,8 +44,8 @@ const CategoryForm: React.FC<CategoryFormProps> = ({id, name, description}) => {
             showToast(successMessage, "success");
             forceRefresh();
             closeModal();
-        } catch (error) {
-            showToast(`Wystąpił błąd. Spróbuj ponownie.`, "error");
+        } catch (error: any) {
+            showToast(error, "error");
         }
     };
 

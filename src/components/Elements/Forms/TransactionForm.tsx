@@ -167,8 +167,8 @@ const TransactionForm: React.FC<TransactionFormProps> = ({
             forceRefresh();
             closeModal();
             getBudgetNotification(successMessage.spentInBudget)
-        } catch (error) {
-            showToast(`Wystąpił błąd. Spróbuj ponownie.`, "error");
+        } catch (error: any) {
+            showToast(error, "error");
         }
     };
 
