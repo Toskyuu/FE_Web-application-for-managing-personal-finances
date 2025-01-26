@@ -49,7 +49,6 @@ export const fetchTransactions = async (
         });
         return response.data;
     } catch (error: any) {
-        console.log(error);
         throw new Error(
             `Wystąpił błąd podczas pobierania transakcji: ${error.response?.data?.message || error.message}`
         );

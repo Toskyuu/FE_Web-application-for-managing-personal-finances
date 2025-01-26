@@ -23,7 +23,8 @@ export const fetchBudgets = async (
     page: number,
     size: number,
     sortBy: string,
-    order: "asc" | "desc"
+    order: "asc" | "desc",
+    filters: any
 ) => {
     try {
         const response = await apiClient.post("/budgets/budgets", {
@@ -31,6 +32,7 @@ export const fetchBudgets = async (
             size: size,
             sort_by: sortBy,
             order,
+            ...filters
         });
         return response.data;
     } catch (error: any) {

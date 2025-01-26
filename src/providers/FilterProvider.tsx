@@ -28,6 +28,12 @@ interface TransactionSummaryFormData {
     type: string | null;
 }
 
+interface BudgetFilterFormData {
+    month_year: string | null;
+    category_id: string[];
+
+}
+
 interface FilterContextType {
     transactionFilters: TransactionFilterFormData;
     setTransactionFilters: (filters: TransactionFilterFormData) => void;
@@ -38,6 +44,9 @@ interface FilterContextType {
     transactionSummaryFilters: TransactionSummaryFormData;
     setTransactionSummaryFilters: (filters: TransactionSummaryFormData) => void;
     resetTransactionSummaryFilters: () => void;
+    budgetFilters: BudgetFilterFormData;
+    setBudgetFilters: (filters: BudgetFilterFormData) => void;
+    resetBudgetFilters: () => void;
 }
 
 export const FilterContext = createContext<FilterContextType | undefined>(undefined);
@@ -103,6 +112,18 @@ export const FilterProvider: React.FC<FilterProviderProps> = ({children}) => {
         });
     };
 
+
+    const [budgetFilters, setBudgetFilters] = useState<BudgetFilterFormData>({
+        month_year: null,
+        category_id: [],
+
+    });
+    const resetBudgetFilters = () => {
+        setBudgetFilters({
+            month_year: null,
+            category_id: [],
+        });
+    };
     return (
         <FilterContext.Provider value={{
             transactionFilters,
@@ -113,7 +134,10 @@ export const FilterProvider: React.FC<FilterProviderProps> = ({children}) => {
             resetTransactionOverTimeFilters,
             transactionSummaryFilters,
             setTransactionSummaryFilters,
-            resetTransactionSummaryFilters
+            resetTransactionSummaryFilters,
+            budgetFilters,
+            setBudgetFilters,
+            resetBudgetFilters
         }}>
             {children}
         </FilterContext.Provider>

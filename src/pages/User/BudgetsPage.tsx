@@ -4,6 +4,9 @@ import {useModal} from "@/hooks/useModal.tsx";
 import {useRefresh} from "@/hooks/useRefresh.tsx";
 import {deleteBudget, fetchBudgets} from "@/API/BudgetAPI.tsx";
 import {useToast} from "@/hooks/useToast.tsx";
+import {translateMonth} from "@/utils/Translators.tsx";
+import FilterBudgetForm from "@/components/Elements/Forms/Filters/FilterBudgetForm.tsx";
+import {useFilters} from "@/hooks/useFilters.tsx";
 
 interface Budget {
     id: number;
@@ -32,16 +35,27 @@ const BudgetsPage: React.FC = () => {
         const {showToast} = useToast();
         const [totalPages, setTotalPages] = useState<number>(1);
         const size = 10;
+        const {budgetFilters} = useFilters();
 
         const loadBudgets = async (
             page: number,
             size: number,
             sortBy: string,
-            order: "asc" | "desc"
+            order: "asc" | "desc",
+            filters: any
         ) => {
             setIsLoading(true);
             try {
-                const data: BudgetResponse = await fetchBudgets(page, size, sortBy, order);
+                const { month_year, ...rest } = filters;
+
+                const formattedMonthYear =
+                    month_year && month_year.includes("-") ? `${month_year}-01` : null;
+
+                const updatedFilters = {
+                    ...rest,
+                    month_year: formattedMonthYear,
+                };
+                const data: BudgetResponse = await fetchBudgets(page, size, sortBy, order, updatedFilters);
                 setTotalPages(data.total_pages);
                 setBudgets((prev) => (page === 1 ? data.budgets : [...prev, ...data.budgets]));
             } catch (error: any) {
@@ -52,8 +66,8 @@ const BudgetsPage: React.FC = () => {
         };
 
         useEffect(() => {
-            loadBudgets(page, size, sortBy, order);
-        }, [page, size, sortBy, order, refreshKey]);
+            loadBudgets(page, size, sortBy, order, budgetFilters);
+        }, [page, size, sortBy, order, budgetFilters, refreshKey]);
 
 
         const loadMore = () => {
@@ -118,28 +132,40 @@ const BudgetsPage: React.FC = () => {
             <div className="p-4 space-y-6">
                 <h1 className="text-4xl font-bold text-center mb-4 ">Budżety</h1>
 
-                <div className="flex justify-end items-center w-full sm:w-3/4 mx-auto space-x-4">
-                    <select
-                        id="sort-by"
-                        value={sortBy}
-                        onChange={(e) => {
-                            setSortBy(e.target.value);
-                            setBudgets([]);
-                            setPage(1);
-                        }}
-                        className="p-3 rounded-2xl shadow-2xl bg-surface-light dark:bg-surface-dark text-text-light dark:text-text-dark"
-                    >
-                        <option value="month_year">Data</option>
-                        <option value="spent_in_budget">Zapełnienie budżetu</option>
-                        <option value="limit">Limit</option>
+                <div className="flex justify-between items-center w-full sm:w-3/4 mx-auto space-x-4">
+                    <div className="">
+                        <button
+                            onClick={() =>
+                                openModal(<FilterBudgetForm/>)
+                            }
+                            className="p-3 rounded-2xl shadow-2xl bg-secondary text-text-dark"
+                        >
+                            Filtry
+                        </button>
+                    </div>
+                    <div className="space-x-4">
+                        <select
+                            id="sort-by"
+                            value={sortBy}
+                            onChange={(e) => {
+                                setSortBy(e.target.value);
+                                setBudgets([]);
+                                setPage(1);
+                            }}
+                            className="p-3 rounded-2xl shadow-2xl bg-surface-light dark:bg-surface-dark text-text-light dark:text-text-dark"
+                        >
+                            <option value="month_year">Data</option>
+                            <option value="spent_in_budget">Zapełnienie budżetu</option>
+                            <option value="limit">Limit</option>
 
-                    </select>
-                    <button
-                        onClick={toggleSortOrder}
-                        className="p-3 sticky rounded-2xl shadow-2xl bg-secondary text-text-dark"
-                    >
-                        {getSortIcon()}
-                    </button>
+                        </select>
+                        <button
+                            onClick={toggleSortOrder}
+                            className="p-3 sticky rounded-2xl shadow-2xl bg-secondary text-text-dark"
+                        >
+                            {getSortIcon()}
+                        </button>
+                    </div>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full sm:w-3/4 mx-auto">
@@ -163,12 +189,15 @@ const BudgetsPage: React.FC = () => {
                                 />
                             </div>
 
-                            <p className="text-2xl font-bold">{budget.month_year.slice(0, 7)}</p>
+                            <p className="text-2xl font-bold">
+                                {budget.category_name} - {translateMonth(budget.month_year)} {budget.month_year.slice(0, 4)}
+                            </p>
                             <hr className="w-full"/>
                             <div className="py-3">
                                 <p className="text-md">{budget.category_name}</p>
                                 <p className="text-md text-success">Limit: {`${budget.limit.toFixed(2)} PLN`}</p>
-                                <p className="text-md">Wydane pieniądze: {`${budget.spent_in_budget.toFixed(2)} PLN`}</p>
+                                <p className="text-md">Wydane
+                                    pieniądze: {`${budget.spent_in_budget.toFixed(2)} PLN`}</p>
                                 <p className="text-md">Zapełnienie
                                     budżetu: {`${(budget.spent_in_budget / budget.limit * 100).toFixed(2)} %`}</p>
                             </div>
