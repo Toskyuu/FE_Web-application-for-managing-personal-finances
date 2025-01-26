@@ -165,7 +165,12 @@ const CategoriesPage: React.FC = () => {
 
                 {isLoading && <p className="text-center">Ładowanie...</p>}
 
-                {page < totalPages && !isLoading && (
+                {!isLoading && categories.length === 0 && (
+                    <p className="text-center text-gray-500">Aktualnie nie ma jeszcze tutaj żadnych kategorii.</p>
+                )}
+
+
+                {page < totalPages && !isLoading && categories.length > 0 && (
                     <div className="flex justify-center">
                         <button
                             onClick={loadMore}

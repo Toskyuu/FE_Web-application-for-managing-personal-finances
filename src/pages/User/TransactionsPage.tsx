@@ -295,7 +295,12 @@ const TransactionsPage: React.FC = () => {
 
             {isLoading && <p className="text-center">Ładowanie...</p>}
 
-            {page < totalPages && !isLoading && (
+            {!isLoading && transactions.length === 0 && (
+                <p className="text-center text-gray-500">Aktualnie nie ma jeszcze tutaj żadnych transakcji.</p>
+            )}
+
+
+            {page < totalPages && !isLoading && transactions.length > 0 && (
                 <div className="flex justify-center">
                     <button
                         onClick={loadMore}

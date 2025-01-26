@@ -16,6 +16,7 @@ interface Budget {
     category_id: number;
     category_name: string;
     spent_in_budget: number;
+    spent_to_limit_ratio: number;
 }
 
 interface BudgetResponse {
@@ -46,7 +47,7 @@ const BudgetsPage: React.FC = () => {
         ) => {
             setIsLoading(true);
             try {
-                const { month_year, ...rest } = filters;
+                const {month_year, ...rest} = filters;
 
                 const formattedMonthYear =
                     month_year && month_year.includes("-") ? `${month_year}-01` : null;
@@ -155,8 +156,9 @@ const BudgetsPage: React.FC = () => {
                             className="p-3 rounded-2xl shadow-2xl bg-surface-light dark:bg-surface-dark text-text-light dark:text-text-dark"
                         >
                             <option value="month_year">Data</option>
-                            <option value="spent_in_budget">Zapełnienie budżetu</option>
+                            <option value="spent_in_budget">Wydane pieniądze</option>
                             <option value="limit">Limit</option>
+                            <option value="spent_to_limit_ratio">Zapełnienie budżetu</option>
 
                         </select>
                         <button
@@ -189,17 +191,17 @@ const BudgetsPage: React.FC = () => {
                                 />
                             </div>
 
-                            <p className="text-2xl font-bold">
-                                {budget.category_name} - {translateMonth(budget.month_year)} {budget.month_year.slice(0, 4)}
-                            </p>
+                            <div className="flex flex-wrap justify-between text-2xl  w-full gap-6">
+                                <div className="font-bold">{budget.category_name}</div>
+                                <div>{translateMonth(budget.month_year)} {budget.month_year.slice(0, 4)}</div>
+                            </div>
                             <hr className="w-full"/>
                             <div className="py-3">
-                                <p className="text-md">{budget.category_name}</p>
                                 <p className="text-md text-success">Limit: {`${budget.limit.toFixed(2)} PLN`}</p>
                                 <p className="text-md">Wydane
                                     pieniądze: {`${budget.spent_in_budget.toFixed(2)} PLN`}</p>
                                 <p className="text-md">Zapełnienie
-                                    budżetu: {`${(budget.spent_in_budget / budget.limit * 100).toFixed(2)} %`}</p>
+                                    budżetu: {`${budget.spent_to_limit_ratio.toFixed(2)} %`}</p>
                             </div>
                         </div>
                     ))}
@@ -208,7 +210,12 @@ const BudgetsPage: React.FC = () => {
 
                 {isLoading && <p className="text-center">Ładowanie...</p>}
 
-                {page < totalPages && !isLoading && (
+                {!isLoading && budgets.length === 0 && (
+                    <p className="text-center text-gray-500">Aktualnie nie ma jeszcze tutaj żadnych budżetów.</p>
+                )}
+
+
+                {page < totalPages && !isLoading && budgets.length > 0 && (
                     <div className="flex justify-center">
                         <button
                             onClick={loadMore}
@@ -219,8 +226,6 @@ const BudgetsPage: React.FC = () => {
                     </div>
                 )}
             </div>
-        );
-    }
-;
+    )};
 
 export default BudgetsPage;

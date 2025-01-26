@@ -81,11 +81,19 @@ const CumulativeChart: React.FC<CumulativeChartProps> = ({
             },
         },
         scales: {
-            y: {
-                title: {
-                    display: true,
-                    text: 'Kwota (zł)',
+            x: {
+                grid: {
+                    drawOnChartArea: false,
+                    drawBorder: true,
                 },
+
+            },
+            y: {
+                grid: {
+                    drawOnChartArea: false,
+                    drawBorder: true,
+                },
+
                 beginAtZero: true,
             },
         },
