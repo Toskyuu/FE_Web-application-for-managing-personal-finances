@@ -53,7 +53,7 @@ const RecurringTransactionsPage: React.FC = () => {
             setTotalPages(data.total_pages);
             setRecurringTransactions((prev) => (page === 1 ? data.recurring_transactions : [...prev, ...data.recurring_transactions]));
         } catch (error: any) {
-            showToast(error.message, "error")
+            showToast(error, "error")
         } finally {
             setIsLoading(false);
         }
@@ -142,7 +142,7 @@ const RecurringTransactionsPage: React.FC = () => {
                                 showToast(response, "success");
                                 forceRefresh();
                             } catch (error: any) {
-                                showToast(error.message, "error");
+                                showToast(error.response.data.message || error.message, "error");
                             } finally {
                                 closeModal();
                             }

@@ -31,7 +31,7 @@ const UserPage: React.FC = () => {
             const data = await fetchUser();
             setUser(data);
         } catch (error: any) {
-            showToast(error.message, "error")
+            showToast(error, "error")
         } finally {
             setIsLoading(false);
         }
@@ -47,7 +47,7 @@ const UserPage: React.FC = () => {
             let response = await resetPassword(email);
             showToast(response, "success");
         } catch (error: any) {
-            showToast(error.message, "error");
+            showToast(error, "error");
         }
     }
 
@@ -56,7 +56,7 @@ const UserPage: React.FC = () => {
             let response = await resendConfirmation(email);
             showToast(response, "success");
         } catch (error: any) {
-            showToast(error.message, "error");
+            showToast(error, "error");
         }
     }
 
@@ -80,7 +80,7 @@ const UserPage: React.FC = () => {
                                 logOut();
                                 forceRefresh();
                             } catch (error: any) {
-                                showToast(error.message, "error");
+                                showToast(error, "error");
                             } finally {
                                 closeModal();
                             }

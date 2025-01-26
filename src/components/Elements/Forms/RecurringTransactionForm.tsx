@@ -137,8 +137,8 @@ const RecurringTransactionForm: React.FC<RecurringTransactionFormProps> = ({
             forceRefresh();
             closeModal();
         } catch
-            (error) {
-            showToast(`Wystąpił błąd. Spróbuj ponownie.`, "error");
+            (error: any) {
+            showToast(error, "error");
         }
     };
 

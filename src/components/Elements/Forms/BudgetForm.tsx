@@ -75,8 +75,8 @@ const BudgetForm: React.FC<BudgetFormProps> = ({id, category_id, limit, month_ye
             showToast(successMessage, "success");
             forceRefresh();
             closeModal();
-        } catch (error) {
-            showToast(`Wystąpił nieoczekiwany błąd. Spróbuj ponownie}`, "error");
+        } catch (error: any) {
+            showToast(error, "error");
         }
     };
 

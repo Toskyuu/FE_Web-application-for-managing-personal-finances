@@ -60,7 +60,7 @@ const BudgetsPage: React.FC = () => {
                 setTotalPages(data.total_pages);
                 setBudgets((prev) => (page === 1 ? data.budgets : [...prev, ...data.budgets]));
             } catch (error: any) {
-                showToast(error.message, "error")
+                showToast(error, "error")
             } finally {
                 setIsLoading(false);
             }
@@ -109,7 +109,7 @@ const BudgetsPage: React.FC = () => {
                                     showToast(response, "success");
                                     forceRefresh();
                                 } catch (error: any) {
-                                    showToast(error.message, "error");
+                                    showToast(error, "error");
                                 } finally {
                                     closeModal();
                                 }

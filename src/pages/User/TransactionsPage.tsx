@@ -53,7 +53,7 @@ const TransactionsPage: React.FC = () => {
             setTotalPages(data.total_pages)
             setTransactions((prev) => (page === 1 ? data.transactions : [...prev, ...data.transactions]));
         } catch (error: any) {
-            showToast(error.message, "error")
+            showToast(error, "error")
         } finally {
             setIsLoading(false);
         }
@@ -162,7 +162,7 @@ const TransactionsPage: React.FC = () => {
                                 showToast(response, "success");
                                 forceRefresh();
                             } catch (error: any) {
-                                showToast(error.message, "error");
+                                showToast(error, "error");
                             } finally {
                                 closeModal();
                             }

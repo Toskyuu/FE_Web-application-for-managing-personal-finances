@@ -44,7 +44,7 @@ const CategoriesPage: React.FC = () => {
                 setTotalPages(data.total_pages);
                 setCategories(data.categories);
             } catch (error: any) {
-                showToast(error.message, "error")
+                showToast(error, "error")
             } finally {
                 setIsLoading(false);
             }
@@ -85,7 +85,7 @@ const CategoriesPage: React.FC = () => {
                                     showToast(response, "success");
                                     forceRefresh();
                                 } catch (error: any) {
-                                    showToast(error.message, "error");
+                                    showToast(error, "error");
                                 } finally {
                                     closeModal();
                                 }

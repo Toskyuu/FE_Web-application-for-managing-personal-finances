@@ -1,7 +1,7 @@
-import React from "react";
+import React, { JSX } from "react";
 
 interface DefaultButtonProps {
-    text: string;
+    text: string | JSX.Element;
     onClick?: () => void;
     color?: string;
     bgColor?: string;
@@ -22,7 +22,7 @@ const DefaultButton: React.FC<DefaultButtonProps> = ({
                                                          minwidth,
                                                      }) => {
     return (
-        <div className="relative flex items-center">
+        <div className="relative flex items-center justify-center">
             <button
                 onClick={onClick}
                 className={`flex items-center justify-center ${minwidth} ${fontSize} ${padding} ${radius} ${bgColor} ${color}  shadow-lg transition-transform transform`}

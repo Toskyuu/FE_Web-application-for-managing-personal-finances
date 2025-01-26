@@ -1,7 +1,9 @@
-import React from "react";
+import React, {useState} from "react";
 import {useForm, SubmitHandler} from "react-hook-form";
 import {DefaultButton, MainCard} from "@/components";
 import {useAuth} from "@/hooks/useAuth.tsx";
+import {useNavigate} from "react-router-dom";
+import Loader from "@/components/Elements/Loader/Loader.tsx";
 
 interface LoginFormInputs {
     email: string;
@@ -10,14 +12,21 @@ interface LoginFormInputs {
 
 const LoginForm: React.FC = () => {
     const {register, handleSubmit, formState: {errors}} = useForm<LoginFormInputs>();
-    const { logIn } = useAuth();
+    const {logIn} = useAuth();
+    const navigate = useNavigate();
+    const [isLoading, setIsLoading] = useState(false);
 
     const onSubmit: SubmitHandler<LoginFormInputs> = async (data) => {
-        await logIn(data.email, data.password);
+        setIsLoading(true);
+        try {
+            await logIn(data.email, data.password);
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     return (
-        <div className="flex flex-col items-center justify-center h-screen">
+        <div className="flex flex-col items-center justify-center h-full">
             <MainCard
                 fontSize="text-xl"
                 padding="p-10"
@@ -54,7 +63,8 @@ const LoginForm: React.FC = () => {
                     </div>
 
                     <DefaultButton
-                        text= "Zaloguj się"
+                        text={isLoading ?
+                            (<Loader/>) : ("Zaloguj się")}
                         onClick={handleSubmit(onSubmit)}
                         bgColor="bg-success"
                         color="text-text-dark"
@@ -63,8 +73,23 @@ const LoginForm: React.FC = () => {
                         fontSize="text-2xl"
                         minwidth="w-full"
                     />
-
                 </form>
+
+                <div className="mt-10 flex flex-col columns-1 justify-center gap-2">
+                    <div>
+                        Nie masz jeszcze konta?
+                    </div>
+                    <DefaultButton
+                        text="Zarejestruj się"
+                        onClick={() => navigate("/register")}
+                        bgColor="bg-secondary"
+                        color="text-text-dark"
+                        padding="p-2"
+                        radius="rounded-xl"
+                        fontSize="text-xl"
+                        minwidth="w-2/3"
+                    />
+                </div>
             </MainCard>
         </div>
     );

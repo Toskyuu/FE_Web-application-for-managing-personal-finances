@@ -36,7 +36,7 @@ const ResetPasswordPage: React.FC = () => {
                 showToast(response, "success");
                 navigate('/');
             } catch (error: any) {
-                showToast(error.message, "error");
+                showToast(error, "error");
 
             }
         }
