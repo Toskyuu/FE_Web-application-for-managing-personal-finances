@@ -17,7 +17,7 @@
     "@fortawesome/fontawesome-svg-core": "^6.7.2",
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
     "@fortawesome/react-fontawesome": "^0.2.2",
-    "@tanstack/react-query": "^5.63.0",
+    "@tanstack/react-query": "^5.64.2",
     "axios": "^1.7.9",
     "canvasjs": "^1.8.3",
     "chart.js": "^4.4.7",
