@@ -32,6 +32,9 @@ const errorTranslations: { [key: string]: { [key: string]: string } } = {
     "503": {
         "default": "Usługa jest tymczasowo niedostępna. Spróbuj ponownie później.",
     },
+    "default": {
+        "default": "Wystąpił nieoczekiwany błąd, spróbuj ponownie później."
+    }
 };
 
 apiClient.interceptors.request.use((config) => {
@@ -54,8 +57,11 @@ apiClient.interceptors.response.use(
                     errorTranslations[statusCode]["default"];
             } else {
                 error.response.data.message =
-                    errorTranslations["default"] || error.message;
+                    errorTranslations["default"]["default"] || error.message;
             }
+        }
+        else{
+            error.message = "Brak odpowiedzi z serwera. Sprawdź połączenie z internetem.";
         }
         return Promise.reject(error);
     }

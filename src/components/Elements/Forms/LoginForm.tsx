@@ -1,9 +1,10 @@
 import React, {useState} from "react";
 import {useForm, SubmitHandler} from "react-hook-form";
-import {DefaultButton, MainCard} from "@/components";
+import {DefaultButton, MainCard, ResetPasswordForm} from "@/components";
 import {useAuth} from "@/hooks/useAuth.tsx";
 import {useNavigate} from "react-router-dom";
 import Loader from "@/components/Elements/Loader/Loader.tsx";
+import {useModal} from "@/hooks/useModal.tsx";
 
 interface LoginFormInputs {
     email: string;
@@ -11,10 +12,11 @@ interface LoginFormInputs {
 }
 
 const LoginForm: React.FC = () => {
-    const {register, handleSubmit, formState: {errors}} = useForm<LoginFormInputs>();
+    const {register, handleSubmit, formState: {errors}, getValues} = useForm<LoginFormInputs>();
     const {logIn} = useAuth();
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(false);
+    const {openModal} = useModal();
 
     const onSubmit: SubmitHandler<LoginFormInputs> = async (data) => {
         setIsLoading(true);
@@ -23,6 +25,12 @@ const LoginForm: React.FC = () => {
         } finally {
             setIsLoading(false);
         }
+    };
+
+
+    const onResetPassword = () => {
+        const email = getValues("email");
+        openModal(<ResetPasswordForm email={email}/>);
     };
 
     return (
@@ -77,22 +85,42 @@ const LoginForm: React.FC = () => {
 
                 <div className="mt-10 flex flex-col columns-1 justify-center gap-2">
                     <div>
-                        Nie masz jeszcze konta?
+                        <div>
+                            Nie masz jeszcze konta?
+                        </div>
+                        <DefaultButton
+                            text="Zarejestruj się"
+                            onClick={() => navigate("/register")}
+                            bgColor="bg-secondary"
+                            color="text-text-dark"
+                            padding="p-2"
+                            radius="rounded-xl"
+                            fontSize="text-xl"
+                            minwidth="w-full"
+                        />
                     </div>
-                    <DefaultButton
-                        text="Zarejestruj się"
-                        onClick={() => navigate("/register")}
-                        bgColor="bg-secondary"
-                        color="text-text-dark"
-                        padding="p-2"
-                        radius="rounded-xl"
-                        fontSize="text-xl"
-                        minwidth="w-2/3"
-                    />
+                    <div>
+                        <div>
+                            Zapomniałeś hasła?
+                        </div>
+                        <DefaultButton
+                            text="Zresetuj hasło"
+                            onClick={() => {
+                                onResetPassword()
+                            }}
+                            bgColor="bg-secondary"
+                            color="text-text-dark"
+                            padding="p-2"
+                            radius="rounded-xl"
+                            fontSize="text-xl"
+                            minwidth="w-full"
+                        />
+                    </div>
                 </div>
             </MainCard>
         </div>
-    );
+    )
+        ;
 };
 
 export default LoginForm;

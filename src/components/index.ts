@@ -27,4 +27,4 @@ export { default as SummaryByCategoryChart } from './Elements/Charts/SummaryByCa
 export { default as FilterSummaryByCategoryForm } from './Elements/Forms/Filters/FilterSummaryStatsForm.tsx'
 export { default as SummaryChart } from './Elements/Charts/SummaryChart.tsx'
 export { default as CumulativeChart } from './Elements/Charts/CumulativeChart.tsx'
-
+export { default as ResetPasswordForm } from './Elements/Forms/ResetPasswordForm.tsx'
