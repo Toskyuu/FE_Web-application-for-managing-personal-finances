@@ -71,8 +71,7 @@ export const AuthProvider = ({children}: { children: ReactNode }) => {
             showToast(`Zalogowano pomyślnie.`, "success");
 
         } catch (error:any) {
-            showToast(`Nie udało się zalogować: ${error.response.data.message || error.message }`, "error");
-            throw error;
+            showToast(`Nie udało się zalogować: ${error.response?.data?.message || error.message }`, "error");
         }
     };
 
@@ -101,11 +100,10 @@ export const AuthProvider = ({children}: { children: ReactNode }) => {
             );
 
             navigate('/');
-            showToast(`Udało się zarejestrować użytkownika. Zaloguj się.`, "success");
+            showToast(`Udało się zarejestrować. Zaloguj się.`, "success");
 
         } catch (error: any) {
-            showToast(`Nie udało się zarejestrować użytkownika: ${error.response.data.message || error.message}`, "error");
-            throw error;
+            showToast(`Nie udało się zarejestrować: ${error.response?.data?.message || error.message}`, "error");
         }
     };
 

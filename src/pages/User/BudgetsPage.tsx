@@ -26,125 +26,126 @@ interface BudgetResponse {
 }
 
 const BudgetsPage: React.FC = () => {
-        const [budgets, setBudgets] = useState<Budget[]>([]);
-        const [page, setPage] = useState(1);
-        const [isLoading, setIsLoading] = useState(false);
-        const [sortBy, setSortBy] = useState<string>("month_year");
-        const [order, setOrder] = useState<"asc" | "desc">("desc");
-        const {openModal, closeModal} = useModal();
-        const {forceRefresh, refreshKey} = useRefresh();
-        const {showToast} = useToast();
-        const [totalPages, setTotalPages] = useState<number>(1);
-        const size = 10;
-        const {budgetFilters} = useFilters();
+    const [budgets, setBudgets] = useState<Budget[]>([]);
+    const [page, setPage] = useState(1);
+    const [isLoading, setIsLoading] = useState(false);
+    const [sortBy, setSortBy] = useState<string>("month_year");
+    const [order, setOrder] = useState<"asc" | "desc">("desc");
+    const {openModal, closeModal} = useModal();
+    const {forceRefresh, refreshKey} = useRefresh();
+    const {showToast} = useToast();
+    const [totalPages, setTotalPages] = useState<number>(1);
+    const size = 10;
+    const {budgetFilters} = useFilters();
 
-        const loadBudgets = async (
-            page: number,
-            size: number,
-            sortBy: string,
-            order: "asc" | "desc",
-            filters: any
-        ) => {
-            setIsLoading(true);
-            try {
-                const {month_year, ...rest} = filters;
+    const loadBudgets = async (
+        page: number,
+        size: number,
+        sortBy: string,
+        order: "asc" | "desc",
+        filters: any
+    ) => {
+        setIsLoading(true);
+        try {
+            const {month_year, ...rest} = filters;
 
-                const formattedMonthYear =
-                    month_year && month_year.includes("-") ? `${month_year}-01` : null;
+            const formattedMonthYear =
+                month_year && month_year.includes("-") ? `${month_year}-01` : null;
 
-                const updatedFilters = {
-                    ...rest,
-                    month_year: formattedMonthYear,
-                };
-                const data: BudgetResponse = await fetchBudgets(page, size, sortBy, order, updatedFilters);
-                setTotalPages(data.total_pages);
-                setBudgets((prev) => (page === 1 ? data.budgets : [...prev, ...data.budgets]));
-            } catch (error: any) {
-                showToast(error, "error")
-            } finally {
-                setIsLoading(false);
-            }
-        };
+            const updatedFilters = {
+                ...rest,
+                month_year: formattedMonthYear,
+            };
+            const data: BudgetResponse = await fetchBudgets(page, size, sortBy, order, updatedFilters);
+            setTotalPages(data.total_pages);
+            setBudgets((prev) => (page === 1 ? data.budgets : [...prev, ...data.budgets]));
+        } catch (error: any) {
+            showToast(error, "error")
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
-        useEffect(() => {
-            loadBudgets(page, size, sortBy, order, budgetFilters);
-        }, [page, size, sortBy, order, budgetFilters, refreshKey]);
-
-
-        const loadMore = () => {
-            setPage((prevPage) => prevPage + 1);
-        };
+    useEffect(() => {
+        loadBudgets(page, size, sortBy, order, budgetFilters);
+    }, [page, size, sortBy, order, budgetFilters, refreshKey]);
 
 
-        const toggleSortOrder = () => {
-            setOrder((prevOrder) => (prevOrder === "asc" ? "desc" : "asc"));
-            setPage(1);
-        };
-
-        const getSortIcon = () => {
-            return order === "asc" ? "Rosnąco" : "Malejąco";
-        };
+    const loadMore = () => {
+        setPage((prevPage) => prevPage + 1);
+    };
 
 
-        const handleEditBudget = (
-            id: number,
-            limit: number,
-            month_year: string,
-            category_id: number,
-            category_name: string) => {
-            openModal(<BudgetForm id={id} limit={limit} month_year={month_year}
-                                  category_id={category_id} category_name={category_name}/>)
-        };
+    const toggleSortOrder = () => {
+        setOrder((prevOrder) => (prevOrder === "asc" ? "desc" : "asc"));
+        setPage(1);
+    };
 
-        const handleDeleteBudget = async (budgetId: number) => {
-            openModal(
-                <div className="flex flex-col items-center space-y-4">
-                    <h2 className="text-xl font-bold">Czy na pewno chcesz usunąć ten budżet?</h2>
-                    <div className="flex space-x-4">
-                        <button
-                            className="px-6 py-2 bg-error text-white rounded-lg hover:bg-error-dark"
-                            onClick={async () => {
-                                try {
-                                    let response = await deleteBudget(budgetId);
-                                    showToast(response, "success");
-                                    forceRefresh();
-                                } catch (error: any) {
-                                    showToast(error, "error");
-                                } finally {
-                                    closeModal();
-                                }
-                            }}
-                        >
-                            Tak
-                        </button>
-                        <button
-                            className="px-6 py-2 bg-success text-white rounded-lg hover:bg-success-dark"
-                            onClick={closeModal}
-                        >
-                            Nie
-                        </button>
-                    </div>
-                </div>
-            );
-        };
+    const getSortIcon = () => {
+        return order === "asc" ? "Rosnąco" : "Malejąco";
+    };
 
 
-        return (
-            <div className="p-4 space-y-6">
-                <h1 className="text-4xl font-bold text-center mb-4 ">Budżety</h1>
+    const handleEditBudget = (
+        id: number,
+        limit: number,
+        month_year: string,
+        category_id: number,
+        category_name: string) => {
+        openModal(<BudgetForm id={id} limit={limit} month_year={month_year}
+                              category_id={category_id} category_name={category_name}/>)
+    };
 
-                <div className="flex justify-between items-center w-full sm:w-3/4 mx-auto space-x-4">
-                    <div className="">
-                        <button
-                            onClick={() =>
-                                openModal(<FilterBudgetForm/>)
+    const handleDeleteBudget = async (budgetId: number) => {
+        openModal(
+            <div className="flex flex-col items-center space-y-4">
+                <h2 className="text-xl font-bold">Czy na pewno chcesz usunąć ten budżet?</h2>
+                <div className="flex space-x-4">
+                    <button
+                        className="px-6 py-2 bg-error text-white rounded-lg hover:bg-error-dark"
+                        onClick={async () => {
+                            try {
+                                let response = await deleteBudget(budgetId);
+                                showToast(response, "success");
+                                forceRefresh();
+                            } catch (error: any) {
+                                showToast(error, "error");
+                            } finally {
+                                closeModal();
                             }
-                            className="p-3 rounded-2xl shadow-2xl bg-secondary text-text-dark"
-                        >
-                            Filtry
-                        </button>
-                    </div>
-                    <div className="space-x-4">
+                        }}
+                    >
+                        Tak
+                    </button>
+                    <button
+                        className="px-6 py-2 bg-success text-white rounded-lg hover:bg-success-dark"
+                        onClick={closeModal}
+                    >
+                        Nie
+                    </button>
+                </div>
+            </div>
+        );
+    };
+
+
+    return (
+        <div className="p-4 space-y-6">
+            <h1 className="text-4xl font-bold text-center mb-4 ">Budżety</h1>
+
+            <div className="flex justify-between items-center w-full sm:w-3/4 mx-auto space-x-4">
+                <div className="">
+                    <button
+                        onClick={() =>
+                            openModal(<FilterBudgetForm/>)
+                        }
+                        className="p-3 rounded-2xl shadow-2xl bg-secondary text-text-dark"
+                    >
+                        Filtry
+                    </button>
+                </div>
+                <div className="flex space-x-2 justify-end flex-wrap space-y-2">
+                    <div>
                         <select
                             id="sort-by"
                             value={sortBy}
@@ -161,6 +162,8 @@ const BudgetsPage: React.FC = () => {
                             <option value="spent_to_limit_ratio">Zapełnienie budżetu</option>
 
                         </select>
+                    </div>
+                    <div className="flex items-center">
                         <button
                             onClick={toggleSortOrder}
                             className="p-3 sticky rounded-2xl shadow-2xl bg-secondary text-text-dark"
@@ -169,63 +172,65 @@ const BudgetsPage: React.FC = () => {
                         </button>
                     </div>
                 </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full sm:w-3/4 mx-auto">
-                    {budgets.map((budget) => (
-                        <div
-                            key={budget.id}
-                            className="relative flex flex-col items-start p-6 bg-surface-light dark:bg-surface-dark text-text-light dark:text-text-dark shadow-2xl rounded-2xl space-y-4"
-                        >
-                            <div className="absolute top-0 right-4">
-                                <DropDownMenu
-                                    options={[
-                                        {
-                                            label: "Edytuj budżet",
-                                            onClick: () => handleEditBudget(budget.id, budget.limit, budget.month_year.slice(0, 7), budget.category_id, budget.category_name),
-                                        },
-                                        {
-                                            label: "Usuń budżet",
-                                            onClick: () => handleDeleteBudget(budget.id),
-                                        },
-                                    ]}
-                                />
-                            </div>
-
-                            <div className="flex flex-wrap justify-between text-2xl  w-full gap-6">
-                                <div className="font-bold">{budget.category_name}</div>
-                                <div>{translateMonth(budget.month_year)} {budget.month_year.slice(0, 4)}</div>
-                            </div>
-                            <hr className="w-full"/>
-                            <div className="py-3">
-                                <p className="text-md text-success">Limit: {`${budget.limit.toFixed(2)} PLN`}</p>
-                                <p className="text-md">Wydane
-                                    pieniądze: {`${budget.spent_in_budget.toFixed(2)} PLN`}</p>
-                                <p className="text-md">Zapełnienie
-                                    budżetu: {`${budget.spent_to_limit_ratio.toFixed(2)} %`}</p>
-                            </div>
-                        </div>
-                    ))}
-
-                </div>
-
-                {isLoading && <p className="text-center">Ładowanie...</p>}
-
-                {!isLoading && budgets.length === 0 && (
-                    <p className="text-center text-gray-500">Aktualnie nie ma jeszcze tutaj żadnych budżetów.</p>
-                )}
-
-
-                {page < totalPages && !isLoading && budgets.length > 0 && (
-                    <div className="flex justify-center">
-                        <button
-                            onClick={loadMore}
-                            className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark"
-                        >
-                            Załaduj więcej
-                        </button>
-                    </div>
-                )}
             </div>
-    )};
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full sm:w-3/4 mx-auto">
+                {budgets.map((budget) => (
+                    <div
+                        key={budget.id}
+                        className="relative flex flex-col items-start p-6 bg-surface-light dark:bg-surface-dark text-text-light dark:text-text-dark shadow-2xl rounded-2xl space-y-4"
+                    >
+                        <div className="absolute top-0 right-4">
+                            <DropDownMenu
+                                options={[
+                                    {
+                                        label: "Edytuj budżet",
+                                        onClick: () => handleEditBudget(budget.id, budget.limit, budget.month_year.slice(0, 7), budget.category_id, budget.category_name),
+                                    },
+                                    {
+                                        label: "Usuń budżet",
+                                        onClick: () => handleDeleteBudget(budget.id),
+                                    },
+                                ]}
+                            />
+                        </div>
+
+                        <div className="flex flex-wrap justify-between text-2xl  w-full gap-6">
+                            <div className="font-bold">{budget.category_name}</div>
+                            <div>{translateMonth(budget.month_year)} {budget.month_year.slice(0, 4)}</div>
+                        </div>
+                        <hr className="w-full"/>
+                        <div className="py-3">
+                            <p className="text-md text-success">Limit: {`${budget.limit.toFixed(2)} PLN`}</p>
+                            <p className="text-md">Wydane
+                                pieniądze: {`${budget.spent_in_budget.toFixed(2)} PLN`}</p>
+                            <p className="text-md">Zapełnienie
+                                budżetu: {`${budget.spent_to_limit_ratio.toFixed(2)} %`}</p>
+                        </div>
+                    </div>
+                ))}
+
+            </div>
+
+            {isLoading && <p className="text-center">Ładowanie...</p>}
+
+            {!isLoading && budgets.length === 0 && (
+                <p className="text-center text-gray-500">Aktualnie nie ma jeszcze tutaj żadnych budżetów.</p>
+            )}
+
+
+            {page < totalPages && !isLoading && budgets.length > 0 && (
+                <div className="flex justify-center">
+                    <button
+                        onClick={loadMore}
+                        className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark"
+                    >
+                        Załaduj więcej
+                    </button>
+                </div>
+            )}
+        </div>
+    )
+};
 
 export default BudgetsPage;
