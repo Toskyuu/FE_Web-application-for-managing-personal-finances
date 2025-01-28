@@ -92,11 +92,13 @@ const BudgetsPage: React.FC = () => {
         month_year: string,
         category_id: number,
         category_name: string) => {
+        closeModal();
         openModal(<BudgetForm id={id} limit={limit} month_year={month_year}
                               category_id={category_id} category_name={category_name}/>)
     };
 
     const handleDeleteBudget = async (budgetId: number) => {
+        closeModal();
         openModal(
             <div className="flex flex-col items-center space-y-4">
                 <h2 className="text-xl font-bold">Czy na pewno chcesz usunąć ten budżet?</h2>

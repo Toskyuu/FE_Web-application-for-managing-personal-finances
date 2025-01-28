@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, {useState, useRef, useEffect} from "react";
 
 interface MenuOption {
     label: string;
@@ -10,7 +10,7 @@ interface DropDownMenuProps {
     options: MenuOption[];
 }
 
-const DropDownMenu: React.FC<DropDownMenuProps> = ({ options }) => {
+const DropDownMenu: React.FC<DropDownMenuProps> = ({options}) => {
     const [isOpen, setIsOpen] = useState(false);
     const menuRef = useRef<HTMLDivElement>(null);
 
@@ -29,6 +29,10 @@ const DropDownMenu: React.FC<DropDownMenuProps> = ({ options }) => {
         };
     }, []);
 
+    const handleOptionClick = (onClick: () => void) => {
+        setIsOpen(false);
+        onClick();
+    };
     return (
         <div className="relative" ref={menuRef}>
             <button
@@ -39,11 +43,12 @@ const DropDownMenu: React.FC<DropDownMenuProps> = ({ options }) => {
             </button>
 
             {isOpen && (
-                <div className="absolute right-2/3 bottom-2/3 mt-2 w-40 bg-surface-light dark:bg-surface-dark shadow-2xl rounded-2xl z-30">
+                <div
+                    className="absolute right-2/3 bottom-2/3 mt-2 w-40 bg-surface-light dark:bg-surface-dark shadow-2xl rounded-2xl z-30">
                     {options.map((option, index) => (
                         <button
                             key={index}
-                            onClick={option.onClick}
+                            onClick={() => handleOptionClick(option.onClick)}
                             className={`block w-full text-left px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 ${
                                 option.className || ""
                             }`}

@@ -73,10 +73,12 @@ const AccountsPage: React.FC = () => {
         };
 
         const handleEditAccount = (id: number, name: string, initialBalance: number, type: string) => {
+            closeModal();
             openModal(<AccountForm id={id} name={name} initial_balance={initialBalance} type={type}/>)
         };
 
         const handleDeleteAccount = async (accountId: number) => {
+            closeModal();
             openModal(
                 <div className="flex flex-col items-center space-y-4">
                     <h2 className="text-xl font-bold">Czy na pewno chcesz usunąć to konto?</h2>

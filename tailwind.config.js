@@ -11,15 +11,15 @@ module.exports = {
                 DEFAULT: '#702b73',
             },
             background: {
-                light: '#FEF5EF',
+                light: '#fff',
                 dark: '#171717',
             },
             surface: {
-                light: '#cac1c1',
+                light: '#fbf2e6',
                 dark: '#232323',
             },
             text: {
-                light: '#121212',
+                light: '#393939',
                 dark: '#F7F5FB',
             },
             success: {
@@ -41,7 +41,22 @@ module.exports = {
             },
             minWidth: {
                 '40': '10rem',
-            }
+            },
+            keyframes: {
+                slideUp: {
+                    '0%': { opacity: 0, transform: 'translateY(100px)' },
+                    '100%': { opacity: 1, transform: 'translateY(0)' },
+                },
+                slideDown: {
+                    '0%': { opacity: 1, transform: 'translateY(0)' },
+                    '100%': { opacity: 0, transform: 'translateY(100px)' },
+                },
+            },
+            animation: {
+                slideUp: 'slideUp 0.4s ease-out forwards',
+                slideDown: 'slideDown 0.4s ease-in forwards',
+            },
+
         }
     },
     plugins: [

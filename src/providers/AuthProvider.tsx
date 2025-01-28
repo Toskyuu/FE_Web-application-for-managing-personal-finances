@@ -1,7 +1,6 @@
 import {createContext, useState, ReactNode, useEffect} from "react";
 import apiClient from "@/lib/apiClient.tsx";
 import {useNavigate} from "react-router-dom";
-import {useData} from "@/hooks/useData.tsx";
 import {jwtDecode, JwtPayload} from "jwt-decode";
 import {useToast} from "@/hooks/useToast.tsx";
 
@@ -27,7 +26,6 @@ export const AuthContext = createContext<AuthContextType>({
 export const AuthProvider = ({children}: { children: ReactNode }) => {
     const [token, setToken] = useState<string | null>(localStorage.getItem("token"));
     const navigate = useNavigate();
-    const {clearData, fetchData} = useData();
     const {showToast} = useToast();
 
     const isTokenExpired = () => {
@@ -64,9 +62,6 @@ export const AuthProvider = ({children}: { children: ReactNode }) => {
             const userToken = response.data.access_token;
             setToken(userToken);
             localStorage.setItem("token", userToken);
-
-            fetchData();
-
             navigate('/');
             showToast(`Zalogowano pomyślnie.`, "success");
 
@@ -78,7 +73,6 @@ export const AuthProvider = ({children}: { children: ReactNode }) => {
     const logOut = () => {
         setToken(null);
         localStorage.removeItem("token");
-        clearData();
         navigate("/");
         showToast(`Wylogowano pomyślnie.`, "success");
     };

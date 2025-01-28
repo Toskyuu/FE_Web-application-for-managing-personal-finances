@@ -1,5 +1,6 @@
-import React, { createContext, useState, useEffect, ReactNode } from 'react';
+import React, {createContext, useState, useEffect, ReactNode} from 'react';
 import apiClient from '@/lib/apiClient.tsx';
+import {useAuth} from "@/hooks/useAuth.tsx";
 
 interface DataContextType {
     accounts: any[];
@@ -12,12 +13,12 @@ export const DataContext = createContext<DataContextType | undefined>(undefined)
 
 interface DataProviderProps {
     children: ReactNode;
-    isAuthenticated: boolean;
 }
 
-export const DataProvider: React.FC<DataProviderProps> = ({ children, isAuthenticated }) => {
+export const DataProvider: React.FC<DataProviderProps> = ({children}) => {
     const [accounts, setAccounts] = useState<any[]>([]);
     const [categories, setCategories] = useState<any[]>([]);
+    const {isAuthenticated} = useAuth();
 
     const fetchData = async () => {
         try {
@@ -41,11 +42,13 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children, isAuthenti
     useEffect(() => {
         if (isAuthenticated) {
             fetchData();
+        } else {
+            clearData();
         }
     }, [isAuthenticated]);
 
     return (
-        <DataContext.Provider value={{ accounts, categories, fetchData, clearData }}>
+        <DataContext.Provider value={{accounts, categories, fetchData, clearData}}>
             {children}
         </DataContext.Provider>
     );
