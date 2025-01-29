@@ -28,6 +28,10 @@ module.exports = {
             error: {
                 DEFAULT: '#BC4B51',
             },
+            form: {
+                light: '#fbf2e6',
+                dark: '#303030',
+            }
         },
         extend: {
             fontFamily: {

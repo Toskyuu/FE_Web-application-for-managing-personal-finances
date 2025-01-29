@@ -35,7 +35,7 @@ const FormField: React.FC<FormFieldProps> = ({
                 <select
                     id={id}
                     {...register(id, validation)}
-                    className="w-full p-2 border dark:bg-surface-dark bg-surface-light rounded-xl"
+                    className="w-full p-2 border dark:bg-form-dark bg-form-light rounded-xl"
                     value={value}
                     onChange={(e) => onChange && onChange(e.target.value)}
                 >
@@ -53,7 +53,7 @@ const FormField: React.FC<FormFieldProps> = ({
                     {...register(id, validation)}
                     step={type === "number" ? step : undefined}
 
-                    className="w-full p-2 border dark:bg-surface-dark bg-surface-light rounded-xl"
+                    className="w-full p-2 border dark:bg-form-dark bg-form-light rounded-xl"
                 />
             )}
             {errors[id]?.message && (
