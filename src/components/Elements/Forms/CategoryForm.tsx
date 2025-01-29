@@ -60,7 +60,6 @@ const CategoryForm: React.FC<CategoryFormProps> = ({id, name, description}) => {
             id: "description",
             label: "Opis kategorii",
             type: "text",
-            validation: {required: "Opis kategorii jest wymagany"},
         },
     ];
 

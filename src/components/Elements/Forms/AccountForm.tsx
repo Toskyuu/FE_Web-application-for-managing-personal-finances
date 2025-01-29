@@ -27,7 +27,7 @@ const AccountForm: React.FC<AccountFormProps> = ({id, name, initial_balance, typ
         defaultValues: {
             name: name || "",
             initial_balance: initial_balance || 0,
-            type: type || "Cheking",
+            type: type || "Checking",
         },
     });
     const {showToast} = useToast();

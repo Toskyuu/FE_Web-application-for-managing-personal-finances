@@ -6,6 +6,8 @@ import {useFilters} from '@/hooks/useFilters.tsx';
 import {useModal} from '@/hooks/useModal.tsx';
 import {FilterSummaryByCategoryForm} from '@/components';
 import {SummaryChart} from '@/components';
+import Loader from "@/components/Elements/Loader/Loader.tsx";
+import {useRefresh} from "@/hooks/useRefresh.tsx";
 
 interface SummaryData {
     expenses: number;
@@ -23,6 +25,7 @@ const SummaryPage: React.FC = () => {
     const {showToast} = useToast();
     const {transactionSummaryFilters} = useFilters();
     const {openModal} = useModal();
+    const {refreshKey} = useRefresh();
 
     const loadSummary = async (filters: any) => {
         try {
@@ -38,7 +41,7 @@ const SummaryPage: React.FC = () => {
 
     useEffect(() => {
         loadSummary(transactionSummaryFilters);
-    }, [transactionSummaryFilters]);
+    }, [transactionSummaryFilters, refreshKey]);
 
     return (
         <div className="grid grid-cols-1 gap-6 w-full sm:w-3/4 mx-auto">
@@ -54,7 +57,7 @@ const SummaryPage: React.FC = () => {
             </div>
             <MainCard fontSize="text-lg" padding="p-5" height="h-auto" width="w-auto">
                 {loading ? (
-                    <p>Loading chart data...</p>
+                    <Loader/>
                 ) : data ? (
                     <div className="h-[60vh] w-auto ">
                         <SummaryChart
@@ -67,7 +70,7 @@ const SummaryPage: React.FC = () => {
                         />
                     </div>
                 ) : (
-                    <p>No data available for the selected filters.</p>
+                    <p>Brak danych.</p>
                 )}
             </MainCard>
         </div>

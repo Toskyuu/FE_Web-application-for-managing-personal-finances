@@ -10,6 +10,21 @@ module.exports = {
             secondary: {
                 DEFAULT: '#702b73',
             },
+            tertiary: {
+                DEFAULT: '#258EA6',
+            },
+            quaternary: {
+                DEFAULT: '#77878B',
+            },
+            quinary: {
+                DEFAULT: '#61b686',
+            },
+            senary: {
+                DEFAULT: '#fabc33',
+            },
+            septenary: {
+                DEFAULT: '#595A4A',
+            },
             background: {
                 light: '#fff',
                 dark: '#171717',
@@ -19,7 +34,7 @@ module.exports = {
                 dark: '#232323',
             },
             text: {
-                light: '#393939',
+                light: '#292929',
                 dark: '#F7F5FB',
             },
             success: {
@@ -30,7 +45,7 @@ module.exports = {
             },
             form: {
                 light: '#ffffff',
-                dark: '#303030',
+                dark: '#474747',
             }
         },
         extend: {

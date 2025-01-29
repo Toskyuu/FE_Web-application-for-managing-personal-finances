@@ -177,7 +177,6 @@ const TransactionForm: React.FC<TransactionFormProps> = ({
             id: "description",
             label: "Opis",
             type: "text",
-            validation: {required: "Opis jest wymagany"},
         },
         {
             id: "amount",

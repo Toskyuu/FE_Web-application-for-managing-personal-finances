@@ -5,6 +5,8 @@ import {useToast} from "@/hooks/useToast.tsx";
 import {useFilters} from "@/hooks/useFilters.tsx";
 import {useModal} from "@/hooks/useModal.tsx";
 import {FilterSummaryByTimeForm} from "@/components";
+import {useRefresh} from "@/hooks/useRefresh.tsx";
+import Loader from "@/components/Elements/Loader/Loader.tsx";
 
 interface SummaryByTimeData {
     time_group: string;
@@ -18,6 +20,8 @@ const SummaryByTimePage: React.FC = () => {
     const {showToast} = useToast();
     const {transactionOverTimeFilters} = useFilters();
     const {openModal} = useModal();
+    const {refreshKey} = useRefresh();
+
 
     const loadTransactionsOverTime = async (filters: any) => {
         try {
@@ -33,7 +37,7 @@ const SummaryByTimePage: React.FC = () => {
 
     useEffect(() => {
         loadTransactionsOverTime(transactionOverTimeFilters);
-    }, [transactionOverTimeFilters]);
+    }, [transactionOverTimeFilters, refreshKey]);
 
     return (
         <div className="grid grid-cols-1 gap-6 w-full sm:w-3/4 mx-auto">
@@ -52,13 +56,13 @@ const SummaryByTimePage: React.FC = () => {
 
             <MainCard fontSize="text-lg" padding="p-5" height="h-auto" width="w-auto">
                 {loading ? (
-                    <p>Loading chart data...</p>
+                    <Loader/>
                 ) : data ? (
                     <div className="h-[60vh] w-auto ">
                         <SummaryByTimeChart data={data} interval={transactionOverTimeFilters.interval}/>
                     </div>
                 ) : (
-                    <p>No data available for the selected filters.</p>
+                    <p>Brak danych.</p>
                 )}
             </MainCard>
         </div>

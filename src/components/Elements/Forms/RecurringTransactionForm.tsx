@@ -147,7 +147,6 @@ const RecurringTransactionForm: React.FC<RecurringTransactionFormProps> = ({
             id: "description",
             label: "Opis",
             type: "text",
-            validation: {required: "Opis jest wymagany"},
         },
         {
             id: "amount",

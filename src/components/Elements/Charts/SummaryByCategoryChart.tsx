@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Pie} from 'react-chartjs-2';
 import {format, parseISO} from 'date-fns';
+import {translateTransactionType} from "@/utils/Translators.tsx";
 
 interface SummaryByCategoryChartProps {
     data: {
@@ -56,7 +57,6 @@ const SummaryByCategoryChart: React.FC<SummaryByCategoryChartProps> = ({
     const labels = mappedData.map((item) => item.category);
     const values = mappedData.map((item) => item.value);
     const counts = mappedData.map((item) => item.count);
-    const transactionTypes = mappedData.map((item) => item.transactionType);
 
     const colors = generateRandomColors(mappedData.length);
 
@@ -72,6 +72,14 @@ const SummaryByCategoryChart: React.FC<SummaryByCategoryChartProps> = ({
 
         ],
     };
+
+    const theme = localStorage.getItem('theme');
+    let textColor: string;
+    if (theme === 'dark') {
+        textColor = '#F7F5FB';
+    } else {
+        textColor = '#292929';
+    }
 
     const options = {
         responsive: true,
@@ -89,6 +97,7 @@ const SummaryByCategoryChart: React.FC<SummaryByCategoryChartProps> = ({
                 font: {
                     size: 15,
                 },
+                color: textColor,
             },
             legend: {
                 position: legendPosition,
@@ -96,7 +105,7 @@ const SummaryByCategoryChart: React.FC<SummaryByCategoryChartProps> = ({
                     font: {
                         size: 26,
                     },
-
+                    color: textColor,
                 },
             },
             tooltip: {
@@ -106,15 +115,17 @@ const SummaryByCategoryChart: React.FC<SummaryByCategoryChartProps> = ({
                         const value = tooltipItem.raw;
                         const index = tooltipItem.dataIndex;
                         const count = counts[index];
-                        const transactionType = transactionTypes[index];
 
                         return [
                             `Kategoria: ${category}`,
-                            `${transactionType}: ${value} zł`,
+                            `${translateTransactionType(type)}: ${value} zł`,
                             `Liczba transakcji: ${count}`,
                         ];
                     },
                 },
+            },
+            datalabels: {
+                display: false,
             },
 
         },
