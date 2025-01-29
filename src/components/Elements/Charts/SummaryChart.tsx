@@ -25,11 +25,19 @@ const SummaryChart: React.FC<SummaryChartProps> = ({
             {
                 label: 'Kwota (zł)',
                 data: [expenses, incomes],
-                backgroundColor: ['rgba(255, 99, 132, 0.8)', 'rgba(75, 192, 192, 0.8)'],
+                backgroundColor: ['#BC4B51', '#4cd684'],
                 borderRadius: 8,
             },
         ],
     };
+
+    const theme = localStorage.getItem('theme');
+    let textColor: string;
+    if (theme === 'dark') {
+        textColor = '#F7F5FB';
+    } else {
+        textColor = '#292929';
+    }
 
     const options = {
         responsive: true,
@@ -45,6 +53,7 @@ const SummaryChart: React.FC<SummaryChartProps> = ({
                 font: {
                     size: 15,
                 },
+                color: textColor,
             },
             legend: {
                 display: false,
@@ -62,12 +71,31 @@ const SummaryChart: React.FC<SummaryChartProps> = ({
                     },
                 },
             },
+            datalabels: {
+                anchor: 'end' as const,
+                align: 'top' as const,
+                formatter: (value: number) => {
+                    if (value === 0) return '';
+                    return `${value} zł`;
+                },
+                color: textColor,
+                font: {
+                    weight: 'bold' as const,
+                    size: 15,
+                },
+            },
         },
         scales: {
             x: {
                 grid: {
                     drawOnChartArea: false,
                     drawBorder: true,
+                },
+                ticks: {
+                    color: textColor,
+                    font: {
+                        size: 15,
+                    }
                 },
 
             },
@@ -76,13 +104,19 @@ const SummaryChart: React.FC<SummaryChartProps> = ({
                     drawOnChartArea: false,
                     drawBorder: true,
                 },
+                ticks: {
+                    color: textColor,
+                    font: {
+                        size: 15,
+                    }
+                },
 
                 beginAtZero: true,
             },
         },
     };
 
-    return <Bar data={chartData} options={options}/>;
+    return <Bar data={chartData} options={options} />;
 };
 
 export default SummaryChart;

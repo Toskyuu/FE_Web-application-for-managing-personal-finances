@@ -5,6 +5,8 @@ import {useToast} from '@/hooks/useToast.tsx';
 import {useFilters} from '@/hooks/useFilters.tsx';
 import {useModal} from '@/hooks/useModal.tsx';
 import {FilterSummaryByCategoryForm} from '@/components';
+import {useRefresh} from "@/hooks/useRefresh.tsx";
+import Loader from "@/components/Elements/Loader/Loader.tsx";
 
 interface CumulativeData {
     data: {
@@ -25,6 +27,7 @@ const CumulativePage: React.FC = () => {
     const {showToast} = useToast();
     const {transactionSummaryFilters} = useFilters();
     const {openModal} = useModal();
+    const {refreshKey} = useRefresh();
 
     const loadCumulative = async (filters: any) => {
         try {
@@ -32,7 +35,7 @@ const CumulativePage: React.FC = () => {
             const response = await fetchCumulative(filters);
             setData(response);
         } catch (error: any) {
-            showToast(error, "error");
+            showToast(error.message, "error")
         } finally {
             setLoading(false);
         }
@@ -40,7 +43,7 @@ const CumulativePage: React.FC = () => {
 
     useEffect(() => {
         loadCumulative(transactionSummaryFilters);
-    }, [transactionSummaryFilters]);
+    }, [transactionSummaryFilters, refreshKey]);
 
     return (
         <div className="grid grid-cols-1 gap-6 w-full sm:w-3/4 mx-auto">
@@ -56,7 +59,7 @@ const CumulativePage: React.FC = () => {
             </div>
             <MainCard fontSize="text-lg" padding="p-5" height="h-auto" width="w-auto">
                 {loading ? (
-                    <p>Loading chart data...</p>
+                    <Loader/>
                 ) : data ? (
                     <div className="h-[60vh] w-auto">
                         <CumulativeChart
@@ -66,7 +69,7 @@ const CumulativePage: React.FC = () => {
                         />
                     </div>
                 ) : (
-                    <p>No data available for the selected filters.</p>
+                    <p>Brak danych.</p>
                 )}
             </MainCard>
         </div>

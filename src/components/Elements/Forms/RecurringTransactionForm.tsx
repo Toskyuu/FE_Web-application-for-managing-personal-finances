@@ -138,7 +138,7 @@ const RecurringTransactionForm: React.FC<RecurringTransactionFormProps> = ({
             closeModal();
         } catch
             (error: any) {
-            showToast(error, "error");
+            showToast(error.message, "error")
         }
     };
 
@@ -147,7 +147,6 @@ const RecurringTransactionForm: React.FC<RecurringTransactionFormProps> = ({
             id: "description",
             label: "Opis",
             type: "text",
-            validation: {required: "Opis jest wymagany"},
         },
         {
             id: "amount",

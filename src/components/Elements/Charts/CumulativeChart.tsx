@@ -30,21 +30,29 @@ const CumulativeChart: React.FC<CumulativeChartProps> = ({
             {
                 label: 'Wydatki',
                 data: data.map((item) => item.cumulative_expense),
-                backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                borderColor: 'rgba(255, 99, 132, 1)',
+                backgroundColor: 'rgba(188,75, 81, 0.2)',
+                borderColor: 'rgba(188,75, 81, 1)',
                 fill: true,
                 count: data.map((item) => item.cumulative_expense_count),
             },
             {
                 label: 'Przychody',
                 data: data.map((item) => item.cumulative_income),
-                backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                borderColor: 'rgba(75, 192, 192, 1)',
+                backgroundColor: 'rgba(76,214, 132, 0.2)',
+                borderColor: 'rgba(76,214, 132, 1)',
                 fill: true,
                 count: data.map((item) => item.cumulative_income_count),
             },
         ],
     };
+
+    const theme = localStorage.getItem('theme');
+    let textColor: string;
+    if (theme === 'dark') {
+        textColor = '#F7F5FB';
+    } else {
+        textColor = '#292929';
+    }
 
     const options = {
         responsive: true,
@@ -60,6 +68,10 @@ const CumulativeChart: React.FC<CumulativeChartProps> = ({
                         'dd.MM.yyyy'
                     )})`,
                 ],
+                font: {
+                    size: 15,
+                },
+                color: textColor,
             },
             legend: {
                 display: false,
@@ -68,9 +80,9 @@ const CumulativeChart: React.FC<CumulativeChartProps> = ({
                 callbacks: {
                     label: function (tooltipItem: any) {
                         const dataset = tooltipItem.dataset;
-                        const label = dataset.label; // "Wydatki" lub "Przychody"
-                        const value = dataset.data[tooltipItem.dataIndex]; // Kwota
-                        const count = dataset.count[tooltipItem.dataIndex]; // Liczba transakcji
+                        const label = dataset.label;
+                        const value = dataset.data[tooltipItem.dataIndex];
+                        const count = dataset.count[tooltipItem.dataIndex];
 
                         return [
                             `${label}: ${value} zł`,
@@ -79,6 +91,9 @@ const CumulativeChart: React.FC<CumulativeChartProps> = ({
                     },
                 },
             },
+            datalabels: {
+                display: false,
+            },
         },
         scales: {
             x: {
@@ -86,12 +101,24 @@ const CumulativeChart: React.FC<CumulativeChartProps> = ({
                     drawOnChartArea: false,
                     drawBorder: true,
                 },
+                ticks: {
+                    color: textColor,
+                    font: {
+                        size: 15,
+                    }
+                },
 
             },
             y: {
                 grid: {
                     drawOnChartArea: false,
                     drawBorder: true,
+                },
+                ticks: {
+                    color: textColor,
+                    font: {
+                        size: 15,
+                    }
                 },
 
                 beginAtZero: true,

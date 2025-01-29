@@ -1,34 +1,47 @@
-import React, { createContext, useState, ReactNode } from "react";
+import React, {createContext, useState, ReactNode} from "react";
 import {Toast} from "@/components";
+import {v4 as uuidv4} from "uuid";
+import {AnimatePresence, motion} from "framer-motion";
 
 interface ToastContextType {
     showToast: (message: string, type: "success" | "error") => void;
 }
 
+interface ToastItem {
+    id: string;
+    message: string;
+    type: "success" | "error";
+}
+
 export const ToastContext = createContext<ToastContextType | undefined>(undefined);
 
-export const ToastProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-    const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
-
+export const ToastProvider: React.FC<{ children: ReactNode }> = ({children}) => {
+    const [toasts, setToasts] = useState<ToastItem[]>([]);
     const showToast = (message: string, type: "success" | "error") => {
-        setToast({ message, type });
-    };
+        const id = uuidv4();
+        setToasts((prev) => [...prev, {id, message, type}]);
 
-    const closeToast = () => {
-        setToast(null);
+        setTimeout(() => {
+            setToasts((prev) => prev.filter((toast) => toast.id !== id));
+        }, 3000);
     };
 
     return (
-        <ToastContext.Provider value={{ showToast }}>
+        <ToastContext.Provider value={{showToast}}>
             {children}
-            {toast && (
-                <Toast
-                    message={toast.message}
-                    type={toast.type}
-                    onClose={closeToast}
-                />
-            )}
+            <div className="fixed top-8 right-4 z-50 flex flex-col space-y-2">
+                <AnimatePresence>
+                    {toasts.map((toast) => (
+                        <motion.div key={toast.id} layout>
+                            <Toast
+                                message={toast.message}
+                                type={toast.type}
+                                onClose={() => setToasts((prev) => prev.filter((t) => t.id !== toast.id))}
+                            />
+                        </motion.div>
+                    ))}
+                </AnimatePresence>
+            </div>
         </ToastContext.Provider>
     );
 };
-

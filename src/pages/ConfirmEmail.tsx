@@ -19,7 +19,7 @@ const ConfirmEmail = () => {
                     navigate('/');
                     showToast(response, 'success');
                 } catch (error: any) {
-                    showToast(error, 'error');
+                    showToast(error.message, "error")
                 }
             }
         };

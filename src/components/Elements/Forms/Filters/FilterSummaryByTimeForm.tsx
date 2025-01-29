@@ -35,7 +35,7 @@ const FilterSummaryByTimeForm: React.FC = ({}) => {
     }, [transactionOverTimeFilters, setValue]);
 
 
-    const Intervalypes = [
+    const IntervalTypes = [
         {value: "Daily", label: "Dzienny"},
         {value: "Monthly", label: "Miesięczny"},
         {value: "Yearly", label: "Roczny"},
@@ -46,7 +46,7 @@ const FilterSummaryByTimeForm: React.FC = ({}) => {
             id: "interval",
             label: "Czas interwału",
             type: "select",
-            options: Intervalypes,
+            options: IntervalTypes,
             validation: {required: "Czas interwału jest wymagany"},
         },
         {

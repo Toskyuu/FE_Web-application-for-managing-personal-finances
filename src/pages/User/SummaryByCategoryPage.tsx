@@ -6,6 +6,8 @@ import {useFilters} from "@/hooks/useFilters.tsx";
 import {useModal} from "@/hooks/useModal.tsx";
 import {FilterSummaryByCategoryForm} from "@/components";
 import {SummaryByCategoryChart} from "@/components";
+import {useRefresh} from "@/hooks/useRefresh.tsx";
+import Loader from "@/components/Elements/Loader/Loader.tsx";
 
 interface SummaryByCategoryData {
     data: {
@@ -27,6 +29,8 @@ const SummaryByCategoryPage: React.FC = () => {
     const {showToast} = useToast();
     const {transactionSummaryFilters} = useFilters();
     const {openModal} = useModal();
+    const {refreshKey} = useRefresh();
+
 
     const loadSummaryByCategory = async (filters: any) => {
         try {
@@ -34,7 +38,7 @@ const SummaryByCategoryPage: React.FC = () => {
             const response = await fetchSummaryByCategory(filters);
             setData(response);
         } catch (error: any) {
-            showToast(error, "error");
+            showToast(error.message, "error")
         } finally {
             setLoading(false);
         }
@@ -42,7 +46,7 @@ const SummaryByCategoryPage: React.FC = () => {
 
     useEffect(() => {
         loadSummaryByCategory(transactionSummaryFilters);
-    }, [transactionSummaryFilters]);
+    }, [transactionSummaryFilters, refreshKey]);
 
     return (
         <div className="grid grid-cols-1 gap-6 w-full sm:w-3/4 mx-auto">
@@ -60,7 +64,7 @@ const SummaryByCategoryPage: React.FC = () => {
             </div>
             <MainCard fontSize="text-lg" padding="p-6" height="h-auto" width="w-auto">
                 {loading ? (
-                    <p>Loading chart data...</p>
+                    <Loader/>
                 ) : data ? (
                     <div className="h-[60vh] w-auto">
                         <SummaryByCategoryChart
@@ -71,7 +75,7 @@ const SummaryByCategoryPage: React.FC = () => {
                         />
                     </div>
                 ) : (
-                    <p>No data available for the selected filters.</p>
+                    <p>Brak danych.</p>
                 )}
             </MainCard>
         </div>

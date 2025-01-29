@@ -48,7 +48,7 @@ const UserForm: React.FC<UserFormProps> = ({
             forceRefresh();
             closeModal();
         } catch (error: any) {
-            showToast(error, "error");
+            showToast(error.message, "error")
         }
     };
 

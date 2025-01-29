@@ -187,9 +187,9 @@ const Header: React.FC = () => {
                             bgColor="bg-error"
                             onClick={() => logOut()}
                             text={"Wyloguj się"}
-                            padding="p-4"
+                            padding="p-3"
                             radius="rounded-2xl"
-                            minwidth="min-w-30"
+                            minwidth="min-w-20"
                         />
                         <button
                             onClick={toggleTheme}

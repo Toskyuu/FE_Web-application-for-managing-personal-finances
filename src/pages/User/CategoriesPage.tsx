@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import {CategoryForm, DropDownMenu} from "@/components";
+import {CategoryForm, DefaultButton, DropDownMenu} from "@/components";
 import {useModal} from "@/hooks/useModal.tsx";
 import {useRefresh} from "@/hooks/useRefresh.tsx";
 import {useToast} from "@/hooks/useToast.tsx";
@@ -44,7 +44,7 @@ const CategoriesPage: React.FC = () => {
                 setTotalPages(data.total_pages);
                 setCategories(data.categories);
             } catch (error: any) {
-                showToast(error, "error")
+                showToast(error.message, "error")
             } finally {
                 setIsLoading(false);
             }
@@ -77,28 +77,36 @@ const CategoriesPage: React.FC = () => {
                 <div className="flex flex-col items-center space-y-4">
                     <h2 className="text-xl font-bold">Czy na pewno chcesz usunąć tę kategorię?</h2>
                     <div className="flex space-x-4">
-                        <button
-                            className="px-6 py-2 bg-error text-white rounded-lg hover:bg-error-dark"
+                        <DefaultButton
+                            bgColor=" bg-error"
+                            color="text-text-dark"
                             onClick={async () => {
                                 try {
                                     let response = await deleteCategory(categoryId, fetchData);
                                     showToast(response, "success");
                                     forceRefresh();
                                 } catch (error: any) {
-                                    showToast(error, "error");
+                                    showToast(error.message, "error")
                                 } finally {
                                     closeModal();
                                 }
                             }}
-                        >
-                            Tak
-                        </button>
-                        <button
-                            className="px-6 py-2 bg-success text-white rounded-lg hover:bg-success-dark"
+                            text="Tak"
+                            padding="px-6 py-3"
+                            radius="rounded-xl"
+                            fontSize="text-xl"
+                            minwidth="w-full"
+                        />
+                        <DefaultButton
+                            bgColor=" bg-success"
+                            color="text-text-dark"
                             onClick={closeModal}
-                        >
-                            Nie
-                        </button>
+                            text="Nie"
+                            padding="px-6 py-3"
+                            radius="rounded-xl"
+                            fontSize="text-xl"
+                            minwidth="w-full"
+                        />
                     </div>
                 </div>
             );
@@ -109,7 +117,7 @@ const CategoriesPage: React.FC = () => {
             <div className="p-4 space-y-6">
                 <h1 className="text-4xl font-bold text-center mb-4 ">Kategorie</h1>
 
-                <div className="flex justify-end items-center w-full sm:w-3/4 mx-auto space-x-4">
+                <div className="flex justify-end items-center w-full sm:w-3/4 mx-auto flex-wrap gap-3 h-full">
                     <select
                         id="sort-by"
                         value={sortBy}
@@ -118,18 +126,22 @@ const CategoriesPage: React.FC = () => {
                             setCategories([]);
                             setPage(1);
                         }}
-                        className="p-3 rounded-2xl shadow-2xl bg-surface-light dark:bg-surface-dark text-text-light dark:text-text-dark"
+                        className="p-3 cursor-pointer rounded-2xl h-12 shadow-xl bg-surface-light dark:bg-surface-dark text-text-light dark:text-text-dark focus:outline-none transition-all duration-300 hover:brightness-90 dark:hover:brightness-125"
                     >
                         <option value="id">ID</option>
                         <option value="name">Nazwa</option>
-
                     </select>
-                    <button
+
+                    <DefaultButton
                         onClick={toggleSortOrder}
-                        className="p-3 sticky rounded-2xl shadow-2xl bg-secondary text-text-dark"
-                    >
-                        {getSortIcon()}
-                    </button>
+                        text={getSortIcon()}
+                        bgColor="bg-secondary"
+                        color="text-text-dark"
+                        padding="p-2"
+                        radius="rounded-2xl"
+                        fontSize=""
+                        minwidth="w-full h-12"
+                    />
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full sm:w-3/4 mx-auto">

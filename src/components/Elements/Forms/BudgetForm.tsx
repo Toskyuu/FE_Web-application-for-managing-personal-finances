@@ -76,7 +76,7 @@ const BudgetForm: React.FC<BudgetFormProps> = ({id, category_id, limit, month_ye
             forceRefresh();
             closeModal();
         } catch (error: any) {
-            showToast(error, "error");
+            showToast(error.message, "error")
         }
     };
 

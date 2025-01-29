@@ -1,4 +1,4 @@
-import React, {useState, useRef, useEffect} from "react";
+import React, { useState, useRef, useEffect } from "react";
 
 interface MenuOption {
     label: string;
@@ -10,7 +10,7 @@ interface DropDownMenuProps {
     options: MenuOption[];
 }
 
-const DropDownMenu: React.FC<DropDownMenuProps> = ({options}) => {
+const DropDownMenu: React.FC<DropDownMenuProps> = ({ options }) => {
     const [isOpen, setIsOpen] = useState(false);
     const menuRef = useRef<HTMLDivElement>(null);
 
@@ -33,31 +33,33 @@ const DropDownMenu: React.FC<DropDownMenuProps> = ({options}) => {
         setIsOpen(false);
         onClick();
     };
+
     return (
         <div className="relative" ref={menuRef}>
             <button
                 onClick={toggleMenu}
-                className="p-2 rounded-full hover:text-secondary "
+                className="p-2 hover:text-secondary"
             >
                 •••
             </button>
 
-            {isOpen && (
-                <div
-                    className="absolute right-2/3 bottom-2/3 mt-2 w-40 bg-surface-light dark:bg-surface-dark shadow-2xl rounded-2xl z-30">
-                    {options.map((option, index) => (
-                        <button
-                            key={index}
-                            onClick={() => handleOptionClick(option.onClick)}
-                            className={`block w-full text-left px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 ${
-                                option.className || ""
-                            }`}
-                        >
-                            {option.label}
-                        </button>
-                    ))}
-                </div>
-            )}
+            <div
+                className={`absolute right-2/3 bottom-2/3 mt-2 w-40 bg-surface-light dark:bg-surface-dark shadow-2xl rounded-xl z-30 transition-all transform duration-300 overflow-hidden ${
+                    isOpen ? "scale-100 opacity-100" : "scale-95 opacity-0 pointer-events-none"
+                }`}
+            >
+                {options.map((option, index) => (
+                    <button
+                        key={index}
+                        onClick={() => handleOptionClick(option.onClick)}
+                        className={`block w-full text-left px-4 py-2  text-sm bg-surface-light dark:bg-surface-dark hover:brightness-75 dark:hover:brightness-125  transition-all transform duration-300 ${
+                            option.className || ""
+                        }`}
+                    >
+                        {option.label}
+                    </button>
+                ))}
+            </div>
         </div>
     );
 };

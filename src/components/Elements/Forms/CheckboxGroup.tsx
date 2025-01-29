@@ -23,7 +23,7 @@ const CheckboxGroup: React.FC<CheckboxGroupProps> = ({
     } = useController({
         name: id,
         control,
-        defaultValue: [], // Inicjalizujemy jako pustą tablicę
+        defaultValue: [],
         rules: validation,
     });
 
@@ -32,12 +32,12 @@ const CheckboxGroup: React.FC<CheckboxGroupProps> = ({
         let updatedValue: string[];
 
         if (e.target.checked) {
-            updatedValue = [...value, newValue]; // Dodajemy do tablicy
+            updatedValue = [...value, newValue];
         } else {
-            updatedValue = value.filter((item: string) => item !== newValue); // Usuwamy z tablicy
+            updatedValue = value.filter((item: string) => item !== newValue);
         }
 
-        onChange(updatedValue); // Przekazujemy nową tablicę do formularza
+        onChange(updatedValue);
     };
 
     return (
@@ -45,17 +45,18 @@ const CheckboxGroup: React.FC<CheckboxGroupProps> = ({
             <label htmlFor={id} className="block mb-2">
                 {label}
             </label>
-            <div className="bg-gray-200 p-4 rounded-md">
+            <div className=" p-4 ">
                 {options.map((option) => (
                     <div key={option.value} className="flex items-center space-x-2 mb-2">
                         <input
                             id={option.value.toString()}
                             type="checkbox"
                             value={option.value.toString()}
-                            checked={value.includes(option.value.toString())} // Zaznaczenie na podstawie wartości w `value`
+                            checked={value.includes(option.value.toString())}
                             onChange={handleCheckboxChange}
-                            className="h-4 w-4"
+                            className="h-3 w-3 appearance-none rounded-sm bg-surface-light border-2 border-surface-light outline outline-2 outline-surface-dark dark:outline-surface-light checked:bg-secondary"
                         />
+
                         <label htmlFor={option.value.toString()}>{option.label}</label>
                     </div>
                 ))}

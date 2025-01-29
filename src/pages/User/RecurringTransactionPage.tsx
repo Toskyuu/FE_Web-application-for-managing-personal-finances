@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import {DropDownMenu, RecurringTransactionForm} from "@/components";
+import {DefaultButton, DropDownMenu, RecurringTransactionForm} from "@/components";
 import {useModal} from "@/hooks/useModal.tsx";
 import {useRefresh} from "@/hooks/useRefresh.tsx";
 import {translateRecurringType} from "@/utils/Translators.tsx";
@@ -53,7 +53,7 @@ const RecurringTransactionsPage: React.FC = () => {
             setTotalPages(data.total_pages);
             setRecurringTransactions((prev) => (page === 1 ? data.recurring_transactions : [...prev, ...data.recurring_transactions]));
         } catch (error: any) {
-            showToast(error, "error")
+            showToast(error.message, "error")
         } finally {
             setIsLoading(false);
         }
@@ -134,28 +134,36 @@ const RecurringTransactionsPage: React.FC = () => {
             <div className="flex flex-col items-center  space-y-4">
                 <h2 className="text-xl font-bold text-center">Czy na pewno chcesz usunąć tę transakcję cykliczną?</h2>
                 <div className="flex space-x-4">
-                    <button
-                        className="px-6 py-2 bg-error text-white rounded-lg hover:bg-error-dark"
+                    <DefaultButton
+                        bgColor=" bg-error"
+                        color="text-text-dark"
                         onClick={async () => {
                             try {
                                 let response = await deleteRecurringTransaction(recurringTransactionId);
                                 showToast(response, "success");
                                 forceRefresh();
                             } catch (error: any) {
-                                showToast(error.response.data.message || error.message, "error");
+                                showToast(error.message, "error")
                             } finally {
                                 closeModal();
                             }
                         }}
-                    >
-                        Tak
-                    </button>
-                    <button
-                        className="px-6 py-2 bg-success text-white rounded-lg hover:bg-success-dark"
+                        text="Tak"
+                        padding="px-6 py-3"
+                        radius="rounded-xl"
+                        fontSize="text-xl"
+                        minwidth="w-full"
+                    />
+                    <DefaultButton
+                        bgColor=" bg-success"
+                        color="text-text-dark"
                         onClick={closeModal}
-                    >
-                        Nie
-                    </button>
+                        text="Nie"
+                        padding="px-6 py-3"
+                        radius="rounded-xl"
+                        fontSize="text-xl"
+                        minwidth="w-full"
+                    />
                 </div>
             </div>
         );
@@ -164,29 +172,33 @@ const RecurringTransactionsPage: React.FC = () => {
     return (
         <div className="p-4 space-y-6">
             <h1 className="text-2xl font-bold text-center mb-4">Transakcje cykliczne</h1>
-            <div className="flex justify-end items-center  w-full sm:w-3/4 mx-auto ">
-                <div className="space-x-4">
-                    <select
-                        id="sort-by"
-                        value={sortBy}
-                        onChange={(e) => {
-                            setSortBy(e.target.value);
-                            setPage(1);
-                            setRecurringTransactions([]);
-                        }}
-                        className="p-3 rounded-2xl shadow-2xl bg-surface-light dark:bg-surface-dark text-text-light dark:text-text-dark"
-                    >
-                        <option value="id">ID</option>
-                        <option value="amount">Kwota</option>
-                        <option value="recurring_frequency">Częstotliwość</option>
-                    </select>
-                    <button
-                        onClick={toggleSortOrder}
-                        className="p-3 sticky rounded-2xl shadow-2xl bg-secondary text-text-dark"
-                    >
-                        {getSortIcon()}
-                    </button>
-                </div>
+
+            <div className="flex justify-end items-center w-full sm:w-3/4 mx-auto flex-wrap gap-3 h-full">
+                <select
+                    id="sort-by"
+                    value={sortBy}
+                    onChange={(e) => {
+                        setSortBy(e.target.value);
+                        setPage(1);
+                        setRecurringTransactions([]);
+                    }}
+                    className="p-3 cursor-pointer rounded-2xl h-12 shadow-xl bg-surface-light dark:bg-surface-dark text-text-light dark:text-text-dark focus:outline-none transition-all duration-300 hover:brightness-90 dark:hover:brightness-125"
+                >
+                    <option value="id">ID</option>
+                    <option value="amount">Kwota</option>
+                    <option value="recurring_frequency">Częstotliwość</option>
+                </select>
+
+                <DefaultButton
+                    onClick={toggleSortOrder}
+                    text={getSortIcon()}
+                    bgColor="bg-secondary"
+                    color="text-text-dark"
+                    padding="p-2"
+                    radius="rounded-2xl"
+                    fontSize=""
+                    minwidth="w-full h-12"
+                />
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full sm:w-3/4 mx-auto">
@@ -274,7 +286,8 @@ const RecurringTransactionsPage: React.FC = () => {
             {isLoading && <p className="text-center">Ładowanie...</p>}
 
             {!isLoading && recurringTransactions.length === 0 && (
-                <p className="text-center text-gray-500">Aktualnie nie ma jeszcze tutaj żadnych transakcji cyklicznych.</p>
+                <p className="text-center text-gray-500">Aktualnie nie ma jeszcze tutaj żadnych transakcji
+                    cyklicznych.</p>
             )}
 
 

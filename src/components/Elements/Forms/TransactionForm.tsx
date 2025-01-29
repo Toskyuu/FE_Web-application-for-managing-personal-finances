@@ -168,7 +168,7 @@ const TransactionForm: React.FC<TransactionFormProps> = ({
             closeModal();
             getBudgetNotification(successMessage.spentInBudget)
         } catch (error: any) {
-            showToast(error, "error");
+            showToast(error.message, "error")
         }
     };
 
@@ -177,7 +177,6 @@ const TransactionForm: React.FC<TransactionFormProps> = ({
             id: "description",
             label: "Opis",
             type: "text",
-            validation: {required: "Opis jest wymagany"},
         },
         {
             id: "amount",
