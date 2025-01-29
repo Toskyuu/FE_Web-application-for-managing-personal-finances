@@ -32,7 +32,7 @@ const CumulativePage: React.FC = () => {
             const response = await fetchCumulative(filters);
             setData(response);
         } catch (error: any) {
-            showToast(error, "error");
+            showToast(error.message, "error")
         } finally {
             setLoading(false);
         }

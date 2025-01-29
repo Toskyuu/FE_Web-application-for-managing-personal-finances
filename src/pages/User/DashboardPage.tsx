@@ -81,7 +81,7 @@ const DashboardPage: React.FC = () => {
             const response: DashboardData = await fetchDashboard();
             setData(response);
         } catch (error: any) {
-            showToast(error, 'error');
+            showToast(error.message, "error")
         } finally {
             setLoading(false);
         }

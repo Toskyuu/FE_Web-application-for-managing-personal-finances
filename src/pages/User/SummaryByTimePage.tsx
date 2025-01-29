@@ -25,7 +25,7 @@ const SummaryByTimePage: React.FC = () => {
             const response = await fetchSummaryByTime(filters);
             setData(response.data);
         } catch (error: any) {
-            showToast(error, "error");
+            showToast(error.message, "error")
         } finally {
             setLoading(false);
         }

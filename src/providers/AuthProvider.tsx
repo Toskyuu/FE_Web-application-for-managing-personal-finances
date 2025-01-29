@@ -74,8 +74,27 @@ export const AuthProvider = ({children}: { children: ReactNode }) => {
         setToken(null);
         localStorage.removeItem("token");
         navigate("/");
-        showToast(`Wylogowano pomyślnie.`, "success");
+        showToast(`Wylogowano.`, "success");
     };
+
+    useEffect(() => {
+        const interceptor = apiClient.interceptors.response.use(
+            (response) => response,
+            (error) => {
+                // Sprawdź, czy odpowiedź to 401
+                if (error.response?.status === 401) {
+                    logOut(); // Wylogowanie
+                    showToast('Token wygasł lub jest nieważny. Proszę zalogować się ponownie.', 'error');
+                }
+                return Promise.reject(error);
+            }
+        );
+
+        return () => {
+            apiClient.interceptors.response.eject(interceptor);
+        };
+    }, [logOut, showToast]);
+
 
     const register = async (username: string, email: string, password: string) => {
         try {

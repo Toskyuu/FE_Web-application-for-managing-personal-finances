@@ -31,7 +31,7 @@ const UserPage: React.FC = () => {
             const data = await fetchUser();
             setUser(data);
         } catch (error: any) {
-            showToast(error, "error")
+            showToast(error.message, "error")
         } finally {
             setIsLoading(false);
         }
@@ -47,7 +47,7 @@ const UserPage: React.FC = () => {
             let response = await resetPassword(email);
             showToast(response, "success");
         } catch (error: any) {
-            showToast(error, "error");
+            showToast(error.message, "error")
         }
     }
 
@@ -56,7 +56,7 @@ const UserPage: React.FC = () => {
             let response = await resendConfirmation(email);
             showToast(response, "success");
         } catch (error: any) {
-            showToast(error, "error");
+            showToast(error.message, "error")
         }
     }
 
@@ -80,7 +80,7 @@ const UserPage: React.FC = () => {
                                 logOut();
                                 forceRefresh();
                             } catch (error: any) {
-                                showToast(error, "error");
+                                showToast(error.message, "error")
                             } finally {
                                 closeModal();
                             }
@@ -103,7 +103,7 @@ const UserPage: React.FC = () => {
     return (
         <div className="flex flex-col items-center">
 
-            <MainCard fontSize="text-lg" padding="p-6" height="h-auto" width="w-auto md:w-1/2 lg:w-1/2">
+            <MainCard fontSize="text-lg" padding="p-6" height="h-auto" width="w-full sm:w-3/4 md:w-1/2">
                 <div className="flex flex-col items-center">
                     <div className="mb-4">
                         <FontAwesomeIcon icon={faUser} className="text-6xl"/>

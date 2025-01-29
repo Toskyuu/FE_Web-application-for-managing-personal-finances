@@ -127,8 +127,6 @@ const FloatingButtons: React.FC = () => {
                 ></div>
             )}
         </div>
-
-
     );
 };
 

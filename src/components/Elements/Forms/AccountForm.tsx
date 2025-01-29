@@ -55,7 +55,7 @@ const AccountForm: React.FC<AccountFormProps> = ({id, name, initial_balance, typ
             forceRefresh();
             closeModal();
         } catch (error: any) {
-            showToast(error, "error");
+            showToast(error.message, "error")
         }
     };
 

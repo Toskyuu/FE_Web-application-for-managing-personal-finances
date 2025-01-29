@@ -31,7 +31,7 @@ const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({email}) => {
             showToast(response, "success");
             closeModal();
         } catch (error: any) {
-            showToast(error, "error");
+            showToast(error.message, "error")
         } finally {
             setIsLoading(false);
         }

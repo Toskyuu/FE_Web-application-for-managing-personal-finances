@@ -72,7 +72,6 @@ const FilterTransactionForm: React.FC = ({}) => {
     };
 
 
-
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             {fields.map((field) => (

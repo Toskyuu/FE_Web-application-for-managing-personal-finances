@@ -168,7 +168,7 @@ const TransactionForm: React.FC<TransactionFormProps> = ({
             closeModal();
             getBudgetNotification(successMessage.spentInBudget)
         } catch (error: any) {
-            showToast(error, "error");
+            showToast(error.message, "error")
         }
     };
 

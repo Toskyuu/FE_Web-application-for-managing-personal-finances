@@ -138,7 +138,7 @@ const RecurringTransactionForm: React.FC<RecurringTransactionFormProps> = ({
             closeModal();
         } catch
             (error: any) {
-            showToast(error, "error");
+            showToast(error.message, "error")
         }
     };
 

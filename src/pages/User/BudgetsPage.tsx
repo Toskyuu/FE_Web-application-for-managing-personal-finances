@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import {BudgetForm, DropDownMenu} from "@/components";
+import {BudgetForm, DefaultButton, DropDownMenu} from "@/components";
 import {useModal} from "@/hooks/useModal.tsx";
 import {useRefresh} from "@/hooks/useRefresh.tsx";
 import {deleteBudget, fetchBudgets} from "@/API/BudgetAPI.tsx";
@@ -60,7 +60,7 @@ const BudgetsPage: React.FC = () => {
             setTotalPages(data.total_pages);
             setBudgets((prev) => (page === 1 ? data.budgets : [...prev, ...data.budgets]));
         } catch (error: any) {
-            showToast(error, "error")
+            showToast(error.message, "error")
         } finally {
             setIsLoading(false);
         }
@@ -111,7 +111,7 @@ const BudgetsPage: React.FC = () => {
                                 showToast(response, "success");
                                 forceRefresh();
                             } catch (error: any) {
-                                showToast(error, "error");
+                                showToast(error.message, "error")
                             } finally {
                                 closeModal();
                             }
@@ -132,49 +132,52 @@ const BudgetsPage: React.FC = () => {
 
 
     return (
-        <div className="p-4 space-y-6">
+        <div className="p-4 space-y-6 ">
             <h1 className="text-4xl font-bold text-center mb-4 ">Budżety</h1>
 
-            <div className="flex justify-between items-center w-full sm:w-3/4 mx-auto space-x-4">
-                <div className="">
-                    <button
-                        onClick={() =>
-                            openModal(<FilterBudgetForm/>)
-                        }
-                        className="p-3 rounded-2xl shadow-2xl bg-secondary text-text-dark"
-                    >
-                        Filtry
-                    </button>
+            <div className="flex justify-between items-center w-full sm:w-3/4 h-full mx-auto flex-wrap gap-3">
+                <div className="flex justify-start w-auto ">
+                    <DefaultButton
+                        onClick={() => openModal(<FilterBudgetForm/>)}
+                        text="Filtry"
+                        bgColor="bg-secondary"
+                        color="text-text-dark"
+                        padding="p-3"
+                        radius="rounded-2xl"
+                        fontSize=""
+                        minwidth="w-full h-12"
+                    />
                 </div>
-                <div className="flex space-x-2 justify-end flex-wrap space-y-2">
-                    <div>
-                        <select
-                            id="sort-by"
-                            value={sortBy}
-                            onChange={(e) => {
-                                setSortBy(e.target.value);
-                                setBudgets([]);
-                                setPage(1);
-                            }}
-                            className="p-3 rounded-2xl shadow-2xl bg-surface-light dark:bg-surface-dark text-text-light dark:text-text-dark"
-                        >
-                            <option value="month_year">Data</option>
-                            <option value="spent_in_budget">Wydane pieniądze</option>
-                            <option value="limit">Limit</option>
-                            <option value="spent_to_limit_ratio">Zapełnienie budżetu</option>
+                <div className="flex justify-end items-center w-auto flex-wrap gap-3">
+                    <select
+                        id="sort-by"
+                        value={sortBy}
+                        onChange={(e) => {
+                            setSortBy(e.target.value);
+                            setBudgets([]);
+                            setPage(1);
+                        }}
+                        className="p-3 cursor-pointer rounded-2xl h-12 shadow-xl bg-surface-light dark:bg-surface-dark text-text-light dark:text-text-dark focus:outline-none transition-all duration-300 hover:brightness-90 dark:hover:brightness-125"
+                    >
+                        <option value="month_year">Data</option>
+                        <option value="spent_in_budget">Wydane pieniądze</option>
+                        <option value="limit">Limit</option>
+                        <option value="spent_to_limit_ratio">Zapełnienie budżetu</option>
+                    </select>
 
-                        </select>
-                    </div>
-                    <div className="flex items-center">
-                        <button
-                            onClick={toggleSortOrder}
-                            className="p-3 sticky rounded-2xl shadow-2xl bg-secondary text-text-dark"
-                        >
-                            {getSortIcon()}
-                        </button>
-                    </div>
+                    <DefaultButton
+                        onClick={toggleSortOrder}
+                        text={getSortIcon()}
+                        bgColor="bg-secondary"
+                        color="text-text-dark"
+                        padding="p-2"
+                        radius="rounded-2xl"
+                        fontSize=""
+                        minwidth="w-full h-12"
+                    />
                 </div>
             </div>
+
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full sm:w-3/4 mx-auto">
                 {budgets.map((budget) => (
