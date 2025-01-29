@@ -25,7 +25,7 @@ const DefaultButton: React.FC<DefaultButtonProps> = ({
         <div className="relative flex items-center justify-center">
             <button
                 onClick={onClick}
-                className={`flex items-center justify-center ${minwidth} ${fontSize} ${padding} ${radius} ${bgColor} ${color}  shadow-lg hover:brightness-75 transition-all duration-300 `}
+                className={`flex items-center justify-center ${minwidth} ${fontSize} ${padding} ${radius} ${bgColor} ${color}  shadow-lg hover:brightness-125 transition-all duration-300 `}
             >
                 {text}
             </button>

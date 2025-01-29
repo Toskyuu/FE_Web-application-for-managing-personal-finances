@@ -15,7 +15,7 @@ const ModalWindow: React.FC = () => {
 
             <div className="fixed inset-0 z-40 flex items-center justify-center pointer-events-none">
                 <div
-                    className="relative bg-background-light text-text-light dark:bg-surface-dark dark:text-text-dark rounded-2xl shadow-2xl w-full max-w-lg p-6 mx-4 pointer-events-auto"
+                    className="relative bg-surface-light text-text-light dark:bg-surface-dark dark:text-text-dark rounded-2xl shadow-2xl w-full max-w-lg p-6 mx-4 pointer-events-auto"
                 >
                     <button
                         className="absolute top-3 right-3 text-gray-500 hover:text-gray-700"

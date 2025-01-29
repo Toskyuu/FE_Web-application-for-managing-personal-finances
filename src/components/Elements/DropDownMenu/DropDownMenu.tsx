@@ -38,13 +38,13 @@ const DropDownMenu: React.FC<DropDownMenuProps> = ({ options }) => {
         <div className="relative" ref={menuRef}>
             <button
                 onClick={toggleMenu}
-                className="p-2 rounded-full hover:text-secondary"
+                className="p-2 hover:text-secondary"
             >
                 •••
             </button>
 
             <div
-                className={`absolute right-2/3 bottom-2/3 mt-2 w-40 bg-surface-light dark:bg-surface-dark shadow-2xl rounded-2xl z-30 transition-all transform duration-300 ${
+                className={`absolute right-2/3 bottom-2/3 mt-2 w-40 bg-surface-light dark:bg-surface-dark shadow-2xl rounded-xl z-30 transition-all transform duration-300 overflow-hidden ${
                     isOpen ? "scale-100 opacity-100" : "scale-95 opacity-0 pointer-events-none"
                 }`}
             >
@@ -52,7 +52,7 @@ const DropDownMenu: React.FC<DropDownMenuProps> = ({ options }) => {
                     <button
                         key={index}
                         onClick={() => handleOptionClick(option.onClick)}
-                        className={`block w-full text-left px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 ${
+                        className={`block w-full text-left px-4 py-2  text-sm bg-surface-light dark:bg-surface-dark hover:brightness-75 dark:hover:brightness-125  transition-all transform duration-300 ${
                             option.className || ""
                         }`}
                     >

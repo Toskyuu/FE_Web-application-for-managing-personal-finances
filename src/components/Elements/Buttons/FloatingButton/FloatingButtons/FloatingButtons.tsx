@@ -38,7 +38,7 @@ const FloatingButtons: React.FC = () => {
                     isExpanded
                         ? 'opacity-100 visible translate-y-0'
                         : 'opacity-0 invisible translate-y-12 pointer-events-none'
-                }`}
+                } z-50`}
                 style={{transformOrigin: 'bottom center'}}
             >
                 <FloatingActionButton

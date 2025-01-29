@@ -103,8 +103,9 @@ const BudgetsPage: React.FC = () => {
             <div className="flex flex-col items-center space-y-4">
                 <h2 className="text-xl font-bold">Czy na pewno chcesz usunąć ten budżet?</h2>
                 <div className="flex space-x-4">
-                    <button
-                        className="px-6 py-2 bg-error text-white rounded-lg hover:bg-error-dark"
+                    <DefaultButton
+                        bgColor=" bg-error"
+                        color="text-text-dark"
                         onClick={async () => {
                             try {
                                 let response = await deleteBudget(budgetId);
@@ -116,15 +117,22 @@ const BudgetsPage: React.FC = () => {
                                 closeModal();
                             }
                         }}
-                    >
-                        Tak
-                    </button>
-                    <button
-                        className="px-6 py-2 bg-success text-white rounded-lg hover:bg-success-dark"
+                        text="Tak"
+                        padding="px-6 py-3"
+                        radius="rounded-xl"
+                        fontSize="text-xl"
+                        minwidth="w-full"
+                    />
+                    <DefaultButton
+                        bgColor=" bg-success"
+                        color="text-text-dark"
                         onClick={closeModal}
-                    >
-                        Nie
-                    </button>
+                        text="Nie"
+                        padding="px-6 py-3"
+                        radius="rounded-xl"
+                        fontSize="text-xl"
+                        minwidth="w-full"
+                    />
                 </div>
             </div>
         );

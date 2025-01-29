@@ -29,7 +29,7 @@ module.exports = {
                 DEFAULT: '#BC4B51',
             },
             form: {
-                light: '#fbf2e6',
+                light: '#ffffff',
                 dark: '#303030',
             }
         },
