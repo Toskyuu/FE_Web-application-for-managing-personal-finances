@@ -104,14 +104,14 @@ const Header: React.FC = () => {
                                     href="/recurring-transactions"
                                     className="flex items-center px-4 py-2 text-text-dark hover:bg-gray-200 transition-colors w-full h-full"
                                 >
-                                    <div className="flex items-center w-full">
+                                    <div className="flex items-center w-full ">
                                         {/* Kontener dla ikony */}
-                                        <div className="flex justify-start w-12">
+                                        <div className="flex justify-start w-12 flex-shrink-0">
                                             <FontAwesomeIcon icon={faClock}/>
                                         </div>
                                         {/* Kontener dla tekstu */}
                                         <div className="flex justify-end">
-                                            <p className="ml-2 flex-grow text-left">Cykliczne Transakcje</p>
+                                            <p className="ml-2  text-left">Cykliczne Transakcje</p>
                                         </div>
                                     </div>
                                 </a>
