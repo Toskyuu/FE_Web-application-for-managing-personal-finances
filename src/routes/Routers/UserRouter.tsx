@@ -18,7 +18,7 @@ export const UserRouter = () => {
     return (
         <Routes>
             <Route path="/" element={<UserLayout/>}>
-                <Route path="" element={<DashboardPage/>}/>
+                <Route path="/" element={<DashboardPage/>}/>
                 <Route path="/Transactions" element={<TransactionPage/>}/>
                 <Route path="/Accounts" element={<AccountsPage/>}/>
                 <Route path="/recurring-transactions" element={<RecurringTransactionsPage/>}/>

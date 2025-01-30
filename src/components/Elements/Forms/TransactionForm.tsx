@@ -1,7 +1,7 @@
 import React, {useEffect, useMemo, useState} from "react";
 import {useForm} from "react-hook-form";
 import {useModal} from "@/hooks/useModal.tsx";
-import {DefaultButton, FormField} from "@/components";
+import {DefaultButton, FormField, RecurringTransactionForm} from "@/components";
 import {useData} from "@/hooks/useData.tsx";
 import {translateTransactionType} from "@/utils/Translators.tsx";
 import {useRefresh} from "@/hooks/useRefresh.tsx";
@@ -154,9 +154,161 @@ const TransactionForm: React.FC<TransactionFormProps> = ({
         }
     }
 
+    const handleSetRecurringTransaction = (
+        data: FormData,
+        recurringFrequency: string
+    ) => {
+        openModal(
+            <RecurringTransactionForm
+                description={data.description}
+                amount={data.amount}
+                category_id={data.category_id}
+                account_id={data.account_id}
+                type={data.type}
+                account_id_2={data.account_id_2}
+                recurring_frequency={recurringFrequency}
+            />
+        );
+    };
+
+    const checkTransactionCyclicality = async (transactionData: FormData, recurringFrequency: string) => {
+        if (recurringFrequency === "Daily") {
+            openModal(
+                <div className="flex flex-col items-center justify-center p-4">
+                    <div className="flex flex-col items-center justify-center mb-4">
+                        <div className="text-4xl  mb-2"><FontAwesomeIcon icon={faTriangleExclamation}/>️
+                        </div>
+                        <div className="text-2xl font-bold text-center">Zauważyliśmy, że ta transakcja często się
+                            powtarza.
+                        </div>
+                    </div>
+                    <p className="text-lg text-center">Czy chcesz ustawić ją jako cykliczną (codziennie)?</p>
+                    <div className="flex mt-4 space-x-4">
+                        <DefaultButton
+                            onClick={() => handleSetRecurringTransaction(transactionData, recurringFrequency)}
+                            bgColor="bg-success"
+                            fontSize="text-md"
+                            color="text-text-dark"
+                            text="Tak"
+                            padding="p-3"
+                            radius="rounded-lg"
+                        />
+                        <DefaultButton
+                            onClick={closeModal}
+                            bgColor="bg-error"
+                            fontSize="text-md"
+                            color="text-text-dark"
+                            text="Nie"
+                            padding="p-3"
+                            radius="rounded-lg"
+                        />
+                    </div>
+                </div>
+            );
+        } else if (recurringFrequency === "Weekly") {
+            openModal(
+                <div className="flex flex-col items-center justify-center p-4">
+                    <div className="flex flex-col items-center justify-center mb-4">
+                        <div className="text-4xl mb-2"><FontAwesomeIcon icon={faTriangleExclamation}/>️</div>
+                        <div className="text-2xl font-bold text-center">Zauważyliśmy, że ta transakcja często się
+                            powtarza.
+                        </div>
+                    </div>
+                    <p className="text-lg text-center">Czy chcesz ustawić ją jako cykliczną (co tydzień)?</p>
+                    <div className="flex mt-4 space-x-4">
+                        <DefaultButton
+                            onClick={() => handleSetRecurringTransaction(transactionData, recurringFrequency)}
+                            bgColor="bg-success"
+                            fontSize="text-md"
+                            color="text-text-dark"
+                            text="Tak"
+                            padding="p-3"
+                            radius="rounded-lg"
+                        />
+                        <DefaultButton
+                            onClick={closeModal}
+                            bgColor="bg-error"
+                            fontSize="text-md"
+                            color="text-text-dark"
+                            text="Nie"
+                            padding="p-3"
+                            radius="rounded-lg"
+                        />
+                    </div>
+                </div>
+            );
+        } else if (recurringFrequency === "Biweekly") {
+            openModal(
+                <div className="flex flex-col items-center justify-center p-4">
+                    <div className="flex flex-col items-center justify-center mb-4">
+                        <div className="text-4xl  mb-2"><FontAwesomeIcon icon={faTriangleExclamation}/>️
+                        </div>
+                        <div className="text-2xl font-bold text-center">Zauważyliśmy, że ta transakcja często się
+                            powtarza.
+                        </div>
+                    </div>
+                    <p className="text-lg text-center">Czy chcesz ustawić ją jako cykliczną (co dwa tygodnie)?</p>
+                    <div className="flex mt-4 space-x-4">
+                        <DefaultButton
+                            onClick={() => handleSetRecurringTransaction(transactionData, recurringFrequency)}
+                            bgColor="bg-success"
+                            fontSize="text-md"
+                            color="text-text-dark"
+                            text="Tak"
+                            padding="p-3"
+                            radius="rounded-lg"
+                        />
+                        <DefaultButton
+                            onClick={closeModal}
+                            bgColor="bg-error"
+                            fontSize="text-md"
+                            color="text-text-dark"
+                            text="Nie"
+                            padding="p-3"
+                            radius="rounded-lg"
+                        />
+                    </div>
+                </div>
+            );
+        } else if (recurringFrequency === "Monthly") {
+            openModal(
+                <div className="flex flex-col items-center justify-center p-4">
+                    <div className="flex flex-col items-center justify-center mb-4">
+                        <div className="text-4xl  mb-2"><FontAwesomeIcon icon={faTriangleExclamation}/>️
+                        </div>
+                        <div className="text-2xl font-bold text-center">Zauważyliśmy, że ta transakcja często się
+                            powtarza.
+                        </div>
+                    </div>
+                    <p className="text-lg text-center">Czy chcesz ustawić ją jako cykliczną (co miesiąc)?</p>
+                    <div className="flex mt-4 space-x-4">
+                        <DefaultButton
+                            onClick={() => handleSetRecurringTransaction(transactionData, recurringFrequency)}
+                            bgColor="bg-success"
+                            fontSize="text-md"
+                            color="text-text-dark"
+                            text="Tak"
+                            padding="p-3"
+                            radius="rounded-lg"
+                        />
+                        <DefaultButton
+                            onClick={closeModal}
+                            bgColor="bg-error"
+                            fontSize="text-md"
+                            color="text-text-dark"
+                            text="Nie"
+                            padding="p-3"
+                            radius="rounded-lg"
+                        />
+                    </div>
+                </div>
+            );
+        }
+    };
+
     const onSubmit = async (data: FormData) => {
         try {
-            let successMessage: { spentInBudget: number, message: string };
+            let successMessage: { spentInBudget: number, recurringFrequency: string, message: string };
 
             if (id) {
                 successMessage = await updateTransaction(id, data);
@@ -166,7 +318,8 @@ const TransactionForm: React.FC<TransactionFormProps> = ({
             showToast(successMessage.message, "success");
             forceRefresh();
             closeModal();
-            getBudgetNotification(successMessage.spentInBudget)
+            await getBudgetNotification(successMessage.spentInBudget);
+            await checkTransactionCyclicality(data, successMessage.recurringFrequency);
         } catch (error: any) {
             showToast(error.message, "error")
         }

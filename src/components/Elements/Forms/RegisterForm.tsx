@@ -1,8 +1,8 @@
-import React, {useState} from "react";
-import {useForm, SubmitHandler} from "react-hook-form";
-import {DefaultButton, MainCard} from "@/components";
-import {useAuth} from "@/hooks/useAuth.tsx";
-import {useNavigate} from "react-router-dom";
+import React, { useState } from "react";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { DefaultButton, MainCard, FormField } from "@/components";
+import { useAuth } from "@/hooks/useAuth.tsx";
+import { useNavigate } from "react-router-dom";
 import Loader from "@/components/Elements/Loader/Loader.tsx";
 
 interface RegisterFormInputs {
@@ -12,8 +12,8 @@ interface RegisterFormInputs {
 }
 
 const RegisterForm: React.FC = () => {
-    const {register: formRegister, handleSubmit, formState: {errors}} = useForm<RegisterFormInputs>();
-    const {register} = useAuth();
+    const { register: formRegister, handleSubmit, formState: { errors } } = useForm<RegisterFormInputs>();
+    const { register } = useAuth();
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(false);
 
@@ -25,6 +25,7 @@ const RegisterForm: React.FC = () => {
             setIsLoading(false);
         }
     };
+
     const validatePassword = (password: string) => {
         const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_])(?!.*\s).{8,}$/;
         if (!passwordRegex.test(password)) {
@@ -32,6 +33,27 @@ const RegisterForm: React.FC = () => {
         }
         return true;
     };
+
+    const fields = [
+        {
+            id: "username",
+            label: "Nazwa użytkownika",
+            type: "text",
+            validation: {required: "Nazwa użytkownika jest wymagana"},
+        },
+        {
+            id: "email",
+            label: "Email",
+            type: "email",
+            validation: {required: "Email jest wymagany"},
+        },
+        {
+            id: "password",
+            label: "Hasło",
+            type: "password",
+            validation: {required: "Hasło jest wymagane"}, validatePassword
+        },
+    ]
 
     return (
         <div className="flex flex-col items-center justify-center h-full">
@@ -41,54 +63,20 @@ const RegisterForm: React.FC = () => {
                 height="h-auto"
                 width="w-full max-w-md"
             >
-                <form onSubmit={handleSubmit(onSubmit)} className="w-full">
+                <form onSubmit={handleSubmit(onSubmit)} className="w-full space-y-6">
                     <h2 className="text-3xl font-semibold text-center mb-6">Rejestracja</h2>
 
-                    <div className="mb-4">
-                        <label htmlFor="username" className="block text-md font-medium">
-                            Nazwa użytkownika
-                        </label>
-                        <input
-                            type="text"
-                            id="username"
-                            {...formRegister("username", {required: "Nazwa użytkownika nie może być pusta"})}
-                            className={`mt-1 p-2 block w-full border rounded-md text-text-light ${errors.username && "border-error"}`}
+                    {fields.map((field) => (
+                        <FormField
+                            key={field.id}
+                            {...field}
+                            register={formRegister}
+                            errors={errors}
                         />
-                        {errors.username && <span className="text-md text-error">{errors.username.message}</span>}
-                    </div>
-
-                    <div className="mb-4">
-                        <label htmlFor="email" className="block text-md font-medium">
-                            E-mail (Login)
-                        </label>
-                        <input
-                            type="email"
-                            id="email"
-                            {...formRegister("email", {required: "E-mail nie może być pusty"})}
-                            className={`mt-1 p-2 block w-full border rounded-md text-text-light ${errors.email && "border-error"}`}
-                        />
-                        {errors.email && <span className="text-md text-error">{errors.email.message}</span>}
-                    </div>
-
-                    <div className="mb-4">
-                        <label htmlFor="password" className="block text-md font-medium ">
-                            Hasło
-                        </label>
-                        <input
-                            type="password"
-                            id="password"
-                            {...formRegister("password", {
-                                required: "Hasło jest wymagane.",
-                                validate: validatePassword
-                            })}
-                            className={`mt-1 p-2 block w-full border rounded-md text-text-light ${errors.password && "border-error"}`}
-                        />
-                        {errors.password && <span className="text-md text-error">{errors.password.message}</span>}
-                    </div>
+                    ))}
 
                     <DefaultButton
-                        text={isLoading ?
-                            (<Loader/>) : ("Zarejestruj się")}
+                        text={isLoading ? <Loader /> : "Zarejestruj się"}
                         onClick={handleSubmit(onSubmit)}
                         bgColor="bg-success"
                         color="text-text-dark"
@@ -100,9 +88,7 @@ const RegisterForm: React.FC = () => {
                 </form>
 
                 <div className="mt-10 flex flex-col columns-1 justify-center gap-2">
-                    <div>
-                        Masz już konto?
-                    </div>
+                    <div>Masz już konto?</div>
                     <DefaultButton
                         text="Zaloguj się"
                         onClick={() => navigate("/login")}

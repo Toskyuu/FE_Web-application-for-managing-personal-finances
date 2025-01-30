@@ -48,6 +48,7 @@ apiClient.interceptors.request.use((config) => {
 apiClient.interceptors.response.use(
     (response) => response,
     (error) => {
+
         if (error.response) {
             const statusCode = error.response.status.toString();
             const errorData = error.response.data.detail;
@@ -59,10 +60,15 @@ apiClient.interceptors.response.use(
                 error.response.data.message =
                     errorTranslations["default"]["default"] || error.message;
             }
+
+
+            if (statusCode === "500") {
+                window.location.href = "/500";
+            }
+        } else {
+            window.location.href = "/500";
         }
-        else{
-            error.message = "Brak odpowiedzi z serwera. Sprawdź połączenie z internetem.";
-        }
+
         return Promise.reject(error);
     }
 );

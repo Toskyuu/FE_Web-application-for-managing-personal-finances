@@ -12,7 +12,7 @@ export const AnonRouter = () => {
             <Route path="/" element={<AnonLayout/>}>
                 <Route path="login" element={<LoginPage/>}/>
                 <Route path="register" element={<RegisterPage/>}/>
-                <Route path="" element={<LandingPage/>}/>
+                <Route path="/" element={<LandingPage/>}/>
                 <Route path="confirm-email" element={<ConfirmEmail/>}/>
                 <Route path="reset-password" element={<ResetPasswordPage/>}/>
                 <Route path="*" element={<Navigate to="/" replace/>}/>

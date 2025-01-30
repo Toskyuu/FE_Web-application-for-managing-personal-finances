@@ -1,5 +1,4 @@
 export { default as Header } from './Elements/Header/UserHeader/Header.tsx';
-export { default as AnonHeader } from './Elements/Header/AnonHeader/AnonHeader.tsx';
 export { default as FloatingButtons } from './Elements/Buttons/FloatingButton/FloatingButtons/FloatingButtons.tsx';
 export { default as FloatingActionButton } from './Elements/Buttons/FloatingButton/FloatingActionButton/FloatingActionButton.tsx'
 export { default as FloatingButtonLabel } from './Elements/Buttons/FloatingButton/FloatingButtonLabel/FloatingButtonLabel.tsx'
