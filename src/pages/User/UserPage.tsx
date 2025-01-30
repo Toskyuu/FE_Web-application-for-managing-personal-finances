@@ -19,21 +19,21 @@ interface User {
 
 const UserPage: React.FC = () => {
     const [user, setUser] = useState<User | null>(null);
-    const [isLoading, setIsLoading] = useState(true);  // Set initial loading state to true
+    const [isLoading, setIsLoading] = useState(true);
     const {showToast} = useToast();
     const {openModal, closeModal} = useModal();
     const {refreshKey, forceRefresh} = useRefresh();
     const {logOut} = useAuth();
 
     const loadUser = async () => {
-        setIsLoading(true);  // Set loading to true when the data is being fetched
+        setIsLoading(true);
         try {
             const data = await fetchUser();
             setUser(data);
         } catch (error: any) {
             showToast(error.message, "error");
         } finally {
-            setIsLoading(false);  // Set loading to false after the data is fetched
+            setIsLoading(false);
         }
     };
 
@@ -70,8 +70,9 @@ const UserPage: React.FC = () => {
                 <h3 className="text-md text-center">Usunięte zostaną także twoje dane i nie będzie możliwości
                     ich przywrócenia.</h3>
                 <div className="flex space-x-4">
-                    <button
-                        className="px-6 py-2 bg-error text-white rounded-lg hover:bg-error-dark"
+                    <DefaultButton
+                        bgColor=" bg-error"
+                        color="text-text-dark"
                         onClick={async () => {
                             try {
                                 let response = await deleteUser();
@@ -84,15 +85,22 @@ const UserPage: React.FC = () => {
                                 closeModal();
                             }
                         }}
-                    >
-                        Tak
-                    </button>
-                    <button
-                        className="px-6 py-2 bg-success text-white rounded-lg hover:bg-success-dark"
+                        text="Tak"
+                        padding="px-6 py-3"
+                        radius="rounded-xl"
+                        fontSize="text-xl"
+                        minwidth="w-full"
+                    />
+                    <DefaultButton
+                        bgColor=" bg-success"
+                        color="text-text-dark"
                         onClick={closeModal}
-                    >
-                        Nie
-                    </button>
+                        text="Nie"
+                        padding="px-6 py-3"
+                        radius="rounded-xl"
+                        fontSize="text-xl"
+                        minwidth="w-full"
+                    />
                 </div>
             </div>
         );
@@ -113,7 +121,7 @@ const UserPage: React.FC = () => {
 
                             <div className="mb-4">
                                 <h2 className="font-bold text-xl">{user.username}</h2>
-                                <p className="text-gray-500">{user.email}</p>
+                                <p className="">{user.email}</p>
                                 <p className={`mt-2`}>
                                     {user.is_verified ? "Konto potwierdzone" : "Konto niepotwierdzone"}
                                 </p>

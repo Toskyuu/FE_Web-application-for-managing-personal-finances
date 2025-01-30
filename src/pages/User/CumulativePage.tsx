@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {CumulativeChart, MainCard} from '@/components';
+import {CumulativeChart, DefaultButton, MainCard} from '@/components';
 import {fetchCumulative} from '@/API/StatsAPI';
 import {useToast} from '@/hooks/useToast.tsx';
 import {useFilters} from '@/hooks/useFilters.tsx';
@@ -50,18 +50,22 @@ const CumulativePage: React.FC = () => {
             <h1 className="text-2xl font-bold text-center ">Wydatki i przychody na przestrzeni czasu</h1>
 
             <div className="flex justify-end">
-                <button
+                <DefaultButton
                     onClick={() => openModal(<FilterSummaryByCategoryForm/>)}
-                    className="p-3 rounded-2xl shadow-2xl bg-secondary text-text-dark"
-                >
-                    Filtry
-                </button>
+                    text="Filtry"
+                    bgColor="bg-secondary"
+                    color="text-text-dark"
+                    padding="p-3"
+                    radius="rounded-2xl"
+                    fontSize=""
+                    minwidth="w-full h-12"
+                />
             </div>
             <MainCard fontSize="text-lg" padding="p-5" height="h-auto" width="w-auto">
                 {loading ? (
                     <Loader/>
                 ) : data ? (
-                    <div className="h-[60vh] w-auto">
+                    <div className="aspect-[2/3] sm:aspect-[2/1]  w-auto">
                         <CumulativeChart
                             data={data.data}
                             start_date={data.start_date}

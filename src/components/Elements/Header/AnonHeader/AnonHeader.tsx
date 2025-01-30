@@ -1,5 +1,5 @@
 import React, {useEffect} from "react";
-import YourFinance from "@/assets/YourFinance.png";
+import YourFinance from "@/assets/YourFinance.webp";
 
 
 const AnonHeader: React.FC = () => {
@@ -26,6 +26,7 @@ const AnonHeader: React.FC = () => {
             <header className="sticky top-0 z-50 bg-primary shadow-md">
                 <div className="container mx-auto flex items-center justify-center p-4">
                     <button onClick={toggleTheme}
+                            aria-label="Zmień motyw"
                             className="absolute left-0 ml-4 text-text-dark h-10 w-10">
                         <svg className="fill-text-dark block dark:hidden" viewBox="0 0 20 20">
                             <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
@@ -39,7 +40,7 @@ const AnonHeader: React.FC = () => {
 
 
                     <div className="flex items-center h-10">
-                        <img src={YourFinance} alt="Logo" className="h-full w-auto object-contain"/>
+                        <img src={YourFinance} alt="Logo" width="202px" height="40px" className="object-contain"/>
                     </div>
                 </div>
             </header>

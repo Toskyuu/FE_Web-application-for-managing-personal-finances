@@ -62,7 +62,7 @@ const CheckboxGroup: React.FC<CheckboxGroupProps> = ({
                 ))}
             </div>
             {errors[id]?.message && (
-                <p className="text-red-500 mt-2">{String(errors[id]?.message)}</p>
+                <p className="text-error mt-2">{String(errors[id]?.message)}</p>
             )}
         </div>
     );

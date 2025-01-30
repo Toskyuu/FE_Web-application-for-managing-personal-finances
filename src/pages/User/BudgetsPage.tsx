@@ -7,6 +7,7 @@ import {useToast} from "@/hooks/useToast.tsx";
 import {translateMonth} from "@/utils/Translators.tsx";
 import FilterBudgetForm from "@/components/Elements/Forms/Filters/FilterBudgetForm.tsx";
 import {useFilters} from "@/hooks/useFilters.tsx";
+import Loader from "@/components/Elements/Loader/Loader.tsx";
 
 interface Budget {
     id: number;
@@ -140,10 +141,10 @@ const BudgetsPage: React.FC = () => {
 
 
     return (
-        <div className="p-4 space-y-6 ">
+        <div className="p-4 space-y-6 max-w-[1800px] justify-center mx-auto">
             <h1 className="text-4xl font-bold text-center mb-4 ">Budżety</h1>
 
-            <div className="flex justify-between items-center w-full sm:w-3/4 h-full mx-auto flex-wrap gap-3">
+            <div className="flex justify-between items-center w-full lg:w-1/2 sm:w-3/4 mx-auto flex-wrap gap-3 h-full">
                 <div className="flex justify-start w-auto ">
                     <DefaultButton
                         onClick={() => openModal(<FilterBudgetForm/>)}
@@ -187,63 +188,88 @@ const BudgetsPage: React.FC = () => {
             </div>
 
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full sm:w-3/4 mx-auto">
-                {budgets.map((budget) => (
-                    <div
-                        key={budget.id}
-                        className="relative flex flex-col items-start p-6 bg-surface-light dark:bg-surface-dark text-text-light dark:text-text-dark shadow-2xl rounded-2xl space-y-4"
-                    >
-                        <div className="absolute top-0 right-4">
-                            <DropDownMenu
-                                options={[
-                                    {
-                                        label: "Edytuj budżet",
-                                        onClick: () => handleEditBudget(budget.id, budget.limit, budget.month_year.slice(0, 7), budget.category_id, budget.category_name),
-                                    },
-                                    {
-                                        label: "Usuń budżet",
-                                        onClick: () => handleDeleteBudget(budget.id),
-                                    },
-                                ]}
-                            />
-                        </div>
+            {isLoading && budgets.length === 0 ? (
+                <Loader/>
+            ) : (
+                <>
+                    {budgets.length > 0 ? (
+                        <>
+                            <div className="grid grid-cols-1 md:grid-cols-2  gap-6 w-full lg:w-1/2 sm:w-3/4 mx-auto">
+                                {budgets.map((budget) => (
+                                    <div
+                                        key={budget.id}
+                                        className="relative flex flex-col items-start p-6 bg-surface-light dark:bg-surface-dark text-text-light dark:text-text-dark shadow-2xl rounded-2xl space-y-4"
+                                    >
+                                        <div className="absolute top-0 right-4">
+                                            <DropDownMenu
+                                                options={[
+                                                    {
+                                                        label: "Edytuj budżet",
+                                                        onClick: () => handleEditBudget(budget.id, budget.limit, budget.month_year.slice(0, 7), budget.category_id, budget.category_name),
+                                                    },
+                                                    {
+                                                        label: "Usuń budżet",
+                                                        onClick: () => handleDeleteBudget(budget.id),
+                                                    },
+                                                ]}
+                                            />
+                                        </div>
+                                        <div className="flex flex-row gap-4 justify-between  w-full flex-wrap">
+                                            <div className="w-full flex flex-wrap justify-between">
+                                                <div className="text-lg font-bold">{budget.category_name}</div>
+                                                <div
+                                                    className="text-lg">{translateMonth(budget.month_year)} {budget.month_year.slice(0, 4)}</div>
+                                            </div>
+                                            <hr className="w-full"/>
+                                            <div className="flex flex-col justify-start w-full">
+                                                <div className="flex justify-between mb-2">
+                                                    <p className="text-sm font-semibold">Limit</p>
+                                                    <p className="text-sm">{`${budget.limit.toFixed(2)} PLN`}</p>
+                                                </div>
+                                                <div className="flex justify-between mb-2">
+                                                    <p className="text-sm font-semibold">Wydane pieniądze</p>
+                                                    <p className="text-sm">{`${budget.spent_in_budget.toFixed(2)} PLN`}</p>
+                                                </div>
+                                                <div className="w-full bg-background-light dark:bg-background-dark rounded-full h-4 mt-3">
+                                                    <div
+                                                        className={`${budget.spent_to_limit_ratio >= 100 ? 'bg-error' : 'bg-success'} h-4 rounded-full`}
+                                                        style={{width: `${Math.min(budget.spent_to_limit_ratio, 100)}%`}}
+                                                    ></div>
+                                                </div>
+                                                <div className="w-full text-center">
+                                                    <p className="text-sm mt-1">{Math.round(budget.spent_to_limit_ratio)}%</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    ))}
+                            </div>
 
-                        <div className="flex flex-wrap justify-between text-2xl  w-full gap-6">
-                            <div className="font-bold">{budget.category_name}</div>
-                            <div>{translateMonth(budget.month_year)} {budget.month_year.slice(0, 4)}</div>
-                        </div>
-                        <hr className="w-full"/>
-                        <div className="py-3">
-                            <p className="text-md text-success">Limit: {`${budget.limit.toFixed(2)} PLN`}</p>
-                            <p className="text-md">Wydane
-                                pieniądze: {`${budget.spent_in_budget.toFixed(2)} PLN`}</p>
-                            <p className="text-md">Zapełnienie
-                                budżetu: {`${budget.spent_to_limit_ratio.toFixed(2)} %`}</p>
-                        </div>
-                    </div>
-                ))}
 
-            </div>
-
-            {isLoading && <p className="text-center">Ładowanie...</p>}
-
-            {!isLoading && budgets.length === 0 && (
-                <p className="text-center text-gray-500">Aktualnie nie ma jeszcze tutaj żadnych budżetów.</p>
-            )}
-
-
-            {page < totalPages && !isLoading && budgets.length > 0 && (
-                <div className="flex justify-center">
-                    <button
-                        onClick={loadMore}
-                        className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark"
-                    >
-                        Załaduj więcej
-                    </button>
+                            {page < totalPages && (
+                            <div className="flex justify-center">
+                                <DefaultButton
+                                    text={isLoading ?
+                                        (<Loader/>) : ("Załaduj więcej")}
+                                    onClick={loadMore}
+                                    bgColor="bg-secondary"
+                                    color="text-text-dark"
+                                    padding="px-6 py-3"
+                                    radius="rounded-xl"
+                                    fontSize="text-xl"
+                                    minwidth="w-full"
+                    />
                 </div>
             )}
+                        </>
+                    ) : (
+                        <p className="text-center text-xl">Brak budżetów.</p>
+                    )}
+                </>
+            )}
         </div>
-    )
+    );
 };
+
 
 export default BudgetsPage;

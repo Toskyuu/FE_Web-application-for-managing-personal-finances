@@ -169,7 +169,7 @@ const DashboardPage: React.FC = () => {
                                                     </div>
                                                 </div>
                                                 <p className="text-sm mb-1">{budget.spent_in_budget} zł</p>
-                                                <div className="w-full bg-background-dark rounded-full h-4 ">
+                                                <div className="w-full bg-background-light dark:bg-background-dark rounded-full h-4">
                                                     <div
                                                         className={`${budget.spent_to_limit_ratio >= 100 ? 'bg-error' : 'bg-success'} h-4 rounded-full`}
                                                         style={{width: `${Math.min(budget.spent_to_limit_ratio, 100)}%`}}
@@ -220,8 +220,8 @@ const DashboardPage: React.FC = () => {
                                     className=" text-text-dark relative top-0 w-full h-10 bg-tertiary rounded-t-2xl flex items-center pl-5 text-left border-b-2 dark:border-background-light border-background-dark ">
                                     <p className="text-xl ">Wykres wydatków</p>
                                 </div>
-                                <div className="p-5 flex flex-col flex-1 h-full ">
-                                    <div className="h-[65vh] w-auto">
+                                <div className="p-5 flex flex-col flex-1 justify-center h-full ">
+                                    <div className="aspect-square w-auto">
                                         <SummaryByTimeChart data={data.expenses.data} interval="Daily"/>
                                     </div>
                                 </div>

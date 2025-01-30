@@ -1,5 +1,5 @@
 import {Routes, Route, Navigate} from "react-router-dom";
-import UserLayout from "@/components/Layout/UserLayout/UserLayout";
+import UserLayout from "@/components/Layout/UserLayout/UserLayout.tsx";
 import DashboardPage from "@/pages/User/DashboardPage.tsx";
 import TransactionPage from "@/pages/User/TransactionsPage.tsx";
 import AccountsPage from "@/pages/User/AccountsPage.tsx";

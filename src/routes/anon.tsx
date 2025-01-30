@@ -1,8 +1,8 @@
-import { AuthRouter } from '@/features/Auth/AuthRouter';
+import { AnonRouter } from '@/routes/Routers/AnonRouter.tsx';
 
 export const anonRoutes = [
     {
         path: '/*',
-        element: <AuthRouter />,
+        element: <AnonRouter />,
     },
 ];

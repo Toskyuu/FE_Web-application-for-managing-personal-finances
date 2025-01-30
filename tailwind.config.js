@@ -38,7 +38,7 @@ module.exports = {
                 dark: '#F7F5FB',
             },
             success: {
-                DEFAULT: '#4cd684',
+                DEFAULT: '#307a50',
             },
             error: {
                 DEFAULT: '#BC4B51',
@@ -61,21 +61,6 @@ module.exports = {
             minWidth: {
                 '40': '10rem',
             },
-            keyframes: {
-                slideUp: {
-                    '0%': { opacity: 0, transform: 'translateY(100px)' },
-                    '100%': { opacity: 1, transform: 'translateY(0)' },
-                },
-                slideDown: {
-                    '0%': { opacity: 1, transform: 'translateY(0)' },
-                    '100%': { opacity: 0, transform: 'translateY(100px)' },
-                },
-            },
-            animation: {
-                slideUp: 'slideUp 0.4s ease-out forwards',
-                slideDown: 'slideDown 0.4s ease-in forwards',
-            },
-
         }
     },
     plugins: [

@@ -1,12 +1,12 @@
 import {Routes, Route, Navigate} from "react-router-dom";
-import AnonLayout from "@/components/Layout/AnonLayout/AnonLayout";
-import LoginPage from "@/pages/Anon/LoginPage";
+import AnonLayout from "@/components/Layout/AnonLayout/AnonLayout.tsx";
+import LoginPage from "@/pages/Anon/LoginPage.tsx";
 import LandingPage from "@/pages/Anon/LandingPage.tsx";
 import RegisterPage from "@/pages/Anon/RegisterPage.tsx";
 import ConfirmEmail from "@/pages/ConfirmEmail.tsx";
 import ResetPasswordPage from "@/pages/ResetPasswordPage.tsx";
 
-export const AuthRouter = () => {
+export const AnonRouter = () => {
     return (
         <Routes>
             <Route path="/" element={<AnonLayout/>}>

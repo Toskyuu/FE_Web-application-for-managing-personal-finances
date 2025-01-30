@@ -1,7 +1,7 @@
 import React from 'react';
 import {DefaultButton, MainCard} from "@/components";
 import {useNavigate} from "react-router-dom";
-import YourFinance from "@/assets/YourFinance.png";
+import YourFinance from "@/assets/YourFinance.webp";
 
 
 const LandingPage: React.FC = () => {
@@ -15,11 +15,13 @@ const LandingPage: React.FC = () => {
                         <img
                             src={YourFinance}
                             alt="YourFinance Logo"
-                            className=" w-96 object-contain py-10"
+                            className="object-contain py-10"
+                            width="384px"
+                            height="70px"
                         />
                     </div>
                     <div className="text-center text-wrap w-full py-5">
-                        <h2 className="text-4xl font-semibold mt-2">Twój menadżer finansów</h2>
+                        <h2 className="text-4xl mt-2">Twój menadżer finansów</h2>
                         <p className="text-xl  mt-2">
                             Zarządzaj finansami osobistymi, monitoruj oraz analizuj wydatki
                         </p>

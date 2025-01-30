@@ -115,16 +115,16 @@ const FilterTransactionForm: React.FC = ({}) => {
             <div className="w-full flex justify-center items-center pt-5 space-x-8">
                 <DefaultButton
                     fontSize="text-lg"
-                    color="text-white"
-                    bgColor="bg-primary"
+                    color="text-text-dark"
+                    bgColor="bg-secondary"
                     text="Zastosuj filtry"
                     padding="p-3"
                     radius="rounded-md"
                 />
                 <DefaultButton
                     fontSize="text-lg"
-                    color="text-white"
-                    bgColor="bg-primary"
+                    color="text-text-dark"
+                    bgColor="bg-secondary"
                     text="Wyczyść filtry"
                     onClick={resetTransactionFilters}
                     padding="p-3"

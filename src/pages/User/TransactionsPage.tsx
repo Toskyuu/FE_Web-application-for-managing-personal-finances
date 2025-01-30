@@ -48,6 +48,7 @@ const TransactionsPage: React.FC = () => {
     const [totalPages, setTotalPages] = useState<number>(1);
     const size = 10;
 
+
     const loadTransactions = async (
         page: number,
         size: number,
@@ -66,6 +67,7 @@ const TransactionsPage: React.FC = () => {
             setIsLoading(false);
         }
     };
+
 
     useEffect(() => {
         loadTransactions(page, size, sortBy, order, transactionFilters);
@@ -186,8 +188,8 @@ const TransactionsPage: React.FC = () => {
     };
 
     return (
-        <div className="p-4 space-y-6 max-w-[1800px]">
-            <h1 className="text-2xl font-bold text-center mb-4">Transakcje</h1>
+        <div className="p-4 space-y-6 max-w-[1800px] justify-center mx-auto">
+            <h1 className="text-4xl font-bold text-center mb-4">Transakcje</h1>
 
             <div className="flex justify-between items-center w-full sm:w-1/2 h-full mx-auto flex-wrap gap-3">
                 <div className="flex justify-start w-auto">
@@ -243,7 +245,7 @@ const TransactionsPage: React.FC = () => {
                                         className="relative flex flex-col items-start justify-between px-6 pb-6 pt-2 bg-surface-light dark:bg-surface-dark text-text-light dark:text-text-dark shadow-2xl rounded-2xl"
                                     >
                                         <div
-                                            className="flex justify-end items-center w-full border-b border-gray-300 pb-1 mb-4">
+                                            className="flex justify-end items-center w-full border-b pb-1 mb-4">
                                             <DropDownMenu
                                                 options={[
                                                     {
@@ -266,7 +268,6 @@ const TransactionsPage: React.FC = () => {
                                                     {
                                                         label: "Usuń transakcję",
                                                         onClick: () => handleDeleteTransaction(transaction.id),
-                                                        className: "text-red-500",
                                                     },
                                                     {
                                                         label: "Ustaw jako cykliczną",
@@ -304,7 +305,11 @@ const TransactionsPage: React.FC = () => {
                                                 className="flex flex-col items-end text-right w-full  ">
                                                 <p
                                                     className={`text-lg sm:text-xl font-semibold ${
-                                                        transaction.type === "Outcome" ? "text-error" : "text-success"
+                                                        transaction.type === "Outcome"
+                                                            ? "text-error"
+                                                            : transaction.type === "Income"
+                                                                ? "text-success"
+                                                                : "text-tertiary"
                                                     }`}
                                                 >
                                                     {`${transaction.amount.toFixed(2)} PLN`}

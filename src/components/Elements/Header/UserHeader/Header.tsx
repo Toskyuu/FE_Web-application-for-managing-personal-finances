@@ -13,7 +13,7 @@ import {
     faCaretDown,
     faCaretUp,
 } from "@fortawesome/free-solid-svg-icons";
-import YourFinance from "@/assets/YourFinance.png";
+import YourFinance from "@/assets/YourFinance.webp";
 import {DefaultButton} from "@/components";
 import {useAuth} from "@/hooks/useAuth.tsx";
 
@@ -64,79 +64,135 @@ const Header: React.FC = () => {
             >
                 <nav className="mt-16 text-lg flex flex-col justify-between h-full">
                     <div className="overflow-y-auto h-[calc(75vh)] scrollbar-custom px-4">
-                        <ul className="flex flex-col items-start space-y-4 pt-4">
-                            <li>
+                        <ul className="flex flex-col items-start space-y-4 pt-4 w-full">
+                            <li className="w-full">
                                 <a
                                     href="/"
-                                    className="flex items-center px-4 py-2 text-text-dark hover:bg-gray-200 transition-colors"
+                                    className="flex items-center px-4 py-2 text-text-dark hover:bg-gray-200 transition-colors w-full h-full"
                                 >
-                                    <FontAwesomeIcon icon={faLandmark} className="mr-2"/>
-                                    Przegląd
+                                    <div className="flex items-center w-full">
+                                        {/* Kontener dla ikony */}
+                                        <div className="flex justify-start w-12">
+                                            <FontAwesomeIcon icon={faLandmark}/>
+                                        </div>
+                                        {/* Kontener dla tekstu */}
+                                        <div className="flex justify-end">
+                                            <p className="ml-2 flex-grow text-left">Przegląd</p>
+                                        </div>
+                                    </div>
                                 </a>
                             </li>
-                            <li>
+                            <li className="w-full">
                                 <a
                                     href="/transactions"
-                                    className="flex items-center px-4 py-2 text-text-dark hover:bg-gray-200 transition-colors"
+                                    className="flex items-center px-4 py-2 text-text-dark hover:bg-gray-200 transition-colors w-full h-full"
                                 >
-                                    <FontAwesomeIcon icon={faMoneyBillTransfer} className="mr-2"/>
-                                    Transakcje
+                                    <div className="flex items-center w-full">
+                                        {/* Kontener dla ikony */}
+                                        <div className="flex justify-start w-12">
+                                            <FontAwesomeIcon icon={faMoneyBillTransfer}/>
+                                        </div>
+                                        {/* Kontener dla tekstu */}
+                                        <div className="flex justify-end">
+                                            <p className="ml-2 flex-grow text-left">Transakcje</p>
+                                        </div>
+                                    </div>
                                 </a>
                             </li>
-                            <li>
+                            <li className="w-full">
                                 <a
                                     href="/recurring-transactions"
-                                    className="flex items-center px-4 py-2 text-text-dark hover:bg-gray-200 transition-colors"
+                                    className="flex items-center px-4 py-2 text-text-dark hover:bg-gray-200 transition-colors w-full h-full"
                                 >
-                                    <FontAwesomeIcon icon={faClock} className="mr-2"/>
-                                    Cykliczne Transakcje
+                                    <div className="flex items-center w-full">
+                                        {/* Kontener dla ikony */}
+                                        <div className="flex justify-start w-12">
+                                            <FontAwesomeIcon icon={faClock}/>
+                                        </div>
+                                        {/* Kontener dla tekstu */}
+                                        <div className="flex justify-end">
+                                            <p className="ml-2 flex-grow text-left">Cykliczne Transakcje</p>
+                                        </div>
+                                    </div>
                                 </a>
                             </li>
-                            <li>
+                            <li className="w-full">
                                 <a
                                     href="/accounts"
-                                    className="flex items-center px-4 py-2 text-text-dark hover:bg-gray-200 transition-colors"
+                                    className="flex items-center px-4 py-2 text-text-dark hover:bg-gray-200 transition-colors w-full h-full"
                                 >
-                                    <FontAwesomeIcon icon={faCreditCard} className="mr-2"/>
-                                    Konta
+                                    <div className="flex items-center w-full">
+                                        {/* Kontener dla ikony */}
+                                        <div className="flex justify-start w-12">
+                                            <FontAwesomeIcon icon={faCreditCard}/>
+                                        </div>
+                                        {/* Kontener dla tekstu */}
+                                        <div className="flex justify-end">
+                                            <p className="ml-2 flex-grow text-left">Konta</p>
+                                        </div>
+                                    </div>
                                 </a>
                             </li>
-                            <li>
+                            <li className="w-full">
                                 <a
                                     href="/budgets"
-                                    className="flex items-center px-4 py-2 text-text-dark hover:bg-gray-200 transition-colors"
+                                    className="flex items-center px-4 py-2 text-text-dark hover:bg-gray-200 transition-colors w-full h-full"
                                 >
-                                    <FontAwesomeIcon icon={faChartPie} className="mr-2"/>
-                                    Budżety
+                                    <div className="flex items-center w-full">
+                                        {/* Kontener dla ikony */}
+                                        <div className="flex justify-start w-12">
+                                            <FontAwesomeIcon icon={faChartPie}/>
+                                        </div>
+                                        {/* Kontener dla tekstu */}
+                                        <div className="flex justify-end">
+                                            <p className="ml-2 flex-grow text-left">Budżety</p>
+                                        </div>
+                                    </div>
                                 </a>
                             </li>
-                            <li>
+                            <li className="w-full">
                                 <a
                                     href="/categories"
-                                    className="flex items-center px-4 py-2 text-text-dark hover:bg-gray-200 transition-colors"
+                                    className="flex items-center px-4 py-2 text-text-dark hover:bg-gray-200 transition-colors w-full h-full"
                                 >
-                                    <FontAwesomeIcon icon={faList} className="mr-2"/>
-                                    Kategorie
+                                    <div className="flex items-center w-full">
+                                        {/* Kontener dla ikony */}
+                                        <div className="flex justify-start w-12">
+                                            <FontAwesomeIcon icon={faList}/>
+                                        </div>
+                                        {/* Kontener dla tekstu */}
+                                        <div className="flex justify-end">
+                                            <p className="ml-2 flex-grow text-left">Kategorie</p>
+                                        </div>
+                                    </div>
                                 </a>
                             </li>
-                            <li>
+                            <li className="w-full">
                                 <button
                                     onClick={() => setIsStatsOpen(!isStatsOpen)}
-                                    className="flex items-center px-4 py-2 text-text-dark hover:bg-gray-200 transition-colors"
+                                    className="flex items-center px-4 py-2 text-text-dark hover:bg-gray-200 transition-colors w-full h-full"
                                 >
-                                    <FontAwesomeIcon icon={faTable} className="mr-2"/>
-                                    Statystyki
-                                    <FontAwesomeIcon
-                                        icon={isStatsOpen ? faCaretUp : faCaretDown}
-                                        className="ml-2"
-                                    />
+                                    <div className="flex items-center w-full">
+                                        {/* Kontener dla ikony */}
+                                        <div className="flex justify-start w-12">
+                                            <FontAwesomeIcon icon={faTable}/>
+                                        </div>
+                                        {/* Kontener dla tekstu */}
+                                        <div className="flex justify-end">
+                                            <p className="ml-2 flex-grow text-left">Statystyki</p>
+                                        </div>
+                                        <FontAwesomeIcon
+                                            icon={isStatsOpen ? faCaretUp : faCaretDown}
+                                            className="ml-2"
+                                        />
+                                    </div>
                                 </button>
                                 {isStatsOpen && (
                                     <ul className="pl-8 space-y-2 mt-2">
                                         <li>
                                             <a
                                                 href="/summary-by-time"
-                                                className="flex items-center px-4 py-2 text-text-dark hover:bg-gray-200 transition-colors"
+                                                className="flex items-center px-4 py-2 text-text-dark hover:bg-gray-200 transition-colors w-full h-full"
                                             >
                                                 Transakcje według czasu
                                             </a>
@@ -144,7 +200,7 @@ const Header: React.FC = () => {
                                         <li>
                                             <a
                                                 href="/summary-by-category"
-                                                className="flex items-center px-4 py-2 text-text-dark hover:bg-gray-200 transition-colors"
+                                                className="flex items-center px-4 py-2 text-text-dark hover:bg-gray-200 transition-colors w-full h-full"
                                             >
                                                 Transakcje według kategorii
                                             </a>
@@ -152,7 +208,7 @@ const Header: React.FC = () => {
                                         <li>
                                             <a
                                                 href="/summary"
-                                                className="flex items-center px-4 py-2 text-text-dark hover:bg-gray-200 transition-colors"
+                                                className="flex items-center px-4 py-2 text-text-dark hover:bg-gray-200 transition-colors w-full h-full"
                                             >
                                                 Ogólne podsumowanie
                                             </a>
@@ -160,7 +216,7 @@ const Header: React.FC = () => {
                                         <li>
                                             <a
                                                 href="/cumulative"
-                                                className="flex items-center px-4 py-2 text-text-dark hover:bg-gray-200 transition-colors"
+                                                className="flex items-center px-4 py-2 text-text-dark hover:bg-gray-200 transition-colors w-full h-full"
                                             >
                                                 Transakcje skumulowane
                                             </a>
@@ -168,16 +224,25 @@ const Header: React.FC = () => {
                                     </ul>
                                 )}
                             </li>
-                            <li>
+                            <li className="w-full">
                                 <a
                                     href="/user"
-                                    className="flex items-center px-4 py-2 text-text-dark hover:bg-gray-200 transition-colors"
+                                    className="flex items-center px-4 py-2 text-text-dark hover:bg-gray-200 transition-colors w-full h-full"
                                 >
-                                    <FontAwesomeIcon icon={faUser} className="mr-2"/>
-                                    Użytkownik
+                                    <div className="flex items-center w-full">
+                                        {/* Kontener dla ikony */}
+                                        <div className="flex justify-start w-12">
+                                            <FontAwesomeIcon icon={faUser}/>
+                                        </div>
+                                        {/* Kontener dla tekstu */}
+                                        <div className="flex justify-end">
+                                            <p className="ml-2 flex-grow text-left">Użytkownik</p>
+                                        </div>
+                                    </div>
                                 </a>
                             </li>
                         </ul>
+
                     </div>
 
                     <div className="fixed bottom-0 w-full h-auto p-4 flex items-center justify-between bg-secondary">
@@ -193,6 +258,7 @@ const Header: React.FC = () => {
                         />
                         <button
                             onClick={toggleTheme}
+                            aria-label="Zmień motyw"
                             className="h-12 w-12 rounded-lg p-2 hover:bg-gray-100 dark:hover:bg-gray-700"
                         >
                             <svg className="fill-text-dark block dark:hidden" viewBox="0 0 20 20">

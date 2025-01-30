@@ -1,4 +1,4 @@
-import {UserRouter} from "@/features/Auth/UserRouter.tsx";
+import {UserRouter} from "@/routes/Routers/UserRouter.tsx";
 
 export const userRoutes = [
     {
