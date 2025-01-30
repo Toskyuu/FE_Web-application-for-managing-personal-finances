@@ -102,7 +102,7 @@ const DashboardPage: React.FC = () => {
                         <div className="md:col-span-2 col-span-1 row-span-3">
                             <MainCard fontSize="text-lg" padding="" height="h-full" width="w-auto">
                                 <div
-                                    className="text-text-dark relative top-0 w-full h-10 bg-tertiary rounded-t-2xl flex items-center pl-5 text-left border-b-2 dark:border-background-light border-background-dark">
+                                    className="text-text-dark relative top-0 w-full h-10 bg-secondary rounded-t-2xl flex items-center pl-5 text-left border-b-2 dark:border-background-light border-background-dark">
                                     <p className="text-xl">Podsumowanie</p>
                                 </div>
 
@@ -147,7 +147,7 @@ const DashboardPage: React.FC = () => {
                             className="md:col-span-2 col-span-1 xl:col-start-6 md:col-start-3 col-start-1 xl:row-span-8 row-span-5">
                             <MainCard fontSize="text-lg" padding="" height="h-full" width="w-auto">
                                 <div
-                                    className="text-text-dark relative top-0 w-full h-10 bg-tertiary rounded-t-2xl flex items-center pl-5 text-left border-b-2 dark:border-background-light border-background-dark ">
+                                    className="text-text-dark relative top-0 w-full h-10 bg-secondary rounded-t-2xl flex items-center pl-5 text-left border-b-2 dark:border-background-light border-background-dark ">
                                     <p className="text-xl ">Budżety</p>
                                 </div>
                                 <div className="p-5 flex flex-col flex-1 h-full">
@@ -169,7 +169,7 @@ const DashboardPage: React.FC = () => {
                                                     </div>
                                                 </div>
                                                 <p className="text-sm mb-1">{budget.spent_in_budget} zł</p>
-                                                <div className="w-full bg-background-dark rounded-full h-4 ">
+                                                <div className="w-full bg-background-light dark:bg-background-dark rounded-full h-4">
                                                     <div
                                                         className={`${budget.spent_to_limit_ratio >= 100 ? 'bg-error' : 'bg-success'} h-4 rounded-full`}
                                                         style={{width: `${Math.min(budget.spent_to_limit_ratio, 100)}%`}}
@@ -188,7 +188,7 @@ const DashboardPage: React.FC = () => {
                             className="xl:col-span-3 md:col-span-2 col-span-1 md:col-start-3  row-span-3 md:row-start-1 row-start-4 ">
                             <MainCard fontSize="text-lg" padding="" height="h-full" width="w-auto">
                                 <div
-                                    className="text-text-dark relative top-0 w-full h-10 bg-tertiary rounded-t-2xl flex items-center pl-5 text-left border-b-2 dark:border-background-light border-background-dark ">
+                                    className="text-text-dark relative top-0 w-full h-10 bg-secondary rounded-t-2xl flex items-center pl-5 text-left border-b-2 dark:border-background-light border-background-dark ">
                                     <p className="text-xl ">Konta</p>
                                 </div>
                                 <div className="p-5 flex flex-col flex-1 max-h-full ">
@@ -217,11 +217,11 @@ const DashboardPage: React.FC = () => {
                             className="xl:col-span-3 md:col-span-4 col-span-1 xl:col-start-3 md:col-start-1  row-span-5 xl:row-start-4 md:row-start-9">
                             <MainCard fontSize="text-lg" padding="" height="h-full" width="w-auto">
                                 <div
-                                    className=" text-text-dark relative top-0 w-full h-10 bg-tertiary rounded-t-2xl flex items-center pl-5 text-left border-b-2 dark:border-background-light border-background-dark ">
+                                    className=" text-text-dark relative top-0 w-full h-10 bg-secondary rounded-t-2xl flex items-center pl-5 text-left border-b-2 dark:border-background-light border-background-dark ">
                                     <p className="text-xl ">Wykres wydatków</p>
                                 </div>
-                                <div className="p-5 flex flex-col flex-1 h-full ">
-                                    <div className="h-[65vh] w-auto">
+                                <div className="p-5 flex flex-col flex-1 justify-center h-full ">
+                                    <div className="aspect-square w-auto">
                                         <SummaryByTimeChart data={data.expenses.data} interval="Daily"/>
                                     </div>
                                 </div>
@@ -232,7 +232,7 @@ const DashboardPage: React.FC = () => {
                             <MainCard fontSize="text-lg" padding="" height="h-full"
                                       width="w-auto">
                                 <div
-                                    className="text-text-dark relative top-0 w-full h-10 bg-tertiary rounded-t-2xl flex items-center pl-5 text-left border-b-2 dark:border-background-light border-background-dark ">
+                                    className="text-text-dark relative top-0 w-full h-10 bg-secondary rounded-t-2xl flex items-center pl-5 text-left border-b-2 dark:border-background-light border-background-dark ">
                                     <p className="text-xl ">Ostatnie transakcje</p>
                                 </div>
                                 <div className="p-5 flex flex-col flex-1 h-full ">

@@ -1,32 +1,35 @@
 import React from 'react';
 import {DefaultButton, MainCard} from "@/components";
 import {useNavigate} from "react-router-dom";
-import YourFinance from "@/assets/YourFinance.png";
+import YourFinance from "@/assets/YourFinance.webp";
 
 
 const LandingPage: React.FC = () => {
     const navigate = useNavigate();
 
     return (
-        <div className="flex flex-col items-center gap-10">
-            <MainCard fontSize="text-lg" padding="p-6" height="h-auto" width="w-auto md:w-1/2 ">
+        <div className="flex flex-col items-center gap-10 md:w-3/4 lg:w-1/2 m-auto">
+            <MainCard fontSize="text-lg" padding="p-6" height="h-auto" width="w-full ">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 py-5">
                     <div className="flex items-center justify-center w-full h-auto ">
                         <img
                             src={YourFinance}
                             alt="YourFinance Logo"
-                            className=" w-96 object-contain py-10"
+                            className="object-contain py-10"
+                            width="200px"
+                            height="200px"
                         />
                     </div>
                     <div className="text-center text-wrap w-full py-5">
-                        <h2 className="text-4xl font-semibold mt-2">Twój menadżer finansów</h2>
+                        <h1 className="text-4xl mt-2 ">YourFinance</h1>
+                        <h2 className="text-2xl mt-4">Twój menadżer finansów</h2>
                         <p className="text-xl  mt-2">
                             Zarządzaj finansami osobistymi, monitoruj oraz analizuj wydatki
                         </p>
                     </div>
                 </div>
 
-                <hr className="w-full border-2 opacity-40"/>
+                <hr className="w-full"/>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 py-5">
                     <DefaultButton
@@ -51,7 +54,7 @@ const LandingPage: React.FC = () => {
                     />
                 </div>
             </MainCard>
-            <MainCard fontSize="text-lg" padding="p-6" height="h-auto" width="w-auto md:w-1/2">
+            <MainCard fontSize="text-lg" padding="p-6" height="h-auto" width="w-full">
                 <h2 className="text-2xl font-semibold mb-10 text-center">Dlaczego warto wybrać nas?</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="flex items-center gap-4">
@@ -74,7 +77,7 @@ const LandingPage: React.FC = () => {
                 </div>
             </MainCard>
 
-            <MainCard fontSize="text-lg" padding="p-6" height="h-auto" width="w-auto md:w-1/2">
+            <MainCard fontSize="text-lg" padding="p-6" height="h-auto" width="w-full">
                 <h2 className="text-2xl font-semibold mb-10 text-center">Zalety aplikacji</h2>
                 <ul className="list-disc pl-6 text-start  space-y-4">
                     <li className="pl-2 text-justify"><strong className="text-secondary">Kompletne
@@ -92,7 +95,7 @@ const LandingPage: React.FC = () => {
                 </ul>
             </MainCard>
 
-            <MainCard fontSize="text-lg" padding="p-6" height="h-auto" width="w-auto md:w-1/2">
+            <MainCard fontSize="text-lg" padding="p-6" height="h-auto" width="w-full">
                 <h2 className="text-2xl font-semibold mb-10 text-center">Jak to działa?</h2>
                 <div className="flex flex-col gap-4">
                     <div className="flex items-center gap-4">

@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {useForm, SubmitHandler} from "react-hook-form";
-import {DefaultButton, MainCard, ResetPasswordForm} from "@/components";
+import {DefaultButton, FormField, MainCard, ResetPasswordForm} from "@/components";
 import {useAuth} from "@/hooks/useAuth.tsx";
 import {useNavigate} from "react-router-dom";
 import Loader from "@/components/Elements/Loader/Loader.tsx";
@@ -33,6 +33,21 @@ const LoginForm: React.FC = () => {
         openModal(<ResetPasswordForm email={email}/>);
     };
 
+    const fields = [
+        {
+            id: "email",
+            label: "Email",
+            type: "email",
+            validation: {required: "Email jest wymagany"},
+        },
+        {
+            id: "password",
+            label: "Hasło",
+            type: "password",
+            validation: {required: "Hasło jest wymagane"}
+        },
+    ]
+
     return (
         <div className="flex flex-col items-center justify-center h-full">
             <MainCard
@@ -41,38 +56,20 @@ const LoginForm: React.FC = () => {
                 height="h-auto"
                 width="w-full max-w-md"
             >
-                <form onSubmit={handleSubmit(onSubmit)} className="w-full">
-                    <h2 className="text-3xl font-semibold text-center mb-6">Logowanie</h2>
+                <form onSubmit={handleSubmit(onSubmit)} className="w-full space-y-6">
+                    <h2 className="text-3xl font-semibold text-center mb-6">Rejestracja</h2>
 
-                    <div className="mb-4">
-                        <label htmlFor="email" className="block text-md font-medium">
-                            E-mail
-                        </label>
-                        <input
-                            type="email"
-                            id="email"
-                            {...register("email", {required: "E-mail nie może być pusty"})}
-                            className={`mt-1 p-2 block w-full border rounded-md text-text-light ${errors.email ? "border-red-500" : "border-gray-300"}`}
+                    {fields.map((field) => (
+                        <FormField
+                            key={field.id}
+                            {...field}
+                            register={register}
+                            errors={errors}
                         />
-                        {errors.email && <span className="text-md text-red-500">{errors.email.message}</span>}
-                    </div>
-
-                    <div className="mb-4">
-                        <label htmlFor="password" className="block text-md font-medium text-gray-700">
-                            Hasło
-                        </label>
-                        <input
-                            type="password"
-                            id="password"
-                            {...register("password", {required: "Hasło nie może być puste"})}
-                            className={`mt-1 p-2 block w-full border rounded-md text-text-light ${errors.password ? "border-red-500" : "border-gray-300"}`}
-                        />
-                        {errors.password && <span className="text-md text-red-500">{errors.password.message}</span>}
-                    </div>
+                    ))}
 
                     <DefaultButton
-                        text={isLoading ?
-                            (<Loader/>) : ("Zaloguj się")}
+                        text={isLoading ? <Loader/> : "Zaloguj się"}
                         onClick={handleSubmit(onSubmit)}
                         bgColor="bg-success"
                         color="text-text-dark"
@@ -82,6 +79,7 @@ const LoginForm: React.FC = () => {
                         minwidth="w-full"
                     />
                 </form>
+
 
                 <div className="mt-10 flex flex-col columns-1 justify-center gap-2">
                     <div>

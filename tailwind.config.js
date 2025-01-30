@@ -5,10 +5,10 @@ module.exports = {
     theme: {
         colors: {
             primary: {
-                DEFAULT: '#530d57',
+                DEFAULT: '#9629D5',
             },
             secondary: {
-                DEFAULT: '#702b73',
+                DEFAULT: '#9629d5',
             },
             tertiary: {
                 DEFAULT: '#258EA6',
@@ -23,22 +23,26 @@ module.exports = {
                 DEFAULT: '#fabc33',
             },
             septenary: {
-                DEFAULT: '#595A4A',
+                DEFAULT: '#090909',
+            },
+            octenary: {
+                DEFAULT: '#151515',
             },
             background: {
                 light: '#fff',
-                dark: '#171717',
+                dark: '#232323',
             },
             surface: {
                 light: '#fbf2e6',
-                dark: '#232323',
+                dark: '#171717',
+
             },
             text: {
                 light: '#292929',
                 dark: '#F7F5FB',
             },
             success: {
-                DEFAULT: '#4cd684',
+                DEFAULT: '#307a50',
             },
             error: {
                 DEFAULT: '#BC4B51',
@@ -61,21 +65,6 @@ module.exports = {
             minWidth: {
                 '40': '10rem',
             },
-            keyframes: {
-                slideUp: {
-                    '0%': { opacity: 0, transform: 'translateY(100px)' },
-                    '100%': { opacity: 1, transform: 'translateY(0)' },
-                },
-                slideDown: {
-                    '0%': { opacity: 1, transform: 'translateY(0)' },
-                    '100%': { opacity: 0, transform: 'translateY(100px)' },
-                },
-            },
-            animation: {
-                slideUp: 'slideUp 0.4s ease-out forwards',
-                slideDown: 'slideDown 0.4s ease-in forwards',
-            },
-
         }
     },
     plugins: [

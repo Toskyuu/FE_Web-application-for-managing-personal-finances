@@ -9,6 +9,7 @@ export const updateTransaction = async (id: number, data: any) => {
         const response = await apiClient.patch(`/transactions/${id}`, requestBody);
         return {
             spentInBudget: response.data.spent_in_budget,
+            recurringFrequency: response.data.recurring_frequency,
             message: "Transakcja została zaktualizowana."
         };
     } catch (error: any) {
@@ -23,8 +24,10 @@ export const addTransaction = async (data: any) => {
             account_id_2: data.account_id_2 || null,
         };
         const response = await apiClient.post("/transactions", requestBody);
+
         return {
             spentInBudget: response.data.spent_in_budget,
+            recurringFrequency: response.data.recurring_frequency,
             message: "Transakcja została dodana."
         };
     } catch (error: any) {

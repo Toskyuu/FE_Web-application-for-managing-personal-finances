@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {MainCard} from '@/components';
+import {DefaultButton, MainCard} from '@/components';
 import {fetchSummaryByCategory} from '@/API/StatsAPI';
 import {useToast} from "@/hooks/useToast.tsx";
 import {useFilters} from "@/hooks/useFilters.tsx";
@@ -49,24 +49,26 @@ const SummaryByCategoryPage: React.FC = () => {
     }, [transactionSummaryFilters, refreshKey]);
 
     return (
-        <div className="grid grid-cols-1 gap-6 w-full sm:w-3/4 mx-auto">
+        <div className="grid grid-cols-1 gap-6 w-full sm:w-3/4  mx-auto">
             <h1 className="text-2xl font-bold text-center ">Wydatki i przychody według kategorii</h1>
 
             <div className="flex justify-end">
-                <button
-                    onClick={() =>
-                        openModal(<FilterSummaryByCategoryForm/>)
-                    }
-                    className="p-3 rounded-2xl shadow-2xl bg-secondary text-text-dark"
-                >
-                    Filtry
-                </button>
+                <DefaultButton
+                    onClick={() => openModal(<FilterSummaryByCategoryForm/>)}
+                    text="Filtry"
+                    bgColor="bg-secondary"
+                    color="text-text-dark"
+                    padding="p-3"
+                    radius="rounded-2xl"
+                    fontSize=""
+                    minwidth="w-full h-12"
+                />
             </div>
             <MainCard fontSize="text-lg" padding="p-6" height="h-auto" width="w-auto">
                 {loading ? (
                     <Loader/>
                 ) : data ? (
-                    <div className="h-[60vh] w-auto">
+                    <div className="aspect-[2/3] sm:aspect-[2/1]  w-auto">
                         <SummaryByCategoryChart
                             data={data.data}
                             start_date={data.start_date}

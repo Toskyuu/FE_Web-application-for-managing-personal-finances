@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {MainCard, SummaryByTimeChart} from '@/components';
+import {DefaultButton, MainCard, SummaryByTimeChart} from '@/components';
 import {fetchSummaryByTime} from '@/API/StatsAPI';
 import {useToast} from "@/hooks/useToast.tsx";
 import {useFilters} from "@/hooks/useFilters.tsx";
@@ -40,25 +40,29 @@ const SummaryByTimePage: React.FC = () => {
     }, [transactionOverTimeFilters, refreshKey]);
 
     return (
-        <div className="grid grid-cols-1 gap-6 w-full sm:w-3/4 mx-auto">
+        <div className="grid grid-cols-1 gap-6 w-full sm:w-3/4  mx-auto">
             <h1 className="text-2xl font-bold text-center ">Wydatki i przychody na przestrzeni czasu</h1>
 
             <div className="flex justify-end">
-                <button
+                <DefaultButton
                     onClick={() =>
                         openModal(<FilterSummaryByTimeForm/>)
                     }
-                    className="p-3 rounded-2xl shadow-2xl bg-secondary text-text-dark hover:bg-secondary-dark"
-                >
-                    Filtry
-                </button>
+                    text="Filtry"
+                    bgColor="bg-secondary"
+                    color="text-text-dark"
+                    padding="p-3"
+                    radius="rounded-2xl"
+                    fontSize=""
+                    minwidth="w-full h-12"
+                />
             </div>
 
             <MainCard fontSize="text-lg" padding="p-5" height="h-auto" width="w-auto">
                 {loading ? (
                     <Loader/>
                 ) : data ? (
-                    <div className="h-[60vh] w-auto ">
+                    <div className="aspect-[2/3] sm:aspect-[2/1] w-auto ">
                         <SummaryByTimeChart data={data} interval={transactionOverTimeFilters.interval}/>
                     </div>
                 ) : (
