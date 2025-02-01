@@ -57,7 +57,7 @@ const LoginForm: React.FC = () => {
                 width="w-full max-w-md"
             >
                 <form onSubmit={handleSubmit(onSubmit)} className="w-full space-y-6">
-                    <h2 className="text-3xl font-semibold text-center mb-6">Rejestracja</h2>
+                    <h2 className="text-3xl font-semibold text-center mb-6">Logowanie</h2>
 
                     {fields.map((field) => (
                         <FormField
