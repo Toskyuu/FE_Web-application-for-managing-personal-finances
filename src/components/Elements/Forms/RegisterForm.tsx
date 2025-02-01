@@ -97,7 +97,7 @@ const RegisterForm: React.FC = () => {
                         padding="p-2"
                         radius="rounded-xl"
                         fontSize="text-xl"
-                        minwidth="w-2/3"
+                        minwidth="w-full"
                     />
                 </div>
             </MainCard>

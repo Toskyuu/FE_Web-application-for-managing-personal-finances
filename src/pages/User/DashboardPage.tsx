@@ -114,7 +114,7 @@ const DashboardPage: React.FC = () => {
                                             <div className="text-xl font-bold text-error">Wydatki</div>
                                             <div
                                                 className="flex flex-col items-end">
-                                                <div className="text-lg">{data.incomes_expenses_summary.expenses} zł
+                                                <div className="text-lg">{data.incomes_expenses_summary.expenses.toFixed(2)} zł
                                                 </div>
                                             </div>
                                         </div>
@@ -123,7 +123,7 @@ const DashboardPage: React.FC = () => {
                                             <div className="text-xl font-bold text-success">Przychody</div>
                                             <div
                                                 className="flex flex-col items-end">
-                                                <div className="text-lg">{data.incomes_expenses_summary.incomes} zł
+                                                <div className="text-lg">{data.incomes_expenses_summary.incomes.toFixed(2)} zł
                                                 </div>
                                             </div>
                                         </div>
@@ -133,7 +133,7 @@ const DashboardPage: React.FC = () => {
                                             <div
                                                 className="flex flex-col items-end">
                                                 <div
-                                                    className="text-lg">{data.incomes_expenses_summary.incomes - data.incomes_expenses_summary.expenses} zł
+                                                    className="text-lg">{(data.incomes_expenses_summary.incomes - data.incomes_expenses_summary.expenses).toFixed(2)} zł
                                                 </div>
                                             </div>
                                         </div>
@@ -168,7 +168,7 @@ const DashboardPage: React.FC = () => {
                                                         </p>
                                                     </div>
                                                 </div>
-                                                <p className="text-sm mb-1">{budget.spent_in_budget} zł</p>
+                                                <p className="text-sm mb-1">{budget.spent_in_budget.toFixed(2)} zł</p>
                                                 <div className="w-full bg-background-light dark:bg-background-dark rounded-full h-4">
                                                     <div
                                                         className={`${budget.spent_to_limit_ratio >= 100 ? 'bg-error' : 'bg-success'} h-4 rounded-full`}
@@ -202,7 +202,7 @@ const DashboardPage: React.FC = () => {
                                                         <p className="text-sm">{translateAccountType(account.type)}</p>
                                                     </div>
                                                     <div className={`text-2xl font-bold text-right ${account.balance > 0
-                                                        ? 'text-success' : account.balance < 0 ? 'text-error' : 'dark:text-text-dark text-text-light'}`}>{account.balance} zł
+                                                        ? 'text-success' : account.balance < 0 ? 'text-error' : 'dark:text-text-dark text-text-light'}`}>{account.balance.toFixed(2)} zł
                                                     </div>
                                                 </div>
                                                 {index < data.accounts.accounts.length - 1 && <hr className="w-full"/>}
@@ -255,7 +255,7 @@ const DashboardPage: React.FC = () => {
                                                     <div className={"flex flex-col text-end"}>
                                                         <p className={`text-2xl font-bold ${transaction.type === 'Outcome'
                                                             ? 'text-error' : transaction.type === 'Income' ? 'text-success' : 'text-secondary'}`}>
-                                                            {transaction.amount} zł
+                                                            {transaction.amount.toFixed(2)} zł
                                                         </p>
                                                         <p className="text-sm ">
                                                             {new Date(transaction.transaction_date).toLocaleDateString('pl-PL')}

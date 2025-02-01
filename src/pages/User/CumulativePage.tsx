@@ -47,7 +47,7 @@ const CumulativePage: React.FC = () => {
 
     return (
         <div className="grid grid-cols-1 gap-6 w-full sm:w-3/4 mx-auto">
-            <h1 className="text-2xl font-bold text-center ">Wydatki i przychody na przestrzeni czasu</h1>
+            <h1 className="text-2xl font-bold text-center ">Skumulowane wydatki i przychody</h1>
 
             <div className="flex justify-end">
                 <DefaultButton
