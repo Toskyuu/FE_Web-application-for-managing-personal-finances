@@ -1,7 +1,7 @@
 import {useRoutes} from 'react-router-dom';
 
-import {anonRoutes} from './anon';
-// import {userRoutes} from './user';
+// import {anonRoutes} from './anon';
+import {userRoutes} from './user';
 import {useAuth} from "@/hooks/useAuth.tsx";
 import Error500Page from "@/pages/Error500Page.tsx";
 
@@ -15,9 +15,9 @@ export const AppRoutes = () => {
     ];
 
     const determineRoutes = () => {
-        if (isAuthenticated) return anonRoutes;
+        if (isAuthenticated) return userRoutes;
 
-        return anonRoutes;
+        return userRoutes;
     };
 
     const routes = determineRoutes();

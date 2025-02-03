@@ -60,7 +60,6 @@
     "@unlighthouse/vite": "^0.10.6",
     "@vitejs/plugin-react": "^4.3.4",
     "autoprefixer": "^10.4.20",
-    "cypress": "^14.0.1",
     "eslint": "^9.18.0",
     "eslint-plugin-react-hooks": "^5.1.0",
     "eslint-plugin-react-refresh": "^0.4.18",
