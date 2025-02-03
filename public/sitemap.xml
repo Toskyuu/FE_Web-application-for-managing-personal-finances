@@ -7,63 +7,75 @@
         <priority>1.0</priority>
     </url>
     <url>
-        <loc>http://localhost:4173/transactions</loc>
+        <loc>http://localhost:4173/login</loc>
         <lastmod>2025-02-02</lastmod>
         <changefreq>monthly</changefreq>
-        <priority>0.9</priority>
+        <priority>1.0</priority>
     </url>
     <url>
-        <loc>http://localhost:4173/accounts</loc>
+        <loc>http://localhost:4173/register</loc>
         <lastmod>2025-02-02</lastmod>
         <changefreq>monthly</changefreq>
-        <priority>0.9</priority>
+        <priority>1.0</priority>
     </url>
-    <url>
-        <loc>http://localhost:4173/recurring-transactions</loc>
-        <lastmod>2025-02-02</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.9</priority>
-    </url>
-    <url>
-        <loc>http://localhost:4173/budgets</loc>
-        <lastmod>2025-02-02</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.9</priority>
-    </url>
-    <url>
-        <loc>http://localhost:4173/categories</loc>
-        <lastmod>2025-02-02</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.9</priority>
-    </url>
-    <url>
-        <loc>http://localhost:4173/user</loc>
-        <lastmod>2025-02-02</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.9</priority>
-    </url>
-    <url>
-        <loc>http://localhost:4173/summary-by-time</loc>
-        <lastmod>2025-02-02</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.8</priority>
-    </url>
-    <url>
-        <loc>http://localhost:4173/summary-by-category</loc>
-        <lastmod>2025-02-02</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.8</priority>
-    </url>
-    <url>
-        <loc>http://localhost:4173/summary</loc>
-        <lastmod>2025-02-02</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.8</priority>
-    </url>
-    <url>
-        <loc>http://localhost:4173/cumulative</loc>
-        <lastmod>2025-02-02</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.8</priority>
-    </url>
+<!--    <url>-->
+<!--        <loc>http://localhost:4173/transactions</loc>-->
+<!--        <lastmod>2025-02-02</lastmod>-->
+<!--        <changefreq>monthly</changefreq>-->
+<!--        <priority>0.9</priority>-->
+<!--    </url>-->
+<!--    <url>-->
+<!--        <loc>http://localhost:4173/accounts</loc>-->
+<!--        <lastmod>2025-02-02</lastmod>-->
+<!--        <changefreq>monthly</changefreq>-->
+<!--        <priority>0.9</priority>-->
+<!--    </url>-->
+<!--    <url>-->
+<!--        <loc>http://localhost:4173/recurring-transactions</loc>-->
+<!--        <lastmod>2025-02-02</lastmod>-->
+<!--        <changefreq>monthly</changefreq>-->
+<!--        <priority>0.9</priority>-->
+<!--    </url>-->
+<!--    <url>-->
+<!--        <loc>http://localhost:4173/budgets</loc>-->
+<!--        <lastmod>2025-02-02</lastmod>-->
+<!--        <changefreq>monthly</changefreq>-->
+<!--        <priority>0.9</priority>-->
+<!--    </url>-->
+<!--    <url>-->
+<!--        <loc>http://localhost:4173/categories</loc>-->
+<!--        <lastmod>2025-02-02</lastmod>-->
+<!--        <changefreq>monthly</changefreq>-->
+<!--        <priority>0.9</priority>-->
+<!--    </url>-->
+<!--    <url>-->
+<!--        <loc>http://localhost:4173/user</loc>-->
+<!--        <lastmod>2025-02-02</lastmod>-->
+<!--        <changefreq>monthly</changefreq>-->
+<!--        <priority>0.9</priority>-->
+<!--    </url>-->
+<!--    <url>-->
+<!--        <loc>http://localhost:4173/summary-by-time</loc>-->
+<!--        <lastmod>2025-02-02</lastmod>-->
+<!--        <changefreq>monthly</changefreq>-->
+<!--        <priority>0.8</priority>-->
+<!--    </url>-->
+<!--    <url>-->
+<!--        <loc>http://localhost:4173/summary-by-category</loc>-->
+<!--        <lastmod>2025-02-02</lastmod>-->
+<!--        <changefreq>monthly</changefreq>-->
+<!--        <priority>0.8</priority>-->
+<!--    </url>-->
+<!--    <url>-->
+<!--        <loc>http://localhost:4173/summary</loc>-->
+<!--        <lastmod>2025-02-02</lastmod>-->
+<!--        <changefreq>monthly</changefreq>-->
+<!--        <priority>0.8</priority>-->
+<!--    </url>-->
+<!--    <url>-->
+<!--        <loc>http://localhost:4173/cumulative</loc>-->
+<!--        <lastmod>2025-02-02</lastmod>-->
+<!--        <changefreq>monthly</changefreq>-->
+<!--        <priority>0.8</priority>-->
+<!--    </url>-->
 </urlset>

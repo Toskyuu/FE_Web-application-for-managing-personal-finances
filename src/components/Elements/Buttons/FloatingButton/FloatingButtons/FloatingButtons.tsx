@@ -1,5 +1,5 @@
-import React, {useState} from "react";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import React, { useState, Suspense } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
     faPlus,
     faCreditCard,
@@ -8,14 +8,19 @@ import {
     faList,
     faClock
 } from "@fortawesome/free-solid-svg-icons";
-import FloatingActionButton
-    from "@/components/Elements/Buttons/FloatingButton/FloatingActionButton/FloatingActionButton.tsx";
-import {useModal} from "@/hooks/useModal.tsx";
-import {AccountForm, BudgetForm, TransactionForm, RecurringTransactionForm, CategoryForm} from "@/components";
+import FloatingActionButton from "@/components/Elements/Buttons/FloatingButton/FloatingActionButton/FloatingActionButton.tsx";
+import { useModal } from "@/hooks/useModal.tsx";
+import Loader from "@/components/Elements/Loader/Loader.tsx";
+
+const AccountForm = React.lazy(() => import("@/components/Elements/Forms/AccountForm.tsx"));
+const BudgetForm = React.lazy(() => import("@/components/Elements/Forms/BudgetForm.tsx"));
+const TransactionForm = React.lazy(() => import("@/components/Elements/Forms/TransactionForm.tsx"));
+const RecurringTransactionForm = React.lazy(() => import("@/components/Elements/Forms/RecurringTransactionForm.tsx"));
+const CategoryForm = React.lazy(() => import("@/components/Elements/Forms/CategoryForm.tsx"));
 
 const FloatingButtons: React.FC = () => {
     const [isExpanded, setIsExpanded] = useState(false);
-    const {openModal} = useModal();
+    const { openModal } = useModal();
 
     const handleOpenModal = (content: React.ReactNode) => {
         openModal(content);
@@ -40,13 +45,13 @@ const FloatingButtons: React.FC = () => {
                         ? 'opacity-100 visible translate-y-0'
                         : 'opacity-0 invisible translate-y-12 pointer-events-none'
                 } z-50`}
-                style={{transformOrigin: 'bottom center'}}
+                style={{ transformOrigin: 'bottom center' }}
             >
                 <FloatingActionButton
                     icon={faCreditCard}
                     ariaLabel="Dodaj konto"
                     label="Dodaj konto"
-                    onClick={() => handleOpenModal(<AccountForm/>)}
+                    onClick={() => handleOpenModal(<Suspense fallback={<div><Loader/></div>}><AccountForm /></Suspense>)}
                     color="text-text-dark"
                     bgColor="bg-primary"
                 />
@@ -55,7 +60,7 @@ const FloatingButtons: React.FC = () => {
                     icon={faChartPie}
                     ariaLabel="Dodaj budżet"
                     label="Dodaj budżet"
-                    onClick={() => handleOpenModal(<BudgetForm/>)}
+                    onClick={() => handleOpenModal(<Suspense fallback={<div><Loader/></div>}><BudgetForm /></Suspense>)}
                     color="text-text-dark"
                     bgColor="bg-primary"
                 />
@@ -64,25 +69,28 @@ const FloatingButtons: React.FC = () => {
                     icon={faMoneyBillTransfer}
                     ariaLabel="Dodaj transakcje"
                     label="Dodaj transakcje"
-                    onClick={() => handleOpenModal(<TransactionForm/>)}
+                    onClick={() => handleOpenModal(<Suspense fallback={<div><Loader/></div>}><TransactionForm /></Suspense>)}
                     color="text-text-dark"
-                    bgColor="bg-primary"/>
+                    bgColor="bg-primary"
+                />
 
                 <FloatingActionButton
                     icon={faClock}
                     ariaLabel="Dodaj cykliczną transakcję"
                     label="Dodaj cykliczną transakcję"
-                    onClick={() => handleOpenModal(<RecurringTransactionForm/>)}
+                    onClick={() => handleOpenModal(<Suspense fallback={<div><Loader/></div>}><RecurringTransactionForm /></Suspense>)}
                     color="text-text-dark"
-                    bgColor="bg-primary"/>
+                    bgColor="bg-primary"
+                />
 
                 <FloatingActionButton
                     icon={faList}
                     ariaLabel="Dodaj kategorię"
                     label="Dodaj kategorię"
-                    onClick={() => handleOpenModal(<CategoryForm/>)}
+                    onClick={() => handleOpenModal(<Suspense fallback={<div><Loader/></div>}><CategoryForm /></Suspense>)}
                     color="text-text-dark"
-                    bgColor="bg-primary"/>
+                    bgColor="bg-primary"
+                />
             </div>
 
             {isExpanded && (
