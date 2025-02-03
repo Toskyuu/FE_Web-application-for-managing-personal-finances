@@ -26,6 +26,7 @@ const FloatingButtons: React.FC = () => {
         <div className="fixed bottom-6 right-6 z-30">
             <button
                 onClick={() => setIsExpanded(!isExpanded)}
+                aria-label="Otwórz menu dodawania zasobów"
                 className={`w-16 h-16 bg-primary text-text-dark rounded-full shadow-lg flex items-center justify-center transition-transform duration-300 ${
                     isExpanded ? 'rotate-45' : 'rotate-0'
                 } hover:bg-primary-dark focus:outline-none`}
@@ -43,6 +44,7 @@ const FloatingButtons: React.FC = () => {
             >
                 <FloatingActionButton
                     icon={faCreditCard}
+                    ariaLabel="Dodaj konto"
                     label="Dodaj konto"
                     onClick={() => handleOpenModal(<AccountForm/>)}
                     color="text-text-dark"
@@ -51,6 +53,7 @@ const FloatingButtons: React.FC = () => {
 
                 <FloatingActionButton
                     icon={faChartPie}
+                    ariaLabel="Dodaj budżet"
                     label="Dodaj budżet"
                     onClick={() => handleOpenModal(<BudgetForm/>)}
                     color="text-text-dark"
@@ -59,6 +62,7 @@ const FloatingButtons: React.FC = () => {
 
                 <FloatingActionButton
                     icon={faMoneyBillTransfer}
+                    ariaLabel="Dodaj transakcje"
                     label="Dodaj transakcje"
                     onClick={() => handleOpenModal(<TransactionForm/>)}
                     color="text-text-dark"
@@ -66,6 +70,7 @@ const FloatingButtons: React.FC = () => {
 
                 <FloatingActionButton
                     icon={faClock}
+                    ariaLabel="Dodaj cykliczną transakcję"
                     label="Dodaj cykliczną transakcję"
                     onClick={() => handleOpenModal(<RecurringTransactionForm/>)}
                     color="text-text-dark"
@@ -73,6 +78,7 @@ const FloatingButtons: React.FC = () => {
 
                 <FloatingActionButton
                     icon={faList}
+                    ariaLabel="Dodaj kategorię"
                     label="Dodaj kategorię"
                     onClick={() => handleOpenModal(<CategoryForm/>)}
                     color="text-text-dark"

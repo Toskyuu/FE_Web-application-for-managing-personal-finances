@@ -86,7 +86,8 @@ const CategoryForm: React.FC<CategoryFormProps> = ({id, name, description}) => {
                     fontSize="text-2xl"
                     color="text-text-dark"
                     bgColor="bg-success"
-                    text={"Dodaj kategorię"}
+                    text={id ? "Zapisz zmiany" : "Dodaj kategorię"}
+                    ariaLabel={id ? "Zapisz zmiany" : "Dodaj kategorię"}
                     padding="p-4"
                     radius="rounded-2xl"
                     minwidth="min-w-30"

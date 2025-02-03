@@ -125,6 +125,7 @@ const BudgetForm: React.FC<BudgetFormProps> = ({id, category_id, limit, month_ye
                     color="text-text-dark"
                     bgColor="bg-success"
                     text={id ? "Zapisz zmiany" : "Dodaj budżet"}
+                    ariaLabel={id ? "Zapisz zmiany" : "Dodaj budżet"}
                     padding="p-4"
                     radius="rounded-2xl"
                     minwidth="min-w-30"

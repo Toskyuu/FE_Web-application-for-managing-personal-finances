@@ -7,6 +7,7 @@ import {useModal} from '@/hooks/useModal.tsx';
 import {FilterSummaryByCategoryForm} from '@/components';
 import {useRefresh} from "@/hooks/useRefresh.tsx";
 import Loader from "@/components/Elements/Loader/Loader.tsx";
+import {Helmet} from "react-helmet-async";
 
 interface CumulativeData {
     data: {
@@ -46,37 +47,45 @@ const CumulativePage: React.FC = () => {
     }, [transactionSummaryFilters, refreshKey]);
 
     return (
-        <div className="grid grid-cols-1 gap-6 w-full sm:w-3/4 mx-auto">
-            <h1 className="text-2xl font-bold text-center ">Skumulowane wydatki i przychody</h1>
+        <>
+            <Helmet>
+                <title>Transakcje skumulowane | YourFinance</title>
+                <meta name="description" content="Obserwuj skumulowane wartości finansowe."/>
+                <link rel="canonical" href="http://localhost:4173/cumulative"/>
+            </Helmet>
+            <div className="grid grid-cols-1 gap-6 w-full sm:w-3/4 mx-auto">
+                <h1 className="text-2xl font-bold text-center ">Skumulowane wydatki i przychody</h1>
 
-            <div className="flex justify-end">
-                <DefaultButton
-                    onClick={() => openModal(<FilterSummaryByCategoryForm/>)}
-                    text="Filtry"
-                    bgColor="bg-secondary"
-                    color="text-text-dark"
-                    padding="p-3"
-                    radius="rounded-2xl"
-                    fontSize=""
-                    minwidth="w-full h-12"
-                />
+                <div className="flex justify-end">
+                    <DefaultButton
+                        onClick={() => openModal(<FilterSummaryByCategoryForm/>)}
+                        text="Filtry"
+                        ariaLabel="Filtry"
+                        bgColor="bg-secondary"
+                        color="text-text-dark"
+                        padding="p-3"
+                        radius="rounded-2xl"
+                        fontSize=""
+                        minwidth="w-full h-12"
+                    />
+                </div>
+                <MainCard fontSize="text-lg" padding="p-5" height="h-auto" width="w-auto">
+                    {loading ? (
+                        <Loader/>
+                    ) : data ? (
+                        <div className="aspect-[2/3] sm:aspect-[2/1]  w-auto">
+                            <CumulativeChart
+                                data={data.data}
+                                start_date={data.start_date}
+                                end_date={data.end_date}
+                            />
+                        </div>
+                    ) : (
+                        <p>Brak danych.</p>
+                    )}
+                </MainCard>
             </div>
-            <MainCard fontSize="text-lg" padding="p-5" height="h-auto" width="w-auto">
-                {loading ? (
-                    <Loader/>
-                ) : data ? (
-                    <div className="aspect-[2/3] sm:aspect-[2/1]  w-auto">
-                        <CumulativeChart
-                            data={data.data}
-                            start_date={data.start_date}
-                            end_date={data.end_date}
-                        />
-                    </div>
-                ) : (
-                    <p>Brak danych.</p>
-                )}
-            </MainCard>
-        </div>
+        </>
     );
 };
 

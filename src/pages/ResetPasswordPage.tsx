@@ -4,6 +4,7 @@ import {useNavigate, useSearchParams} from "react-router-dom";
 import {DefaultButton, MainCard} from "@/components";
 import {useToast} from "@/hooks/useToast.tsx";
 import {setNewPassword} from "@/API/UserAPI.tsx";
+import {Helmet} from "react-helmet-async";
 
 interface ResetPasswordPageProps {
     password: string;
@@ -45,6 +46,12 @@ const ResetPasswordPage: React.FC = () => {
     const password = watch("password");
 
     return (
+        <>
+            <Helmet>
+                <title>Zresetuj hasło | YourFinance</title>
+                <meta name="description" content="Zmieniaj swoje hasło"/>
+                <link rel="canonical" href="http://localhost:4173/reset-password" />
+            </Helmet>
         <div className="flex flex-col items-center justify-center h-screen">
             <MainCard
                 fontSize="text-xl"
@@ -92,6 +99,7 @@ const ResetPasswordPage: React.FC = () => {
                     <DefaultButton
                         text="Zmień hasło"
                         onClick={handleSubmit(onSubmit)}
+                        ariaLabel="Zmień hasło"
                         bgColor="bg-success"
                         color="text-text-dark"
                         padding="p-4"
@@ -102,6 +110,7 @@ const ResetPasswordPage: React.FC = () => {
                 </form>
             </MainCard>
         </div>
+        </>
     );
 };
 

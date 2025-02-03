@@ -38,6 +38,7 @@ const LandingPage: React.FC = () => {
                         bgColor="bg-success"
                         onClick={() => navigate("/login")}
                         text={"Zaloguj się"}
+                        ariaLabel="Zaloguj się"
                         padding="p-6"
                         radius="rounded-3xl"
                         minwidth="min-w-40"
@@ -48,6 +49,7 @@ const LandingPage: React.FC = () => {
                         bgColor="bg-success"
                         onClick={() => navigate("/register")}
                         text={"Zarejestruj się"}
+                        ariaLabel="Zarejestruj się"
                         padding="p-6"
                         radius="rounded-3xl"
                         minwidth="min-w-40"

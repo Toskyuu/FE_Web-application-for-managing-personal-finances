@@ -83,6 +83,7 @@ const UserForm: React.FC<UserFormProps> = ({
                     color="text-text-dark"
                     bgColor="bg-success"
                     text={"Zapisz zmiany"}
+                    ariaLabel={"Zapisz zmiany"}
                     padding="p-4"
                     radius="rounded-2xl"
                     minwidth="min-w-30"

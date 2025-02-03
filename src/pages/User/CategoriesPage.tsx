@@ -6,6 +6,7 @@ import {useToast} from "@/hooks/useToast.tsx";
 import {deleteCategory, fetchCategories} from "@/API/CategoryAPI.tsx";
 import {useData} from "@/hooks/useData.tsx";
 import Loader from "@/components/Elements/Loader/Loader.tsx";
+import {Helmet} from "react-helmet-async";
 
 interface Category {
     id: number;
@@ -115,99 +116,111 @@ const CategoriesPage: React.FC = () => {
 
 
     return (
-        <div className="p-4 space-y-6 max-w-[1800px] justify-center mx-auto">
-            <h1 className="text-4xl font-bold text-center mb-4 ">Kategorie</h1>
+        <>
+            <Helmet>
+                <title>Kategorie | YourFinance</title>
+                <meta name="description" content="Organizuj swoje transakcje według kategorii."/>
+                <link rel="canonical" href="http://localhost:4173/categories"/>
+            </Helmet>
+            <div className="p-4 space-y-6 max-w-[1800px] justify-center mx-auto">
+                <h1 className="text-4xl font-bold text-center mb-4 ">Kategorie</h1>
 
-            <div className="flex justify-end items-center w-full lg:w-1/2 sm:w-3/4 mx-auto flex-wrap gap-3 h-full">
-                <select
-                    id="sort-by"
-                    value={sortBy}
-                    onChange={(e) => {
-                        setSortBy(e.target.value);
-                        setCategories([]);
-                        setPage(1);
-                    }}
-                    className="p-3 cursor-pointer rounded-2xl h-12 shadow-xl bg-surface-light dark:bg-surface-dark text-text-light dark:text-text-dark focus:outline-none transition-all duration-300 hover:brightness-90 dark:hover:brightness-125"
-                >
-                    <option value="id">ID</option>
-                    <option value="name">Nazwa</option>
-                </select>
+                <div className="flex justify-end items-center w-full lg:w-1/2 sm:w-3/4 mx-auto flex-wrap gap-3 h-full">
+                    <select
+                        id="sort-by"
+                        value={sortBy}
+                        aria-label="Wartość, po której będą posrtowane kategorie"
+                        onChange={(e) => {
+                            setSortBy(e.target.value);
+                            setCategories([]);
+                            setPage(1);
+                        }}
+                        className="p-3 cursor-pointer rounded-2xl h-12 shadow-xl bg-surface-light dark:bg-surface-dark text-text-light dark:text-text-dark focus:outline-none transition-all duration-300 hover:brightness-90 dark:hover:brightness-125"
+                    >
+                        <option value="id">ID</option>
+                        <option value="name">Nazwa</option>
+                    </select>
 
-                <DefaultButton
-                    onClick={toggleSortOrder}
-                    text={getSortIcon()}
-                    bgColor="bg-secondary"
-                    color="text-text-dark"
-                    padding="p-2"
-                    radius="rounded-2xl"
-                    fontSize=""
-                    minwidth="w-full h-12"
-                />
-            </div>
+                    <DefaultButton
+                        onClick={toggleSortOrder}
+                        text={getSortIcon()}
+                        ariaLabel="Kierunek sortowania"
+                        bgColor="bg-secondary"
+                        color="text-text-dark"
+                        padding="p-2"
+                        radius="rounded-2xl"
+                        fontSize=""
+                        minwidth="w-full h-12"
+                    />
+                </div>
 
-            {isLoading && categories.length === 0 ? (
-                <Loader/>
-            ) : (
-                <>
-                    {categories.length > 0 ? (
-                        <>
-                            <div className="grid grid-cols-1 md:grid-cols-2  gap-6 w-full lg:w-1/2 sm:w-3/4 mx-auto">
-                                {categories.map((category) => (
-                                    <div
-                                        key={category.id}
-                                        className="relative flex flex-col items-start p-6 pt-2 bg-surface-light dark:bg-surface-dark text-text-light dark:text-text-dark shadow-2xl rounded-2xl"
-                                    >
-                                        <div className="flex justify-end items-center w-full">
-                                            <DropDownMenu
-                                                options={[
-                                                    {
-                                                        label: "Edytuj kategorię",
-                                                        onClick: () => handleEditCategory(category.id, category.name, category.description),
-                                                    },
-                                                    {
-                                                        label: "Usuń kategorię",
-                                                        onClick: () => handleDeleteCategory(category.id),
-                                                    },
-                                                ]}
-                                            />
-                                        </div>
-
-                                        <div className="flex flex-row gap-4 justify-between  w-full flex-wrap">
-                                            <div className="w-full flex flex-wrap justify-between">
-                                                <div className="text-lg font-bold w-full text-center">{category.name}</div>
+                {isLoading && categories.length === 0 ? (
+                    <Loader/>
+                ) : (
+                    <>
+                        {categories.length > 0 ? (
+                            <>
+                                <div
+                                    className="grid grid-cols-1 md:grid-cols-2  gap-6 w-full lg:w-1/2 sm:w-3/4 mx-auto">
+                                    {categories.map((category) => (
+                                        <div
+                                            key={category.id}
+                                            className="relative flex flex-col items-start p-6 pt-2 bg-surface-light dark:bg-surface-dark text-text-light dark:text-text-dark shadow-2xl rounded-2xl"
+                                        >
+                                            <div className="flex justify-end items-center w-full">
+                                                <DropDownMenu
+                                                    options={[
+                                                        {
+                                                            label: "Edytuj kategorię",
+                                                            onClick: () => handleEditCategory(category.id, category.name, category.description),
+                                                        },
+                                                        {
+                                                            label: "Usuń kategorię",
+                                                            onClick: () => handleDeleteCategory(category.id),
+                                                        },
+                                                    ]}
+                                                />
                                             </div>
-                                            <hr className="w-full"/>
-                                            <div className="flex flex-col justify-start w-full">
-                                                <div className="text-md">{category.description}</div>
+
+                                            <div className="flex flex-row gap-4 justify-between  w-full flex-wrap">
+                                                <div className="w-full flex flex-wrap justify-between">
+                                                    <div
+                                                        className="text-lg font-bold w-full text-center">{category.name}</div>
+                                                </div>
+                                                <hr className="w-full"/>
+                                                <div className="flex flex-col justify-start w-full">
+                                                    <div className="text-md">{category.description}</div>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                ))}
-                            </div>
-
-
-                            {page < totalPages && (
-                                <div className="flex justify-center">
-                                    <DefaultButton
-                                        text={isLoading ?
-                                            (<Loader/>) : ("Załaduj więcej")}
-                                        onClick={loadMore}
-                                        bgColor="bg-secondary"
-                                        color="text-text-dark"
-                                        padding="px-6 py-3"
-                                        radius="rounded-xl"
-                                        fontSize="text-xl"
-                                        minwidth="w-full"
-                                    />
+                                    ))}
                                 </div>
-                            )}
-                        </>
-                    ) : (
-                        <p className="text-center text-xl">Brak kont.</p>
-                    )}
-                </>
-            )}
-        </div>
+
+
+                                {page < totalPages && (
+                                    <div className="flex justify-center">
+                                        <DefaultButton
+                                            text={isLoading ?
+                                                (<Loader/>) : ("Załaduj więcej")}
+                                            ariaLabel="Załaduj więcej"
+                                            onClick={loadMore}
+                                            bgColor="bg-secondary"
+                                            color="text-text-dark"
+                                            padding="px-6 py-3"
+                                            radius="rounded-xl"
+                                            fontSize="text-xl"
+                                            minwidth="w-full"
+                                        />
+                                    </div>
+                                )}
+                            </>
+                        ) : (
+                            <p className="text-center text-xl">Brak kont.</p>
+                        )}
+                    </>
+                )}
+            </div>
+        </>
     );
 };
 

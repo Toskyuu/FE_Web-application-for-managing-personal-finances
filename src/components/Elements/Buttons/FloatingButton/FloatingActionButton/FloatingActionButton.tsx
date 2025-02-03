@@ -9,13 +9,15 @@ interface FloatingActionButtonProps {
     onClick: () => void;
     color: string;
     bgColor: string;
+    ariaLabel: string;
 }
 
-const FloatingActionButton: React.FC<FloatingActionButtonProps> = ({ icon, label, onClick, color, bgColor }) => {
+const FloatingActionButton: React.FC<FloatingActionButtonProps> = ({ icon, label, onClick, color, bgColor, ariaLabel }) => {
     return (
         <div className="relative flex items-center">
             <FloatingButtonLabel label={label} color={color} bgColor={bgColor} />
             <button
+                aria-label={ariaLabel}
                 onClick={onClick}
                 className={`w-16 h-16 ${bgColor} text-text-dark rounded-full shadow-lg flex items-center justify-center transition-transform transform`}
             >

@@ -78,6 +78,7 @@ const RegisterForm: React.FC = () => {
                     <DefaultButton
                         text={isLoading ? <Loader /> : "Zarejestruj się"}
                         onClick={handleSubmit(onSubmit)}
+                        ariaLabel="Zarejestruj się"
                         bgColor="bg-success"
                         color="text-text-dark"
                         padding="p-4"
@@ -92,6 +93,7 @@ const RegisterForm: React.FC = () => {
                     <DefaultButton
                         text="Zaloguj się"
                         onClick={() => navigate("/login")}
+                        ariaLabel="Zaloguj się"
                         bgColor="bg-secondary"
                         color="text-text-dark"
                         padding="p-2"

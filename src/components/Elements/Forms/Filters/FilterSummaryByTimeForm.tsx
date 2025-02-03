@@ -119,6 +119,7 @@ const FilterSummaryByTimeForm: React.FC = ({}) => {
                     color="text-text-dark"
                     bgColor="bg-secondary"
                     text="Zastosuj filtry"
+                    ariaLabel="Zastosuj filtry"
                     padding="p-3"
                     radius="rounded-md"
                 />
@@ -127,6 +128,7 @@ const FilterSummaryByTimeForm: React.FC = ({}) => {
                     color="text-text-dark"
                     bgColor="bg-secondary"
                     text="Wyczyść filtry"
+                    ariaLabel="Wyczyść filtry"
                     onClick={resetTransactionOverTimeFilters}
                     padding="p-3"
                     radius="rounded-md"

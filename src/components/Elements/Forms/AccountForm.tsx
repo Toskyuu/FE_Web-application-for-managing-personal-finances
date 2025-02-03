@@ -109,6 +109,7 @@ const AccountForm: React.FC<AccountFormProps> = ({id, name, initial_balance, typ
                     color="text-text-dark"
                     bgColor="bg-success"
                     text={id ? "Zapisz zmiany" : "Dodaj konto"}
+                    ariaLabel={id ? "Zapisz zmiany" : "Dodaj konto"}
                     padding="p-4"
                     radius="rounded-2xl"
                     minwidth="min-w-30"

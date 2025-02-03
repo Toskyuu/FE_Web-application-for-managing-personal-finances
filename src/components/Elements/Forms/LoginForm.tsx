@@ -71,6 +71,7 @@ const LoginForm: React.FC = () => {
                     <DefaultButton
                         text={isLoading ? <Loader/> : "Zaloguj się"}
                         onClick={handleSubmit(onSubmit)}
+                        ariaLabel="Zaloguj się"
                         bgColor="bg-success"
                         color="text-text-dark"
                         padding="p-4"
@@ -88,6 +89,7 @@ const LoginForm: React.FC = () => {
                         </div>
                         <DefaultButton
                             text="Zarejestruj się"
+                            ariaLabel="Zarejestruj się"
                             onClick={() => navigate("/register")}
                             bgColor="bg-secondary"
                             color="text-text-dark"

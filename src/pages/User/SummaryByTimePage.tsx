@@ -7,6 +7,7 @@ import {useModal} from "@/hooks/useModal.tsx";
 import {FilterSummaryByTimeForm} from "@/components";
 import {useRefresh} from "@/hooks/useRefresh.tsx";
 import Loader from "@/components/Elements/Loader/Loader.tsx";
+import {Helmet} from "react-helmet-async";
 
 interface SummaryByTimeData {
     time_group: string;
@@ -40,36 +41,44 @@ const SummaryByTimePage: React.FC = () => {
     }, [transactionOverTimeFilters, refreshKey]);
 
     return (
-        <div className="grid grid-cols-1 gap-6 w-full sm:w-3/4  mx-auto">
-            <h1 className="text-2xl font-bold text-center ">Wydatki i przychody na przestrzeni czasu</h1>
+        <>
+            <Helmet>
+                <title>Transakcje według czasu | YourFinance</title>
+                <meta name="description" content="Analizuj swoje finanse w ujęciu czasowym."/>
+                <link rel="canonical" href="http://localhost:4173/summary-by-time"/>
+            </Helmet>
+            <div className="grid grid-cols-1 gap-6 w-full sm:w-3/4  mx-auto">
+                <h1 className="text-2xl font-bold text-center ">Wydatki i przychody na przestrzeni czasu</h1>
 
-            <div className="flex justify-end">
-                <DefaultButton
-                    onClick={() =>
-                        openModal(<FilterSummaryByTimeForm/>)
-                    }
-                    text="Filtry"
-                    bgColor="bg-secondary"
-                    color="text-text-dark"
-                    padding="p-3"
-                    radius="rounded-2xl"
-                    fontSize=""
-                    minwidth="w-full h-12"
-                />
+                <div className="flex justify-end">
+                    <DefaultButton
+                        onClick={() =>
+                            openModal(<FilterSummaryByTimeForm/>)
+                        }
+                        text="Filtry"
+                        bgColor="bg-secondary"
+                        color="text-text-dark"
+                        ariaLabel="Filtry"
+                        padding="p-3"
+                        radius="rounded-2xl"
+                        fontSize=""
+                        minwidth="w-full h-12"
+                    />
+                </div>
+
+                <MainCard fontSize="text-lg" padding="p-5" height="h-auto" width="w-auto">
+                    {loading ? (
+                        <Loader/>
+                    ) : data ? (
+                        <div className="aspect-[2/3] sm:aspect-[2/1] w-auto ">
+                            <SummaryByTimeChart data={data} interval={transactionOverTimeFilters.interval}/>
+                        </div>
+                    ) : (
+                        <p>Brak danych.</p>
+                    )}
+                </MainCard>
             </div>
-
-            <MainCard fontSize="text-lg" padding="p-5" height="h-auto" width="w-auto">
-                {loading ? (
-                    <Loader/>
-                ) : data ? (
-                    <div className="aspect-[2/3] sm:aspect-[2/1] w-auto ">
-                        <SummaryByTimeChart data={data} interval={transactionOverTimeFilters.interval}/>
-                    </div>
-                ) : (
-                    <p>Brak danych.</p>
-                )}
-            </MainCard>
-        </div>
+        </>
     );
 };
 

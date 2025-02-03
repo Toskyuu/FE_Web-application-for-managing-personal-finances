@@ -4,6 +4,7 @@ import {confirmEmail} from "@/API/UserAPI.tsx";
 import {useToast} from "@/hooks/useToast.tsx";
 import {useNavigate} from "react-router-dom";
 import {MainCard} from "@/components";
+import {Helmet} from "react-helmet-async";
 
 const ConfirmEmail = () => {
     const [searchParams] = useSearchParams();
@@ -29,22 +30,29 @@ const ConfirmEmail = () => {
 
 
     return (
-        <div className="flex flex-col items-center">
+        <>
+            <Helmet>
+                <title>Potwierdź email | YourFinance</title>
+                <meta name="description" content="Potwierdzaj swój email"/>
+                <link rel="canonical" href="http://localhost:4173/confirm-email"/>
+            </Helmet>
+            <div className="flex flex-col items-center">
 
-            <MainCard
-                fontSize="text-xl"
-                padding="p-10"
-                height="h-auto"
-                width="w-full max-w-md"
-            >
-                <h1>Potwierdzanie emaila</h1>
-                {token ? (
-                    <p>Trwa potwierdzanie Twojego emaila...</p>
-                ) : (
-                    <p>Nie znaleziono tokenu w linku.</p>
-                )}
-            </MainCard>
-        </div>
+                <MainCard
+                    fontSize="text-xl"
+                    padding="p-10"
+                    height="h-auto"
+                    width="w-full max-w-md"
+                >
+                    <h1>Potwierdzanie emaila</h1>
+                    {token ? (
+                        <p>Trwa potwierdzanie Twojego emaila...</p>
+                    ) : (
+                        <p>Nie znaleziono tokenu w linku.</p>
+                    )}
+                </MainCard>
+            </div>
+        </>
     );
 };
 

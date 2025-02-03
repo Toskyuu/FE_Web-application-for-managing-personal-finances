@@ -5,6 +5,7 @@ import {fetchDashboard} from '@/API/DashboardAPI.tsx';
 import {useRefresh} from '@/hooks/useRefresh.tsx';
 import Loader from '@/components/Elements/Loader/Loader.tsx';
 import {translateAccountType, translateMonth} from "@/utils/Translators.tsx";
+import {Helmet} from "react-helmet-async";
 
 interface DashboardData {
     accounts: {
@@ -92,190 +93,206 @@ const DashboardPage: React.FC = () => {
     }, [refreshKey]);
 
     return (
-        <div className="p-4 mx-auto flex max-w-[1800px] justify-center">
-            <div className="p-5 h-auto sm:w-3/4 w-full text-lg  ">
-                {loading ? (
-                    <Loader/>
-                ) : data ? (
-                    <div className="grid xl:grid-cols-7 md:grid-cols-4 grid-cols-1 gap-6">
+        <>
+            <Helmet>
+                <title>Dashboard | YourFinance</title>
+                <meta name="description" content="Zarządzaj swoimi finansami w jednym miejscu."/>
+                <link rel="canonical" href="http://localhost:4173/"/>
+            </Helmet>
+            <div className="p-4 mx-auto flex max-w-[1800px] justify-center">
+                <div className="p-5 h-auto sm:w-3/4 w-full text-lg  ">
+                    {loading ? (
+                        <Loader/>
+                    ) : data ? (
+                        <div className="grid xl:grid-cols-7 md:grid-cols-4 grid-cols-1 gap-6">
 
-                        <div className="md:col-span-2 col-span-1 row-span-3">
-                            <MainCard fontSize="text-lg" padding="" height="h-full" width="w-auto">
-                                <div
-                                    className="text-text-dark relative top-0 w-full h-10 bg-secondary rounded-t-2xl flex items-center pl-5 text-left border-b-2 dark:border-background-light border-background-dark">
-                                    <p className="text-xl">Podsumowanie</p>
-                                </div>
-
-                                <div className="flex flex-col flex-1 p-5 h-full">
+                            <div className="md:col-span-2 col-span-1 row-span-3">
+                                <MainCard fontSize="text-lg" padding="" height="h-full" width="w-auto">
                                     <div
-                                        className="text-xl font-bold">{translateMonth(data.incomes_expenses_summary.start_date)} {data.incomes_expenses_summary.start_date.slice(0, 4)}</div>
-                                    <div className="flex flex-col items-center justify-center w-full py-3">
-                                        <div className="flex justify-between items-center w-full flex-wrap gap-3 py-3">
-                                            <div className="text-xl font-bold text-error">Wydatki</div>
+                                        className="text-text-dark relative top-0 w-full h-10 bg-secondary rounded-t-2xl flex items-center pl-5 text-left border-b-2 dark:border-background-light border-background-dark">
+                                        <p className="text-xl">Podsumowanie</p>
+                                    </div>
+
+                                    <div className="flex flex-col flex-1 p-5 h-full">
+                                        <div
+                                            className="text-xl font-bold">{translateMonth(data.incomes_expenses_summary.start_date)} {data.incomes_expenses_summary.start_date.slice(0, 4)}</div>
+                                        <div className="flex flex-col items-center justify-center w-full py-3">
                                             <div
-                                                className="flex flex-col items-end">
-                                                <div className="text-lg">{data.incomes_expenses_summary.expenses.toFixed(2)} zł
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <hr className="w-full"/>
-                                        <div className="flex justify-between items-center w-full flex-wrap gap-3 py-3">
-                                            <div className="text-xl font-bold text-success">Przychody</div>
-                                            <div
-                                                className="flex flex-col items-end">
-                                                <div className="text-lg">{data.incomes_expenses_summary.incomes.toFixed(2)} zł
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <hr className="w-full"/>
-                                        <div className="flex justify-between items-center w-full flex-wrap gap-3 py-3">
-                                            <div className="text-xl font-bold text-secondary">Łącznie</div>
-                                            <div
-                                                className="flex flex-col items-end">
+                                                className="flex justify-between items-center w-full flex-wrap gap-3 py-3">
+                                                <div className="text-xl font-bold text-error">Wydatki</div>
                                                 <div
-                                                    className="text-lg">{(data.incomes_expenses_summary.incomes - data.incomes_expenses_summary.expenses).toFixed(2)} zł
+                                                    className="flex flex-col items-end">
+                                                    <div
+                                                        className="text-lg">{data.incomes_expenses_summary.expenses.toFixed(2)} zł
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <hr className="w-full"/>
+                                            <div
+                                                className="flex justify-between items-center w-full flex-wrap gap-3 py-3">
+                                                <div className="text-xl font-bold text-success">Przychody</div>
+                                                <div
+                                                    className="flex flex-col items-end">
+                                                    <div
+                                                        className="text-lg">{data.incomes_expenses_summary.incomes.toFixed(2)} zł
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <hr className="w-full"/>
+                                            <div
+                                                className="flex justify-between items-center w-full flex-wrap gap-3 py-3">
+                                                <div className="text-xl font-bold text-secondary">Łącznie</div>
+                                                <div
+                                                    className="flex flex-col items-end">
+                                                    <div
+                                                        className="text-lg">{(data.incomes_expenses_summary.incomes - data.incomes_expenses_summary.expenses).toFixed(2)} zł
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </MainCard>
+                                </MainCard>
 
-                        </div>
+                            </div>
 
-                        <div
-                            className="md:col-span-2 col-span-1 xl:col-start-6 md:col-start-3 col-start-1 xl:row-span-8 row-span-5">
-                            <MainCard fontSize="text-lg" padding="" height="h-full" width="w-auto">
-                                <div
-                                    className="text-text-dark relative top-0 w-full h-10 bg-secondary rounded-t-2xl flex items-center pl-5 text-left border-b-2 dark:border-background-light border-background-dark ">
-                                    <p className="text-xl ">Budżety</p>
-                                </div>
-                                <div className="p-5 flex flex-col flex-1 h-full">
+                            <div
+                                className="md:col-span-2 col-span-1 xl:col-start-6 md:col-start-3 col-start-1 xl:row-span-8 row-span-5">
+                                <MainCard fontSize="text-lg" padding="" height="h-full" width="w-auto">
+                                    <div
+                                        className="text-text-dark relative top-0 w-full h-10 bg-secondary rounded-t-2xl flex items-center pl-5 text-left border-b-2 dark:border-background-light border-background-dark ">
+                                        <p className="text-xl ">Budżety</p>
+                                    </div>
+                                    <div className="p-5 flex flex-col flex-1 h-full">
 
-                                    {data.budgets.budgets.map((budget, index) => (
-                                        <div key={budget.id}>
-                                            <div className="py-3">
-                                                <div className="flex justify-between items-center pb-2">
-                                                    <div className="flex flex-col text-start">
-                                                        <p className="font-bold text-xl">{budget.category_name}</p>
+                                        {data.budgets.budgets.map((budget, index) => (
+                                            <div key={budget.id}>
+                                                <div className="py-3">
+                                                    <div className="flex justify-between items-center pb-2">
+                                                        <div className="flex flex-col text-start">
+                                                            <p className="font-bold text-xl">{budget.category_name}</p>
+                                                        </div>
+                                                        <div className="flex flex-col text-end">
+                                                            <p>Limit</p>
+                                                            <p> {budget.limit} zł</p>
+
+                                                            <p className="text-sm ">
+                                                                {translateMonth(budget.month_year)} {budget.month_year.slice(0, 4)}
+                                                            </p>
+                                                        </div>
                                                     </div>
-                                                    <div className="flex flex-col text-end">
-                                                        <p>Limit</p>
-                                                        <p> {budget.limit} zł</p>
-
-                                                        <p className="text-sm ">
-                                                            {translateMonth(budget.month_year)} {budget.month_year.slice(0, 4)}
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                                <p className="text-sm mb-1">{budget.spent_in_budget.toFixed(2)} zł</p>
-                                                <div className="w-full bg-background-light dark:bg-background-dark rounded-full h-4">
+                                                    <p className="text-sm mb-1">{budget.spent_in_budget.toFixed(2)} zł</p>
                                                     <div
-                                                        className={`${budget.spent_to_limit_ratio >= 100 ? 'bg-error' : 'bg-success'} h-4 rounded-full`}
-                                                        style={{width: `${Math.min(budget.spent_to_limit_ratio, 100)}%`}}
-                                                    ></div>
-                                                </div>
-                                                <p className="text-sm mt-1">{Math.round(budget.spent_to_limit_ratio)}%</p>
-                                            </div>
-                                            {index < data.budgets.budgets.length - 1 && <hr className="w-full"/>}
-                                        </div>
-                                    ))}
-                                </div>
-                            </MainCard>
-                        </div>
-
-                        <div
-                            className="xl:col-span-3 md:col-span-2 col-span-1 md:col-start-3  row-span-3 md:row-start-1 row-start-4 ">
-                            <MainCard fontSize="text-lg" padding="" height="h-full" width="w-auto">
-                                <div
-                                    className="text-text-dark relative top-0 w-full h-10 bg-secondary rounded-t-2xl flex items-center pl-5 text-left border-b-2 dark:border-background-light border-background-dark ">
-                                    <p className="text-xl ">Konta</p>
-                                </div>
-                                <div className="p-5 flex flex-col flex-1 max-h-full ">
-
-                                    <div className="flex-1 scrollbar-custom max-h-full ">
-                                        {data.accounts.accounts.map((account, index) => (
-                                            <div key={account.id}>
-                                                <div className="flex justify-between items-center flex-wrap gap-3 py-3">
-                                                    <div className="flex flex-col text-start flex-wrap ">
-                                                        <p className="font-semibold text-lg">{account.name}</p>
-                                                        <p className="text-sm">{translateAccountType(account.type)}</p>
+                                                        className="w-full bg-background-light dark:bg-background-dark rounded-full h-4">
+                                                        <div
+                                                            className={`${budget.spent_to_limit_ratio >= 100 ? 'bg-error' : 'bg-success'} h-4 rounded-full`}
+                                                            style={{width: `${Math.min(budget.spent_to_limit_ratio, 100)}%`}}
+                                                        ></div>
                                                     </div>
-                                                    <div className={`text-2xl font-bold text-right ${account.balance > 0
-                                                        ? 'text-success' : account.balance < 0 ? 'text-error' : 'dark:text-text-dark text-text-light'}`}>{account.balance.toFixed(2)} zł
-                                                    </div>
+                                                    <p className="text-sm mt-1">{Math.round(budget.spent_to_limit_ratio)}%</p>
                                                 </div>
-                                                {index < data.accounts.accounts.length - 1 && <hr className="w-full"/>}
+                                                {index < data.budgets.budgets.length - 1 && <hr className="w-full"/>}
                                             </div>
                                         ))}
                                     </div>
-                                </div>
-                            </MainCard>
-                        </div>
+                                </MainCard>
+                            </div>
 
-                        <div
-                            className="xl:col-span-3 md:col-span-4 col-span-1 xl:col-start-3 md:col-start-1  row-span-5 xl:row-start-4 md:row-start-9">
-                            <MainCard fontSize="text-lg" padding="" height="h-full" width="w-auto">
-                                <div
-                                    className=" text-text-dark relative top-0 w-full h-10 bg-secondary rounded-t-2xl flex items-center pl-5 text-left border-b-2 dark:border-background-light border-background-dark ">
-                                    <p className="text-xl ">Wykres wydatków</p>
-                                </div>
-                                <div className="p-5 flex flex-col flex-1 justify-center h-full ">
-                                    <div className="aspect-square w-auto">
-                                        <SummaryByTimeChart data={data.expenses.data} interval="Daily"/>
+                            <div
+                                className="xl:col-span-3 md:col-span-2 col-span-1 md:col-start-3  row-span-3 md:row-start-1 row-start-4 ">
+                                <MainCard fontSize="text-lg" padding="" height="h-full" width="w-auto">
+                                    <div
+                                        className="text-text-dark relative top-0 w-full h-10 bg-secondary rounded-t-2xl flex items-center pl-5 text-left border-b-2 dark:border-background-light border-background-dark ">
+                                        <p className="text-xl ">Konta</p>
                                     </div>
-                                </div>
-                            </MainCard>
-                        </div>
+                                    <div className="p-5 flex flex-col flex-1 max-h-full ">
 
-                        <div className="md:col-span-2  md:row-start-4  row-start-7 col-span-1 row-span-5 ">
-                            <MainCard fontSize="text-lg" padding="" height="h-full"
-                                      width="w-auto">
-                                <div
-                                    className="text-text-dark relative top-0 w-full h-10 bg-secondary rounded-t-2xl flex items-center pl-5 text-left border-b-2 dark:border-background-light border-background-dark ">
-                                    <p className="text-xl ">Ostatnie transakcje</p>
-                                </div>
-                                <div className="p-5 flex flex-col flex-1 h-full ">
-
-                                    {data.transactions.transactions.map((transaction, index) => (
-                                        <div key={transaction.id}>
-                                            <div className="py-3">
-                                                <div className="flex justify-between items-center gap-3 py-2">
-                                                    <div className="flex flex-col text-start">
-                                                        <p className="text-lg font-semibold">{transaction.category_name}</p>
-                                                        {transaction.type === "Internal" ? (
-                                                            <p className="text-sm ">
-                                                                {transaction.account_name} &rarr; {transaction.account_2_name!}
-                                                            </p>
-                                                        ) : (
-                                                            <p className="text-sm ">{transaction.account_name}</p>
-                                                        )}
+                                        <div className="flex-1 scrollbar-custom max-h-full ">
+                                            {data.accounts.accounts.map((account, index) => (
+                                                <div key={account.id}>
+                                                    <div
+                                                        className="flex justify-between items-center flex-wrap gap-3 py-3">
+                                                        <div className="flex flex-col text-start flex-wrap ">
+                                                            <p className="font-semibold text-lg">{account.name}</p>
+                                                            <p className="text-sm">{translateAccountType(account.type)}</p>
+                                                        </div>
+                                                        <div
+                                                            className={`text-2xl font-bold text-right ${account.balance > 0
+                                                                ? 'text-success' : account.balance < 0 ? 'text-error' : 'dark:text-text-dark text-text-light'}`}>{account.balance.toFixed(2)} zł
+                                                        </div>
                                                     </div>
+                                                    {index < data.accounts.accounts.length - 1 &&
+                                                        <hr className="w-full"/>}
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </MainCard>
+                            </div>
 
-                                                    <div className={"flex flex-col text-end"}>
-                                                        <p className={`text-2xl font-bold ${transaction.type === 'Outcome'
-                                                            ? 'text-error' : transaction.type === 'Income' ? 'text-success' : 'text-secondary'}`}>
-                                                            {transaction.amount.toFixed(2)} zł
-                                                        </p>
-                                                        <p className="text-sm ">
-                                                            {new Date(transaction.transaction_date).toLocaleDateString('pl-PL')}
-                                                        </p>
+                            <div
+                                className="xl:col-span-3 md:col-span-4 col-span-1 xl:col-start-3 md:col-start-1  row-span-5 xl:row-start-4 md:row-start-9">
+                                <MainCard fontSize="text-lg" padding="" height="h-full" width="w-auto">
+                                    <div
+                                        className=" text-text-dark relative top-0 w-full h-10 bg-secondary rounded-t-2xl flex items-center pl-5 text-left border-b-2 dark:border-background-light border-background-dark ">
+                                        <p className="text-xl ">Wykres wydatków</p>
+                                    </div>
+                                    <div className="p-5 flex flex-col flex-1 justify-center h-full ">
+                                        <div className="aspect-square w-auto">
+                                            <SummaryByTimeChart data={data.expenses.data} interval="Daily"/>
+                                        </div>
+                                    </div>
+                                </MainCard>
+                            </div>
+
+                            <div className="md:col-span-2  md:row-start-4  row-start-7 col-span-1 row-span-5 ">
+                                <MainCard fontSize="text-lg" padding="" height="h-full"
+                                          width="w-auto">
+                                    <div
+                                        className="text-text-dark relative top-0 w-full h-10 bg-secondary rounded-t-2xl flex items-center pl-5 text-left border-b-2 dark:border-background-light border-background-dark ">
+                                        <p className="text-xl ">Ostatnie transakcje</p>
+                                    </div>
+                                    <div className="p-5 flex flex-col flex-1 h-full ">
+
+                                        {data.transactions.transactions.map((transaction, index) => (
+                                            <div key={transaction.id}>
+                                                <div className="py-3">
+                                                    <div className="flex justify-between items-center gap-3 py-2">
+                                                        <div className="flex flex-col text-start">
+                                                            <p className="text-lg font-semibold">{transaction.category_name}</p>
+                                                            {transaction.type === "Internal" ? (
+                                                                <p className="text-sm ">
+                                                                    {transaction.account_name} &rarr; {transaction.account_2_name!}
+                                                                </p>
+                                                            ) : (
+                                                                <p className="text-sm ">{transaction.account_name}</p>
+                                                            )}
+                                                        </div>
+
+                                                        <div className={"flex flex-col text-end"}>
+                                                            <p className={`text-2xl font-bold ${transaction.type === 'Outcome'
+                                                                ? 'text-error' : transaction.type === 'Income' ? 'text-success' : 'text-secondary'}`}>
+                                                                {transaction.amount.toFixed(2)} zł
+                                                            </p>
+                                                            <p className="text-sm ">
+                                                                {new Date(transaction.transaction_date).toLocaleDateString('pl-PL')}
+                                                            </p>
+                                                        </div>
                                                     </div>
                                                 </div>
+                                                {index < data.transactions.transactions.length - 1 &&
+                                                    <hr className="w-full"/>}
                                             </div>
-                                            {index < data.transactions.transactions.length - 1 &&
-                                                <hr className="w-full"/>}
-                                        </div>
-                                    ))}
-                                </div>
-                            </MainCard></div>
+                                        ))}
+                                    </div>
+                                </MainCard></div>
 
-                    </div>
-                ) : (
-                    <p>Brak danych do wyświetlenia :(</p>
-                )}
+                        </div>
+                    ) : (
+                        <p>Brak danych do wyświetlenia :(</p>
+                    )}
+                </div>
             </div>
-        </div>
+        </>
     );
 };
 

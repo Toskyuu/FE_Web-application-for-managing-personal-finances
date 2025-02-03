@@ -229,6 +229,7 @@ const RecurringTransactionForm: React.FC<RecurringTransactionFormProps> = ({
                     color="text-text-dark"
                     bgColor="bg-success"
                     text={id ? "Zapisz zmiany" : "Dodaj cykliczną transakcję"}
+                    ariaLabel={id ? "Zapisz zmiany" : "Dodaj cykliczną transakcję"}
                     padding="p-4"
                     radius="rounded-2xl"
                     minwidth="min-w-30"

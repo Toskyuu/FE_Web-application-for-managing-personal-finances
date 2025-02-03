@@ -15,6 +15,7 @@ const Error500Page: React.FC = () => {
                 </p>
                 <DefaultButton
                     text="Powróć do strony głównej"
+                    ariaLabel="Powrót do strony głównej"
                     onClick={() => navigate("/")}
                     bgColor="bg-secondary"
                     color="text-text-dark"

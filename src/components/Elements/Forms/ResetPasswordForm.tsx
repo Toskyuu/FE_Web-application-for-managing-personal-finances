@@ -54,6 +54,7 @@ const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({email}) => {
                 text={isLoading ?
                     (<Loader/>) : ("Zresetuj hasło")}
                 onClick={handleSubmit(onSubmit)}
+                ariaLabel="Zresetuj hasło"
                 bgColor="bg-success"
                 color="text-text-dark"
                 padding="p-4"

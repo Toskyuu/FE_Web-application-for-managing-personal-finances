@@ -8,6 +8,7 @@ import {deleteRecurringTransaction, fetchRecurringTransactions} from "@/API/Recu
 import Loader from "@/components/Elements/Loader/Loader.tsx";
 import {faArrowDown, faArrowUp} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {Helmet} from "react-helmet-async";
 
 interface RecurringTransactions {
     id: number;
@@ -147,6 +148,7 @@ const RecurringTransactionsPage: React.FC = () => {
                             }
                         }}
                         text="Tak"
+                        ariaLabel="Tak, usuń"
                         padding="px-6 py-3"
                         radius="rounded-xl"
                         fontSize="text-xl"
@@ -157,6 +159,7 @@ const RecurringTransactionsPage: React.FC = () => {
                         color="text-text-dark"
                         onClick={closeModal}
                         text="Nie"
+                        ariaLabel="Nie usuwaj"
                         padding="px-6 py-3"
                         radius="rounded-xl"
                         fontSize="text-xl"
@@ -168,176 +171,187 @@ const RecurringTransactionsPage: React.FC = () => {
     };
 
     return (
-        <div className="p-4 space-y-6 max-w-[1800px] justify-center mx-auto">
-            <h1 className="text-4xl font-bold text-center mb-4">Transakcje cykliczne</h1>
+        <>
+            <Helmet>
+                <title>Transakcje cykliczne | YourFinance</title>
+                <meta name="description" content="Zarządzaj powtarzającymi się transakcjami."/>
+                <link rel="canonical" href="http://localhost:4173/recurring-transactions"/>
+            </Helmet>
+            <div className="p-4 space-y-6 max-w-[1800px] justify-center mx-auto">
+                <h1 className="text-4xl font-bold text-center mb-4">Transakcje cykliczne</h1>
 
-            <div className="flex justify-end items-center w-full sm:w-1/2 mx-auto flex-wrap gap-3 h-full">
-                <select
-                    id="sort-by"
-                    value={sortBy}
-                    onChange={(e) => {
-                        setSortBy(e.target.value);
-                        setPage(1);
-                        setRecurringTransactions([]);
-                    }}
-                    className="p-3 cursor-pointer rounded-2xl h-12 shadow-xl bg-surface-light dark:bg-surface-dark text-text-light dark:text-text-dark focus:outline-none transition-all duration-300 hover:brightness-90 dark:hover:brightness-125"
-                >
-                    <option value="id">ID</option>
-                    <option value="amount">Kwota</option>
-                    <option value="recurring_frequency">Częstotliwość</option>
-                </select>
+                <div className="flex justify-end items-center w-full sm:w-1/2 mx-auto flex-wrap gap-3 h-full">
+                    <select
+                        id="sort-by"
+                        value={sortBy}
+                        aria-label="Wartość, po której będą posrtowane transakcje cykliczne"
+                        onChange={(e) => {
+                            setSortBy(e.target.value);
+                            setPage(1);
+                            setRecurringTransactions([]);
+                        }}
+                        className="p-3 cursor-pointer rounded-2xl h-12 shadow-xl bg-surface-light dark:bg-surface-dark text-text-light dark:text-text-dark focus:outline-none transition-all duration-300 hover:brightness-90 dark:hover:brightness-125"
+                    >
+                        <option value="id">ID</option>
+                        <option value="amount">Kwota</option>
+                        <option value="recurring_frequency">Częstotliwość</option>
+                    </select>
 
-                <DefaultButton
-                    onClick={toggleSortOrder}
-                    text={getSortIcon()}
-                    bgColor="bg-secondary"
-                    color="text-text-dark"
-                    padding="p-2"
-                    radius="rounded-2xl"
-                    fontSize=""
-                    minwidth="w-full h-12"
-                />
-            </div>
-            {isLoading && recurringTransactions.length === 0 ? (
-                <Loader/>
-            ) : (
-                <>
-                    {recurringTransactions.length > 0 ? (
-                        <>
-                            <div className="grid grid-cols-1 gap-6 w-full sm:w-1/2 mx-auto">
-                                {recurringTransactions.map((recurringTransaction) => (
-                                    <div
-                                        key={recurringTransaction.id}
-                                        className="relative flex flex-col items-start px-6 pb-6 pt-2 bg-surface-light dark:bg-surface-dark text-text-light dark:text-text-dark shadow-2xl rounded-2xl"
-                                    >
-                                        <div className="flex justify-end items-center w-full">
-                                            <DropDownMenu
-                                                options={[
-                                                    {
-                                                        label: "Edytuj transakcję cykliczną",
-                                                        onClick: () =>
-                                                            handleEditRecurringTransaction(
-                                                                recurringTransaction.id,
-                                                                recurringTransaction.description,
-                                                                recurringTransaction.amount,
-                                                                recurringTransaction.category_id,
-                                                                recurringTransaction.category_name,
-                                                                recurringTransaction.account_id,
-                                                                recurringTransaction.account_name,
-                                                                recurringTransaction.type,
-                                                                recurringTransaction.start_date,
-                                                                recurringTransaction.next_occurrence,
-                                                                recurringTransaction.recurring_frequency,
-                                                                recurringTransaction.account_id_2 ? recurringTransaction.account_id_2 : undefined,
-                                                                recurringTransaction.account_2_name ? recurringTransaction.account_2_name : undefined
-                                                            ),
-                                                    },
-                                                    {
-                                                        label: "Usuń transakcję cykliczną",
-                                                        onClick: () => handleDeleteRecurringTransaction(recurringTransaction.id),
-                                                    },
-                                                ]}
-                                            />
-                                        </div>
-
-                                        <div className="flex flex-row gap-4 justify-between w-full flex-wrap">
-                                            <div>
-                                                <p className="text-lg font-bold">{recurringTransaction.category_name}</p>
+                    <DefaultButton
+                        onClick={toggleSortOrder}
+                        text={getSortIcon()}
+                        bgColor="bg-secondary"
+                        ariaLabel="Kierunek sortowania"
+                        color="text-text-dark"
+                        padding="p-2"
+                        radius="rounded-2xl"
+                        fontSize=""
+                        minwidth="w-full h-12"
+                    />
+                </div>
+                {isLoading && recurringTransactions.length === 0 ? (
+                    <Loader/>
+                ) : (
+                    <>
+                        {recurringTransactions.length > 0 ? (
+                            <>
+                                <div className="grid grid-cols-1 gap-6 w-full sm:w-1/2 mx-auto">
+                                    {recurringTransactions.map((recurringTransaction) => (
+                                        <div
+                                            key={recurringTransaction.id}
+                                            className="relative flex flex-col items-start px-6 pb-6 pt-2 bg-surface-light dark:bg-surface-dark text-text-light dark:text-text-dark shadow-2xl rounded-2xl"
+                                        >
+                                            <div className="flex justify-end items-center w-full">
+                                                <DropDownMenu
+                                                    options={[
+                                                        {
+                                                            label: "Edytuj transakcję cykliczną",
+                                                            onClick: () =>
+                                                                handleEditRecurringTransaction(
+                                                                    recurringTransaction.id,
+                                                                    recurringTransaction.description,
+                                                                    recurringTransaction.amount,
+                                                                    recurringTransaction.category_id,
+                                                                    recurringTransaction.category_name,
+                                                                    recurringTransaction.account_id,
+                                                                    recurringTransaction.account_name,
+                                                                    recurringTransaction.type,
+                                                                    recurringTransaction.start_date,
+                                                                    recurringTransaction.next_occurrence,
+                                                                    recurringTransaction.recurring_frequency,
+                                                                    recurringTransaction.account_id_2 ? recurringTransaction.account_id_2 : undefined,
+                                                                    recurringTransaction.account_2_name ? recurringTransaction.account_2_name : undefined
+                                                                ),
+                                                        },
+                                                        {
+                                                            label: "Usuń transakcję cykliczną",
+                                                            onClick: () => handleDeleteRecurringTransaction(recurringTransaction.id),
+                                                        },
+                                                    ]}
+                                                />
                                             </div>
-                                            <div>
-                                                <p
-                                                    className={`text-lg font-bold ${
-                                                        recurringTransaction.type === "Outcome"
-                                                            ? "text-error"
-                                                            : recurringTransaction.type === "Income"
-                                                                ? "text-success"
-                                                                : "text-tertiary"
-                                                    }`}
-                                                >
-                                                    {`${recurringTransaction.amount.toFixed(2)} PLN`}
-                                                </p>
-                                            </div>
-                                        </div>
 
-                                        <div className="flex flex-row gap-4 justify-between w-full flex-wrap">
-                                            <p className="text-sm text-wrap flex-1 min-w-[80px]">{recurringTransaction.description}</p>
-                                            <p className="text-sm flex-none">{translateTransactionType(recurringTransaction.type)}</p>
-                                        </div>
-
-                                        <div className="w-full">
-                                            {recurringTransaction.type === "Internal" ? (
-                                                <p className="text-md font-semibold">
-                                                    {recurringTransaction.account_name}
-                                                    <span className="mx-1">→</span>
-                                                    {recurringTransaction.account_2_name}
-                                                </p>
-                                            ) : (
-                                                <p className="text-md font-semibold">{recurringTransaction.account_name}</p>
-                                            )}
-                                        </div>
-
-                                        <hr className="w-full mt-4"/>
-
-                                        <div className="w-full mt-4 space-y-2 flex flex-col justify-center">
-                                            <button
-                                                onClick={() => toggleDetails(recurringTransaction.id)}
-                                                className="text-xl font-semibold text-secondary hover:scale-125  transform transition-all  duration-300"
-                                            >
-                                                {expandedTransactionIds.includes(recurringTransaction.id)
-                                                    ? <FontAwesomeIcon icon={faArrowUp}/>
-                                                    : <FontAwesomeIcon icon={faArrowDown}/>}
-                                            </button>
-
-                                            {expandedTransactionIds.includes(recurringTransaction.id) && (
-                                                <div className="flex flex-col justify-start w-full">
-                                                    <div className="flex justify-between mb-2">
-                                                        <p className="text-sm font-semibold">Data rozpoczęcia</p>
-                                                        <p className="text-sm">
-                                                            {new Date(recurringTransaction.start_date).toLocaleDateString()}
-                                                        </p>
-                                                    </div>
-                                                    <div className="flex justify-between mb-2">
-                                                        <p className="text-sm font-semibold">Kolejna płatność</p>
-                                                        <p className="text-sm">
-                                                            {new Date(recurringTransaction.next_occurrence).toLocaleDateString()}
-                                                        </p>
-                                                    </div>
-                                                    <div className="flex justify-between mb-2">
-                                                        <p className="text-sm font-semibold">Częstotliwość</p>
-                                                        <p className="text-sm">
-                                                            {translateRecurringType(recurringTransaction.recurring_frequency)}
-                                                        </p>
-                                                    </div>
+                                            <div className="flex flex-row gap-4 justify-between w-full flex-wrap">
+                                                <div>
+                                                    <p className="text-lg font-bold">{recurringTransaction.category_name}</p>
                                                 </div>
-                                            )}
+                                                <div>
+                                                    <p
+                                                        className={`text-lg font-bold ${
+                                                            recurringTransaction.type === "Outcome"
+                                                                ? "text-error"
+                                                                : recurringTransaction.type === "Income"
+                                                                    ? "text-success"
+                                                                    : "text-tertiary"
+                                                        }`}
+                                                    >
+                                                        {`${recurringTransaction.amount.toFixed(2)} PLN`}
+                                                    </p>
+                                                </div>
+                                            </div>
+
+                                            <div className="flex flex-row gap-4 justify-between w-full flex-wrap">
+                                                <p className="text-sm text-wrap flex-1 min-w-[80px]">{recurringTransaction.description}</p>
+                                                <p className="text-sm flex-none">{translateTransactionType(recurringTransaction.type)}</p>
+                                            </div>
+
+                                            <div className="w-full">
+                                                {recurringTransaction.type === "Internal" ? (
+                                                    <p className="text-md font-semibold">
+                                                        {recurringTransaction.account_name}
+                                                        <span className="mx-1">→</span>
+                                                        {recurringTransaction.account_2_name}
+                                                    </p>
+                                                ) : (
+                                                    <p className="text-md font-semibold">{recurringTransaction.account_name}</p>
+                                                )}
+                                            </div>
+
+                                            <hr className="w-full mt-4"/>
+
+                                            <div className="w-full mt-4 space-y-2 flex flex-col justify-center">
+                                                <button
+                                                    onClick={() => toggleDetails(recurringTransaction.id)}
+                                                    aria-label="Rozwiń informację o transakcjach cyklicznych"
+                                                    className="text-xl font-semibold text-secondary hover:scale-125  transform transition-all  duration-300"
+                                                >
+                                                    {expandedTransactionIds.includes(recurringTransaction.id)
+                                                        ? <FontAwesomeIcon icon={faArrowUp}/>
+                                                        : <FontAwesomeIcon icon={faArrowDown}/>}
+                                                </button>
+
+                                                {expandedTransactionIds.includes(recurringTransaction.id) && (
+                                                    <div className="flex flex-col justify-start w-full">
+                                                        <div className="flex justify-between mb-2">
+                                                            <p className="text-sm font-semibold">Data rozpoczęcia</p>
+                                                            <p className="text-sm">
+                                                                {new Date(recurringTransaction.start_date).toLocaleDateString()}
+                                                            </p>
+                                                        </div>
+                                                        <div className="flex justify-between mb-2">
+                                                            <p className="text-sm font-semibold">Kolejna płatność</p>
+                                                            <p className="text-sm">
+                                                                {new Date(recurringTransaction.next_occurrence).toLocaleDateString()}
+                                                            </p>
+                                                        </div>
+                                                        <div className="flex justify-between mb-2">
+                                                            <p className="text-sm font-semibold">Częstotliwość</p>
+                                                            <p className="text-sm">
+                                                                {translateRecurringType(recurringTransaction.recurring_frequency)}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                )}
+                                            </div>
                                         </div>
-                                    </div>
-                                ))}
-                            </div>
-
-
-                            {page < totalPages && (
-                                <div className="flex justify-center">
-                                    <DefaultButton
-                                        text={isLoading ?
-                                            (<Loader/>) : ("Załaduj więcej")}
-                                        onClick={loadMore}
-                                        bgColor="bg-secondary"
-                                        color="text-text-dark"
-                                        padding="px-6 py-3"
-                                        radius="rounded-xl"
-                                        fontSize="text-xl"
-                                        minwidth="w-full"
-                                    />
+                                    ))}
                                 </div>
-                            )}
-                        </>
-                    ) : (
-                        <p className="text-center text-xl">Brak transakcji cyklicznych.</p>
-                    )}
-                </>
-            )}
-        </div>
+
+
+                                {page < totalPages && (
+                                    <div className="flex justify-center">
+                                        <DefaultButton
+                                            text={isLoading ?
+                                                (<Loader/>) : ("Załaduj więcej")}
+                                            onClick={loadMore}
+                                            ariaLabel="Załaduj więcej"
+                                            bgColor="bg-secondary"
+                                            color="text-text-dark"
+                                            padding="px-6 py-3"
+                                            radius="rounded-xl"
+                                            fontSize="text-xl"
+                                            minwidth="w-full"
+                                        />
+                                    </div>
+                                )}
+                            </>
+                        ) : (
+                            <p className="text-center text-xl">Brak transakcji cyklicznych.</p>
+                        )}
+                    </>
+                )}
+            </div>
+        </>
     );
 };
 

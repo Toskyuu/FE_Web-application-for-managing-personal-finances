@@ -9,6 +9,7 @@ import UserForm from "@/components/Elements/Forms/UserForm.tsx";
 import {useRefresh} from "@/hooks/useRefresh.tsx";
 import {useAuth} from "@/hooks/useAuth.tsx";
 import Loader from "@/components/Elements/Loader/Loader.tsx";
+import {Helmet} from "react-helmet-async";
 
 interface User {
     id: number;
@@ -107,83 +108,94 @@ const UserPage: React.FC = () => {
     };
 
     return (
-        <div className="flex flex-col items-center">
-            <MainCard fontSize="text-lg" padding="p-6" height="h-auto" width="w-full sm:w-3/4 md:w-1/2">
-                <div className="flex flex-col items-center">
-                    {isLoading ? (
-                        <Loader/>
-                    ) : user ? (
-                        <>
-                            <div className="mb-4">
-                                <FontAwesomeIcon icon={faUser} className="text-6xl"/>
-                            </div>
+        <>
+            <Helmet>
+                <title>Profil użytkownika | YourFinance</title>
+                <meta name="description" content="Zarządzaj swoim profilem użytkownika."/>
+                <link rel="canonical" href="http://localhost:4173/user"/>
+            </Helmet>
+            <div className="flex flex-col items-center">
+                <MainCard fontSize="text-lg" padding="p-6" height="h-auto" width="w-full sm:w-3/4 md:w-1/2">
+                    <div className="flex flex-col items-center">
+                        {isLoading ? (
+                            <Loader/>
+                        ) : user ? (
+                            <>
+                                <div className="mb-4">
+                                    <FontAwesomeIcon icon={faUser} className="text-6xl"/>
+                                </div>
 
 
-                            <div className="mb-4">
-                                <h2 className="font-bold text-xl">{user.username}</h2>
-                                <p className="">{user.email}</p>
-                                <p className={`mt-2`}>
-                                    {user.is_verified ? "Konto potwierdzone" : "Konto niepotwierdzone"}
-                                </p>
-                            </div>
+                                <div className="mb-4">
+                                    <h2 className="font-bold text-xl">{user.username}</h2>
+                                    <p className="">{user.email}</p>
+                                    <p className={`mt-2`}>
+                                        {user.is_verified ? "Konto potwierdzone" : "Konto niepotwierdzone"}
+                                    </p>
+                                </div>
 
 
-                            <div className="flex flex-col gap-4 md:w-1/2 lg:w-1/2">
-                                {user?.is_verified && (
+                                <div className="flex flex-col gap-4 md:w-1/2 lg:w-1/2">
+                                    {user?.is_verified && (
+                                        <DefaultButton
+                                            onClick={() => onUpdateUserData(user.username, user.email)}
+                                            text="Zmień swoje dane"
+                                            ariaLabel="Zmień swoje dane"
+                                            bgColor="bg-secondary"
+                                            color="text-text-dark"
+                                            padding="py-2 px-6"
+                                            radius="rounded-lg"
+                                            fontSize=""
+                                            minwidth="w-full"
+                                        />
+                                    )}
+                                    {!(user?.is_verified) && (
+                                        <DefaultButton
+                                            onClick={() => onResendConfirmation(user!.email)}
+                                            text="Wyślij ponownie maila z potwierdzeniem"
+                                            ariaLabel="Wyślij ponownie maila z potwierdzeniem"
+                                            bgColor="bg-secondary"
+                                            color="text-text-dark"
+                                            padding="py-2 px-6"
+                                            radius="rounded-lg"
+                                            fontSize=""
+                                            minwidth="w-full"
+                                        />
+                                    )}
+                                    {user?.is_verified && (
+                                        <DefaultButton
+                                            onClick={() => onResetPassword(user!.email)}
+                                            text="Zresetuj hasło"
+                                            ariaLabel="Zresetuj hasło"
+                                            bgColor="bg-secondary"
+                                            color="text-text-dark"
+                                            padding="py-2 px-6"
+                                            radius="rounded-lg"
+                                            fontSize=""
+                                            minwidth="w-full"
+                                        />
+                                    )}
                                     <DefaultButton
-                                        onClick={() => onUpdateUserData(user.username, user.email)}
-                                        text="Zmień swoje dane"
-                                        bgColor="bg-secondary"
+                                        onClick={() => onDeleteUser()}
+                                        text="Usuń konto"
+                                        bgColor="bg-error"
+                                        ariaLabel="Usuń konto"
                                         color="text-text-dark"
                                         padding="py-2 px-6"
                                         radius="rounded-lg"
                                         fontSize=""
                                         minwidth="w-full"
                                     />
-                                )}
-                                {!(user?.is_verified) && (
-                                    <DefaultButton
-                                        onClick={() => onResendConfirmation(user!.email)}
-                                        text="Wyślij ponownie maila z potwierdzeniem"
-                                        bgColor="bg-secondary"
-                                        color="text-text-dark"
-                                        padding="py-2 px-6"
-                                        radius="rounded-lg"
-                                        fontSize=""
-                                        minwidth="w-full"
-                                    />
-                                )}
-                                {user?.is_verified && (
-                                    <DefaultButton
-                                        onClick={() => onResetPassword(user!.email)}
-                                        text="Zresetuj hasło"
-                                        bgColor="bg-secondary"
-                                        color="text-text-dark"
-                                        padding="py-2 px-6"
-                                        radius="rounded-lg"
-                                        fontSize=""
-                                        minwidth="w-full"
-                                    />
-                                )}
-                                <DefaultButton
-                                    onClick={() => onDeleteUser()}
-                                    text="Usuń konto"
-                                    bgColor="bg-error"
-                                    color="text-text-dark"
-                                    padding="py-2 px-6"
-                                    radius="rounded-lg"
-                                    fontSize=""
-                                    minwidth="w-full"
-                                />
-                            </div>
-                        </>
+                                </div>
+                            </>
 
-                    ) : (
-                        <p className="text-center">Brak danych użytkownika.</p>
-                    )}
-                </div>
-            </MainCard>
-        </div>
+                        ) : (
+                            <p className="text-center">Brak danych użytkownika.</p>
+                        )}
+                    </div>
+                </MainCard>
+            </div>
+        </>
     );
 };
 

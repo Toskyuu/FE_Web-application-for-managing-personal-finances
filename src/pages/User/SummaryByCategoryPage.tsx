@@ -8,6 +8,7 @@ import {FilterSummaryByCategoryForm} from "@/components";
 import {SummaryByCategoryChart} from "@/components";
 import {useRefresh} from "@/hooks/useRefresh.tsx";
 import Loader from "@/components/Elements/Loader/Loader.tsx";
+import {Helmet} from "react-helmet-async";
 
 interface SummaryByCategoryData {
     data: {
@@ -49,38 +50,46 @@ const SummaryByCategoryPage: React.FC = () => {
     }, [transactionSummaryFilters, refreshKey]);
 
     return (
-        <div className="grid grid-cols-1 gap-6 w-full sm:w-3/4  mx-auto">
-            <h1 className="text-2xl font-bold text-center ">Wydatki i przychody według kategorii</h1>
+        <>
+            <Helmet>
+                <title>Transakcje według kategorii | YourFinance</title>
+                <meta name="description" content="Analizuj wydatki według kategorii."/>
+                <link rel="canonical" href="http://localhost:4173/summary-by-category"/>
+            </Helmet>
+            <div className="grid grid-cols-1 gap-6 w-full sm:w-3/4  mx-auto">
+                <h1 className="text-2xl font-bold text-center ">Wydatki i przychody według kategorii</h1>
 
-            <div className="flex justify-end">
-                <DefaultButton
-                    onClick={() => openModal(<FilterSummaryByCategoryForm/>)}
-                    text="Filtry"
-                    bgColor="bg-secondary"
-                    color="text-text-dark"
-                    padding="p-3"
-                    radius="rounded-2xl"
-                    fontSize=""
-                    minwidth="w-full h-12"
-                />
+                <div className="flex justify-end">
+                    <DefaultButton
+                        onClick={() => openModal(<FilterSummaryByCategoryForm/>)}
+                        text="Filtry"
+                        bgColor="bg-secondary"
+                        color="text-text-dark"
+                        ariaLabel="Filtry"
+                        padding="p-3"
+                        radius="rounded-2xl"
+                        fontSize=""
+                        minwidth="w-full h-12"
+                    />
+                </div>
+                <MainCard fontSize="text-lg" padding="p-6" height="h-auto" width="w-auto">
+                    {loading ? (
+                        <Loader/>
+                    ) : data ? (
+                        <div className="aspect-[2/3] sm:aspect-[2/1]  w-auto">
+                            <SummaryByCategoryChart
+                                data={data.data}
+                                start_date={data.start_date}
+                                end_date={data.end_date}
+                                type={data.type}
+                            />
+                        </div>
+                    ) : (
+                        <p>Brak danych.</p>
+                    )}
+                </MainCard>
             </div>
-            <MainCard fontSize="text-lg" padding="p-6" height="h-auto" width="w-auto">
-                {loading ? (
-                    <Loader/>
-                ) : data ? (
-                    <div className="aspect-[2/3] sm:aspect-[2/1]  w-auto">
-                        <SummaryByCategoryChart
-                            data={data.data}
-                            start_date={data.start_date}
-                            end_date={data.end_date}
-                            type={data.type}
-                        />
-                    </div>
-                ) : (
-                    <p>Brak danych.</p>
-                )}
-            </MainCard>
-        </div>
+        </>
     );
 };
 

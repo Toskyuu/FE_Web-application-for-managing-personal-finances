@@ -13,6 +13,7 @@ import {useToast} from "@/hooks/useToast.tsx";
 import {deleteTransaction, fetchTransactions} from "@/API/TransactionAPI.tsx";
 import Loader from "@/components/Elements/Loader/Loader.tsx";
 import {translateTransactionType} from "@/utils/Translators.tsx";
+import {Helmet} from "react-helmet-async";
 
 interface Transaction {
     id: number;
@@ -166,6 +167,7 @@ const TransactionsPage: React.FC = () => {
                             }
                         }}
                         text="Tak"
+                        ariaLabel="Tak, usuń"
                         padding="px-6 py-3"
                         radius="rounded-xl"
                         fontSize="text-xl"
@@ -176,6 +178,7 @@ const TransactionsPage: React.FC = () => {
                         color="text-text-dark"
                         onClick={closeModal}
                         text="Nie"
+                        ariaLabel="Nie usuwaj"
                         padding="px-6 py-3"
                         radius="rounded-xl"
                         fontSize="text-xl"
@@ -188,165 +191,176 @@ const TransactionsPage: React.FC = () => {
     };
 
     return (
-        <div className="p-4 space-y-6 max-w-[1800px] justify-center mx-auto">
-            <h1 className="text-4xl font-bold text-center mb-4">Transakcje</h1>
+        <>
+            <Helmet>
+                <title>Transakcje | YourFinance</title>
+                <meta name="description" content="Przeglądaj swoje transakcje i analizuj wydatki."/>
+                <link rel="canonical" href="http://localhost:4173/transactions"/>
+            </Helmet>
+            <div className="p-4 space-y-6 max-w-[1800px] justify-center mx-auto">
+                <h1 className="text-4xl font-bold text-center mb-4">Transakcje</h1>
 
-            <div className="flex justify-between items-center w-full sm:w-1/2 h-full mx-auto flex-wrap gap-3">
-                <div className="flex justify-start w-auto">
-                    <DefaultButton
-                        onClick={() => openModal(<FilterTransactionForm/>)}
-                        text="Filtry"
-                        bgColor="bg-secondary"
-                        color="text-text-dark"
-                        padding="p-3"
-                        radius="rounded-2xl"
-                        fontSize=""
-                        minwidth="w-full h-12"
-                    />
+                <div className="flex justify-between items-center w-full sm:w-1/2 h-full mx-auto flex-wrap gap-3">
+                    <div className="flex justify-start w-auto">
+                        <DefaultButton
+                            onClick={() => openModal(<FilterTransactionForm/>)}
+                            text="Filtry"
+                            ariaLabel="Filtry"
+                            bgColor="bg-secondary"
+                            color="text-text-dark"
+                            padding="p-3"
+                            radius="rounded-2xl"
+                            fontSize=""
+                            minwidth="w-full h-12"
+                        />
+                    </div>
+                    <div className="flex justify-end items-center w-auto flex-wrap gap-3">
+                        <select
+                            id="sort-by"
+                            value={sortBy}
+                            aria-label="Wartość, po której będą posrtowane transakcje"
+                            onChange={(e) => {
+                                setSortBy(e.target.value);
+                                setPage(1);
+                                setTransactions([]);
+                            }}
+                            className="p-3 cursor-pointer rounded-2xl h-12 shadow-xl bg-surface-light dark:bg-surface-dark text-text-light dark:text-text-dark focus:outline-none transition-all duration-300 hover:brightness-90 dark:hover:brightness-125"
+                        >
+                            <option value="transaction_date">Data</option>
+                            <option value="amount">Kwota</option>
+                        </select>
+
+                        <DefaultButton
+                            onClick={toggleSortOrder}
+                            text={getSortIcon()}
+                            ariaLabel="Kierunek sortowania"
+                            bgColor="bg-secondary"
+                            color="text-text-dark"
+                            padding="p-2"
+                            radius="rounded-2xl"
+                            fontSize=""
+                            minwidth="w-full h-12"
+                        />
+                    </div>
                 </div>
-                <div className="flex justify-end items-center w-auto flex-wrap gap-3">
-                    <select
-                        id="sort-by"
-                        value={sortBy}
-                        onChange={(e) => {
-                            setSortBy(e.target.value);
-                            setPage(1);
-                            setTransactions([]);
-                        }}
-                        className="p-3 cursor-pointer rounded-2xl h-12 shadow-xl bg-surface-light dark:bg-surface-dark text-text-light dark:text-text-dark focus:outline-none transition-all duration-300 hover:brightness-90 dark:hover:brightness-125"
-                    >
-                        <option value="transaction_date">Data</option>
-                        <option value="amount">Kwota</option>
-                    </select>
 
-                    <DefaultButton
-                        onClick={toggleSortOrder}
-                        text={getSortIcon()}
-                        bgColor="bg-secondary"
-                        color="text-text-dark"
-                        padding="p-2"
-                        radius="rounded-2xl"
-                        fontSize=""
-                        minwidth="w-full h-12"
-                    />
-                </div>
-            </div>
-
-            {isLoading && transactions.length === 0 ? (
-                <Loader/>
-            ) : (
-                <>
-                    {transactions.length > 0 ? (
-                        <>
-                            <div className="grid grid-cols-1 gap-6 w-full sm:w-1/2 mx-auto">
-                                {transactions.map((transaction) => (
-                                    <div
-                                        key={transaction.id}
-                                        className="relative flex flex-col items-start justify-between px-6 pb-6 pt-2 bg-surface-light dark:bg-surface-dark text-text-light dark:text-text-dark shadow-2xl rounded-2xl"
-                                    >
+                {isLoading && transactions.length === 0 ? (
+                    <Loader/>
+                ) : (
+                    <>
+                        {transactions.length > 0 ? (
+                            <>
+                                <div className="grid grid-cols-1 gap-6 w-full sm:w-1/2 mx-auto">
+                                    {transactions.map((transaction) => (
                                         <div
-                                            className="flex justify-end items-center w-full border-b pb-1 mb-4">
-                                            <DropDownMenu
-                                                options={[
-                                                    {
-                                                        label: "Edytuj transakcję",
-                                                        onClick: () =>
-                                                            handleEditTransaction(
-                                                                transaction.id,
-                                                                transaction.description,
-                                                                transaction.amount,
-                                                                transaction.transaction_date,
-                                                                transaction.category_id,
-                                                                transaction.category_name,
-                                                                transaction.account_id,
-                                                                transaction.account_name,
-                                                                transaction.type,
-                                                                transaction.account_id_2 ? transaction.account_id_2 : undefined,
-                                                                transaction.account_2_name ? transaction.account_2_name : undefined
-                                                            ),
-                                                    },
-                                                    {
-                                                        label: "Usuń transakcję",
-                                                        onClick: () => handleDeleteTransaction(transaction.id),
-                                                    },
-                                                    {
-                                                        label: "Ustaw jako cykliczną",
-                                                        onClick: () =>
-                                                            handleSetRecurringTransaction(
-                                                                transaction.description,
-                                                                transaction.amount,
-                                                                transaction.category_id,
-                                                                transaction.category_name,
-                                                                transaction.account_id,
-                                                                transaction.account_name,
-                                                                transaction.type,
-                                                                transaction.account_id_2 ? transaction.account_id_2 : undefined,
-                                                                transaction.account_2_name ? transaction.account_2_name : undefined
-                                                            ),
-                                                    },
-                                                ]}
-                                            />
-                                        </div>
-
-                                        <div className="flex flex-row justify-between w-full text-sm sm:text-md ">
-                                            <div className="flex flex-col items-start text-left w-full ">
-                                                <p className="font-bold text-lg sm:text-xl">{transaction.category_name}</p>
-                                                <p className="">{transaction.description}</p>
-                                                {transaction.type === "Internal" ? (
-                                                    <p className="">
-                                                        {transaction.account_name} → {transaction.account_2_name!}
-                                                    </p>
-                                                ) : (
-                                                    <p className="">{transaction.account_name}</p>
-                                                )}
-                                            </div>
-
+                                            key={transaction.id}
+                                            className="relative flex flex-col items-start justify-between px-6 pb-6 pt-2 bg-surface-light dark:bg-surface-dark text-text-light dark:text-text-dark shadow-2xl rounded-2xl"
+                                        >
                                             <div
-                                                className="flex flex-col items-end text-right w-full  ">
-                                                <p
-                                                    className={`text-lg sm:text-xl font-semibold ${
-                                                        transaction.type === "Outcome"
-                                                            ? "text-error"
-                                                            : transaction.type === "Income"
-                                                                ? "text-success"
-                                                                : "text-tertiary"
-                                                    }`}
-                                                >
-                                                    {`${transaction.amount.toFixed(2)} PLN`}
-                                                </p>
-                                                <p className="">
-                                                    {new Date(transaction.transaction_date).toLocaleDateString()}
-                                                </p>
-                                                <p className="">{translateTransactionType(transaction.type)}</p>
+                                                className="flex justify-end items-center w-full border-b pb-1 mb-4">
+                                                <DropDownMenu
+                                                    options={[
+                                                        {
+                                                            label: "Edytuj transakcję",
+                                                            onClick: () =>
+                                                                handleEditTransaction(
+                                                                    transaction.id,
+                                                                    transaction.description,
+                                                                    transaction.amount,
+                                                                    transaction.transaction_date,
+                                                                    transaction.category_id,
+                                                                    transaction.category_name,
+                                                                    transaction.account_id,
+                                                                    transaction.account_name,
+                                                                    transaction.type,
+                                                                    transaction.account_id_2 ? transaction.account_id_2 : undefined,
+                                                                    transaction.account_2_name ? transaction.account_2_name : undefined
+                                                                ),
+                                                        },
+                                                        {
+                                                            label: "Usuń transakcję",
+                                                            onClick: () => handleDeleteTransaction(transaction.id),
+                                                        },
+                                                        {
+                                                            label: "Ustaw jako cykliczną",
+                                                            onClick: () =>
+                                                                handleSetRecurringTransaction(
+                                                                    transaction.description,
+                                                                    transaction.amount,
+                                                                    transaction.category_id,
+                                                                    transaction.category_name,
+                                                                    transaction.account_id,
+                                                                    transaction.account_name,
+                                                                    transaction.type,
+                                                                    transaction.account_id_2 ? transaction.account_id_2 : undefined,
+                                                                    transaction.account_2_name ? transaction.account_2_name : undefined
+                                                                ),
+                                                        },
+                                                    ]}
+                                                />
+                                            </div>
+
+                                            <div className="flex flex-row justify-between w-full text-sm sm:text-md ">
+                                                <div className="flex flex-col items-start text-left w-full ">
+                                                    <p className="font-bold text-lg sm:text-xl">{transaction.category_name}</p>
+                                                    <p className="">{transaction.description}</p>
+                                                    {transaction.type === "Internal" ? (
+                                                        <p className="">
+                                                            {transaction.account_name} → {transaction.account_2_name!}
+                                                        </p>
+                                                    ) : (
+                                                        <p className="">{transaction.account_name}</p>
+                                                    )}
+                                                </div>
+
+                                                <div
+                                                    className="flex flex-col items-end text-right w-full  ">
+                                                    <p
+                                                        className={`text-lg sm:text-xl font-semibold ${
+                                                            transaction.type === "Outcome"
+                                                                ? "text-error"
+                                                                : transaction.type === "Income"
+                                                                    ? "text-success"
+                                                                    : "text-tertiary"
+                                                        }`}
+                                                    >
+                                                        {`${transaction.amount.toFixed(2)} PLN`}
+                                                    </p>
+                                                    <p className="">
+                                                        {new Date(transaction.transaction_date).toLocaleDateString()}
+                                                    </p>
+                                                    <p className="">{translateTransactionType(transaction.type)}</p>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                ))}
-                            </div>
-
-
-                            {page < totalPages && (
-                                <div className="flex justify-center">
-                                    <DefaultButton
-                                        text={isLoading ?
-                                            (<Loader/>) : ("Załaduj więcej")}
-                                        onClick={loadMore}
-                                        bgColor="bg-secondary"
-                                        color="text-text-dark"
-                                        padding="px-6 py-3"
-                                        radius="rounded-xl"
-                                        fontSize="text-xl"
-                                        minwidth="w-full"
-                                    />
+                                    ))}
                                 </div>
-                            )}
-                        </>
-                    ) : (
-                        <p className="text-center text-xl">Brak transakcji</p>
-                    )}
-                </>
-            )}
-        </div>
+
+
+                                {page < totalPages && (
+                                    <div className="flex justify-center">
+                                        <DefaultButton
+                                            text={isLoading ?
+                                                (<Loader/>) : ("Załaduj więcej")}
+                                            onClick={loadMore}
+                                            ariaLabel={"Załaduj więcej"}
+                                            bgColor="bg-secondary"
+                                            color="text-text-dark"
+                                            padding="px-6 py-3"
+                                            radius="rounded-xl"
+                                            fontSize="text-xl"
+                                            minwidth="w-full"
+                                        />
+                                    </div>
+                                )}
+                            </>
+                        ) : (
+                            <p className="text-center text-xl">Brak transakcji</p>
+                        )}
+                    </>
+                )}
+            </div>
+        </>
     );
 };
 

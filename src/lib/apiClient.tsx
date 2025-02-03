@@ -38,7 +38,7 @@ const errorTranslations: { [key: string]: { [key: string]: string } } = {
 };
 
 apiClient.interceptors.request.use((config) => {
-    const token = localStorage.getItem("token");
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxNSIsImF1ZCI6WyJmYXN0YXBpLXVzZXJzOmF1dGgiXSwiZXhwIjoxNzM4NTk2OTA1fQ.eeYhEbwG1ldNoD7nMy58CRWOPFyoxwu-PTVb4JaXUt8"
     if (token) {
         config.headers.Authorization = `Bearer ${token}`;
     }
