@@ -40,6 +40,13 @@ const SummaryByTimePage: React.FC = () => {
         loadTransactionsOverTime(transactionOverTimeFilters);
     }, [transactionOverTimeFilters, refreshKey]);
 
+    const isEmpty = (data: SummaryByTimeData[]): boolean => {
+        return data.every((item) =>
+            (item.expenses === 0 || item.expenses === null) &&
+            (item.incomes === 0 || item.incomes === null)
+        );
+    };
+
     return (
         <>
             <Helmet>
@@ -69,7 +76,7 @@ const SummaryByTimePage: React.FC = () => {
                 <MainCard fontSize="text-lg" padding="p-5" height="h-auto" width="w-auto">
                     {loading ? (
                         <Loader/>
-                    ) : data ? (
+                    ) : data && !isEmpty(data) ? (
                         <div className="aspect-[2/3] sm:aspect-[2/1] w-auto ">
                             <SummaryByTimeChart data={data} interval={transactionOverTimeFilters.interval}/>
                         </div>

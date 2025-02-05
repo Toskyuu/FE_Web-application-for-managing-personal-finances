@@ -44,6 +44,7 @@ const SummaryPage: React.FC = () => {
         loadSummary(transactionSummaryFilters);
     }, [transactionSummaryFilters, refreshKey]);
 
+
     return (
         <>
             <Helmet>
@@ -70,7 +71,7 @@ const SummaryPage: React.FC = () => {
                 <MainCard fontSize="text-lg" padding="p-5" height="h-auto" width="w-auto">
                     {loading ? (
                         <Loader/>
-                    ) : data ? (
+                    ) : data && data.incomes != 0 && data.expenses != 0 ? (
                         <div className="aspect-[2/3] sm:aspect-[2/1]  w-auto ">
                             <SummaryChart
                                 expenses={data.expenses}

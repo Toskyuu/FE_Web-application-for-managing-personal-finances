@@ -75,7 +75,7 @@ const SummaryByCategoryPage: React.FC = () => {
                 <MainCard fontSize="text-lg" padding="p-6" height="h-auto" width="w-auto">
                     {loading ? (
                         <Loader/>
-                    ) : data ? (
+                    ) : data?.data?.length  ? (
                         <div className="aspect-[2/3] sm:aspect-[2/1]  w-auto">
                             <SummaryByCategoryChart
                                 data={data.data}

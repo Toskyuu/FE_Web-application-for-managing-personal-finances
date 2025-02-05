@@ -14,3 +14,4 @@ import {
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, LineElement, ArcElement, PointElement, Filler, ChartDataLabels);
+

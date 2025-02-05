@@ -92,6 +92,13 @@ const DashboardPage: React.FC = () => {
         loadDashboard();
     }, [refreshKey]);
 
+    const isEmpty = (data: DashboardData): boolean => {
+        return data.expenses.data.every((item) =>
+            (item.expenses === 0 || item.expenses === null) &&
+            (item.incomes === 0 || item.incomes === null)
+        );
+    };
+
     return (
         <>
             <Helmet>
@@ -164,35 +171,43 @@ const DashboardPage: React.FC = () => {
                                     </div>
                                     <div className="p-5 flex flex-col flex-1 h-full">
 
-                                        {data.budgets.budgets.map((budget, index) => (
-                                            <div key={budget.id}>
-                                                <div className="py-3">
-                                                    <div className="flex justify-between items-center pb-2">
-                                                        <div className="flex flex-col text-start">
-                                                            <p className="font-bold text-xl">{budget.category_name}</p>
-                                                        </div>
-                                                        <div className="flex flex-col text-end">
-                                                            <p>Limit</p>
-                                                            <p> {budget.limit} zł</p>
+                                        {data.budgets.budgets.length <= 0 ?
+                                            (<div>
+                                                Nie posiadasz żadnych budżetów.
+                                            </div>) :
+                                            (
+                                                <>
+                                                    {data.budgets.budgets.map((budget, index) => (
+                                                        <div key={budget.id}>
+                                                            <div className="py-3">
+                                                                <div className="flex justify-between items-center pb-2">
+                                                                    <div className="flex flex-col text-start">
+                                                                        <p className="font-bold text-xl">{budget.category_name}</p>
+                                                                    </div>
+                                                                    <div className="flex flex-col text-end">
+                                                                        <p>Limit</p>
+                                                                        <p> {budget.limit} zł</p>
 
-                                                            <p className="text-sm ">
-                                                                {translateMonth(budget.month_year)} {budget.month_year.slice(0, 4)}
-                                                            </p>
+                                                                        <p className="text-sm ">
+                                                                            {translateMonth(budget.month_year)} {budget.month_year.slice(0, 4)}
+                                                                        </p>
+                                                                    </div>
+                                                                </div>
+                                                                <p className="text-sm mb-1">{budget.spent_in_budget.toFixed(2)} zł</p>
+                                                                <div
+                                                                    className="w-full bg-background-light dark:bg-background-dark rounded-full h-4">
+                                                                    <div
+                                                                        className={`${budget.spent_to_limit_ratio >= 100 ? 'bg-error' : 'bg-success'} h-4 rounded-full`}
+                                                                        style={{width: `${Math.min(budget.spent_to_limit_ratio, 100)}%`}}
+                                                                    ></div>
+                                                                </div>
+                                                                <p className="text-sm mt-1">{Math.round(budget.spent_to_limit_ratio)}%</p>
+                                                            </div>
+                                                            {index < data.budgets.budgets.length - 1 &&
+                                                                <hr className="w-full"/>}
                                                         </div>
-                                                    </div>
-                                                    <p className="text-sm mb-1">{budget.spent_in_budget.toFixed(2)} zł</p>
-                                                    <div
-                                                        className="w-full bg-background-light dark:bg-background-dark rounded-full h-4">
-                                                        <div
-                                                            className={`${budget.spent_to_limit_ratio >= 100 ? 'bg-error' : 'bg-success'} h-4 rounded-full`}
-                                                            style={{width: `${Math.min(budget.spent_to_limit_ratio, 100)}%`}}
-                                                        ></div>
-                                                    </div>
-                                                    <p className="text-sm mt-1">{Math.round(budget.spent_to_limit_ratio)}%</p>
-                                                </div>
-                                                {index < data.budgets.budgets.length - 1 && <hr className="w-full"/>}
-                                            </div>
-                                        ))}
+                                                    ))}
+                                                </>)}
                                     </div>
                                 </MainCard>
                             </div>
@@ -204,27 +219,31 @@ const DashboardPage: React.FC = () => {
                                         className="text-text-dark relative top-0 w-full h-10 bg-secondary rounded-t-2xl flex items-center pl-5 text-left border-b-2 dark:border-background-light border-background-dark ">
                                         <p className="text-xl ">Konta</p>
                                     </div>
-                                    <div className="p-5 flex flex-col flex-1 max-h-full ">
+                                    <div className="p-5 flex flex-col flex-1 h-full ">
 
-                                        <div className="flex-1 scrollbar-custom max-h-full ">
-                                            {data.accounts.accounts.map((account, index) => (
-                                                <div key={account.id}>
-                                                    <div
-                                                        className="flex justify-between items-center flex-wrap gap-3 py-3">
-                                                        <div className="flex flex-col text-start flex-wrap ">
-                                                            <p className="font-semibold text-lg">{account.name}</p>
-                                                            <p className="text-sm">{translateAccountType(account.type)}</p>
-                                                        </div>
+                                        {data.accounts.accounts.length <= 0 ?
+                                            (<div>
+                                                Nie posiadasz żadnych kont.
+                                            </div>) :
+                                            (<div className="flex-1 scrollbar-custom max-h-full ">
+                                                {data.accounts.accounts.map((account, index) => (
+                                                    <div key={account.id}>
                                                         <div
-                                                            className={`text-2xl font-bold text-right ${account.balance > 0
-                                                                ? 'text-success' : account.balance < 0 ? 'text-error' : 'dark:text-text-dark text-text-light'}`}>{account.balance.toFixed(2)} zł
+                                                            className="flex justify-between items-center flex-wrap gap-3 py-3">
+                                                            <div className="flex flex-col text-start flex-wrap ">
+                                                                <p className="font-semibold text-lg">{account.name}</p>
+                                                                <p className="text-sm">{translateAccountType(account.type)}</p>
+                                                            </div>
+                                                            <div
+                                                                className={`text-2xl font-bold text-right ${account.balance > 0
+                                                                    ? 'text-success' : account.balance < 0 ? 'text-error' : 'dark:text-text-dark text-text-light'}`}>{account.balance.toFixed(2)} zł
+                                                            </div>
                                                         </div>
+                                                        {index < data.accounts.accounts.length - 1 &&
+                                                            <hr className="w-full"/>}
                                                     </div>
-                                                    {index < data.accounts.accounts.length - 1 &&
-                                                        <hr className="w-full"/>}
-                                                </div>
-                                            ))}
-                                        </div>
+                                                ))}
+                                            </div>)}
                                     </div>
                                 </MainCard>
                             </div>
@@ -236,10 +255,18 @@ const DashboardPage: React.FC = () => {
                                         className=" text-text-dark relative top-0 w-full h-10 bg-secondary rounded-t-2xl flex items-center pl-5 text-left border-b-2 dark:border-background-light border-background-dark ">
                                         <p className="text-xl ">Wykres wydatków</p>
                                     </div>
-                                    <div className="p-5 flex flex-col flex-1 justify-center h-full ">
-                                        <div className="aspect-square w-auto">
-                                            <SummaryByTimeChart data={data.expenses.data} interval="Daily"/>
-                                        </div>
+                                    <div className="p-5 flex flex-col flex-1 h-full ">
+
+                                        {isEmpty(data) ?
+                                            (<div>
+                                                Nie posiadasz żadnych wydatków.
+                                            </div>) :
+                                            (
+                                                <div className="p-5 flex flex-col flex-1 justify-center h-full ">
+                                                    <div className="aspect-square w-auto">
+                                                        <SummaryByTimeChart data={data.expenses.data} interval="Daily"/>
+                                                    </div>
+                                                </div>)}
                                     </div>
                                 </MainCard>
                             </div>
@@ -253,36 +280,44 @@ const DashboardPage: React.FC = () => {
                                     </div>
                                     <div className="p-5 flex flex-col flex-1 h-full ">
 
-                                        {data.transactions.transactions.map((transaction, index) => (
-                                            <div key={transaction.id}>
-                                                <div className="py-3">
-                                                    <div className="flex justify-between items-center gap-3 py-2">
-                                                        <div className="flex flex-col text-start">
-                                                            <p className="text-lg font-semibold">{transaction.category_name}</p>
-                                                            {transaction.type === "Internal" ? (
-                                                                <p className="text-sm ">
-                                                                    {transaction.account_name} &rarr; {transaction.account_2_name!}
-                                                                </p>
-                                                            ) : (
-                                                                <p className="text-sm ">{transaction.account_name}</p>
-                                                            )}
-                                                        </div>
+                                        {data.transactions.transactions.length <= 0 ?
+                                            (<div>
+                                                Nie posiadasz żadnych transakcji.
+                                            </div>) :
+                                            (
+                                                <>
+                                                    {data.transactions.transactions.map((transaction, index) => (
+                                                        <div key={transaction.id}>
+                                                            <div className="py-3">
+                                                                <div
+                                                                    className="flex justify-between items-center gap-3 py-2">
+                                                                    <div className="flex flex-col text-start">
+                                                                        <p className="text-lg font-semibold">{transaction.category_name}</p>
+                                                                        {transaction.type === "Internal" ? (
+                                                                            <p className="text-sm ">
+                                                                                {transaction.account_name} &rarr; {transaction.account_2_name!}
+                                                                            </p>
+                                                                        ) : (
+                                                                            <p className="text-sm ">{transaction.account_name}</p>
+                                                                        )}
+                                                                    </div>
 
-                                                        <div className={"flex flex-col text-end"}>
-                                                            <p className={`text-2xl font-bold ${transaction.type === 'Outcome'
-                                                                ? 'text-error' : transaction.type === 'Income' ? 'text-success' : 'text-secondary'}`}>
-                                                                {transaction.amount.toFixed(2)} zł
-                                                            </p>
-                                                            <p className="text-sm ">
-                                                                {new Date(transaction.transaction_date).toLocaleDateString('pl-PL')}
-                                                            </p>
+                                                                    <div className={"flex flex-col text-end"}>
+                                                                        <p className={`text-2xl font-bold ${transaction.type === 'Outcome'
+                                                                            ? 'text-error' : transaction.type === 'Income' ? 'text-success' : 'text-secondary'}`}>
+                                                                            {transaction.amount.toFixed(2)} zł
+                                                                        </p>
+                                                                        <p className="text-sm ">
+                                                                            {new Date(transaction.transaction_date).toLocaleDateString('pl-PL')}
+                                                                        </p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            {index < data.transactions.transactions.length - 1 &&
+                                                                <hr className="w-full"/>}
                                                         </div>
-                                                    </div>
-                                                </div>
-                                                {index < data.transactions.transactions.length - 1 &&
-                                                    <hr className="w-full"/>}
-                                            </div>
-                                        ))}
+                                                    ))}
+                                                </>)}
                                     </div>
                                 </MainCard></div>
 
