@@ -141,6 +141,17 @@ const BudgetsPage: React.FC = () => {
             </div>
         );
     };
+    const addMonth = (monthYear: string) => {
+        const [year, month] = monthYear.slice(0, 7).split('-').map(Number);
+        let newMonth = month + 1;
+        let newYear = year;
+        if (newMonth > 12) {
+            newMonth = 1;
+            newYear += 1;
+        }
+        const formattedMonth = String(newMonth).padStart(2, '0');
+        return `${newYear}-${formattedMonth}-01`;
+    };
 
 
     return (
@@ -224,6 +235,10 @@ const BudgetsPage: React.FC = () => {
                                                         {
                                                             label: "Usuń budżet",
                                                             onClick: () => handleDeleteBudget(budget.id),
+                                                        },
+                                                        {
+                                                            label: "Ustaw budżet na kolejny miesiąc",
+                                                            onClick: () => handleEditBudget(budget.id, budget.limit, addMonth(budget.month_year).slice(0, 7), budget.category_id, budget.category_name),
                                                         },
                                                     ]}
                                                 />
