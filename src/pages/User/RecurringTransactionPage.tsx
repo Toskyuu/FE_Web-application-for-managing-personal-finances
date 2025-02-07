@@ -192,7 +192,7 @@ const RecurringTransactionsPage: React.FC = () => {
                         }}
                         className="p-3 cursor-pointer rounded-2xl h-12 shadow-xl bg-surface-light dark:bg-surface-dark text-text-light dark:text-text-dark focus:outline-none transition-all duration-300 hover:brightness-90 dark:hover:brightness-125"
                     >
-                        <option value="id">ID</option>
+                        <option value="id">Data dodania</option>
                         <option value="amount">Kwota</option>
                         <option value="recurring_frequency">Częstotliwość</option>
                     </select>
