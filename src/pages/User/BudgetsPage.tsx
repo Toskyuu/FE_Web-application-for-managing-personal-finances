@@ -247,7 +247,13 @@ const BudgetsPage: React.FC = () => {
                                                     <div
                                                         className="w-full bg-background-light dark:bg-background-dark rounded-full h-4 mt-3">
                                                         <div
-                                                            className={`${budget.spent_to_limit_ratio >= 100 ? 'bg-error' : 'bg-success'} h-4 rounded-full`}
+                                                            className={`${
+                                                                budget.spent_to_limit_ratio > 100
+                                                                    ? 'bg-error'
+                                                                    : budget.spent_to_limit_ratio > 80
+                                                                        ? 'bg-senary'
+                                                                        : 'bg-success'
+                                                            } h-4 rounded-full`}
                                                             style={{width: `${Math.min(budget.spent_to_limit_ratio, 100)}%`}}
                                                         ></div>
                                                     </div>
