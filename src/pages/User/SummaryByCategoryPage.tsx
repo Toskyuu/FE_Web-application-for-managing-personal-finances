@@ -9,6 +9,7 @@ import {SummaryByCategoryChart} from "@/components";
 import {useRefresh} from "@/hooks/useRefresh.tsx";
 import Loader from "@/components/Elements/Loader/Loader.tsx";
 import {Helmet} from "react-helmet-async";
+import {useNavigate} from "react-router-dom";
 
 interface SummaryByCategoryData {
     data: {
@@ -25,12 +26,12 @@ interface SummaryByCategoryData {
 
 const SummaryByCategoryPage: React.FC = () => {
     const [data, setData] = useState<SummaryByCategoryData | null>(null);
-
     const [loading, setLoading] = useState<boolean>(true);
     const {showToast} = useToast();
     const {transactionSummaryFilters} = useFilters();
     const {openModal} = useModal();
     const {refreshKey} = useRefresh();
+    const navigate = useNavigate();
 
 
     const loadSummaryByCategory = async (filters: any) => {
@@ -59,7 +60,37 @@ const SummaryByCategoryPage: React.FC = () => {
             <div className="grid grid-cols-1 gap-6 w-full sm:w-3/4  mx-auto">
                 <h1 className="text-2xl font-bold text-center ">Wydatki i przychody według kategorii</h1>
 
-                <div className="flex justify-end">
+                <div className="flex justify-between flex-wrap gap-3">
+                    <div className="gap-3 flex flex-wrap">
+                        <button className="rounded-2xl bg-surface-light dark:bg-surface-dark hover:brightness-125 duration-300 p-3 h-12"
+                                aria-label="Przejdź do strony wykresu transakcji według czasu"
+                                onClick={() => {
+                                    navigate("/summary-by-time");
+                                }}>
+                            Transakcje według czasu
+                        </button>
+                        <button className="rounded-2xl bg-secondary text-text-dark hover:brightness-125 duration-300 p-3 h-12"
+                                aria-label="Przejdź do strony wykresu transakcji według kategorii"
+                                onClick={() => {
+                                    navigate("/summary-by-category");
+                                }}>
+                            Transakcje według kategorii
+                        </button>
+                        <button className="rounded-2xl bg-surface-light dark:bg-surface-dark hover:brightness-125 duration-300 p-3 h-12"
+                                aria-label="Przejdź do strony wykresu ogólnego podsumowanie"
+                                onClick={() => {
+                                    navigate("/summary");
+                                }}>
+                            Ogólne podsumowanie
+                        </button>
+                        <button className="rounded-2xl bg-surface-light dark:bg-surface-dark hover:brightness-125 duration-300 p-3 h-12"
+                                aria-label="Przejdź do strony wykresu transakcji skumulowanych"
+                                onClick={() => {
+                                    navigate("/cumulative");
+                                }}>
+                            Transakcje skumulowane
+                        </button>
+                    </div>
                     <DefaultButton
                         onClick={() => openModal(<FilterSummaryByCategoryForm/>)}
                         text="Filtry"
