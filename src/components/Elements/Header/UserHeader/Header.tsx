@@ -98,7 +98,7 @@ const Header: React.FC = () => {
                                                 <FontAwesomeIcon icon={faLandmark}/>
                                             </div>
                                             <div className="flex justify-end">
-                                                <p className="ml-2 flex-grow text-left">Przegląd</p>
+                                                <p className="ml-2 flex-grow text-left">Podsumowanie</p>
                                             </div>
                                         </div>
                                     </a>
