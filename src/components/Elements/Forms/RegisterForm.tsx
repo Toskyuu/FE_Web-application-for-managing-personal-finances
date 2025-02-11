@@ -45,14 +45,24 @@ const RegisterForm: React.FC = () => {
             id: "email",
             label: "Email",
             type: "email",
-            validation: {required: "Email jest wymagany"},
+            validation: {
+                required: "Email jest wymagany",
+                pattern: {
+                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                    message: "Podaj poprawny adres email"
+                }
+            }
         },
         {
             id: "password",
             label: "Hasło",
             type: "password",
-            validation: {required: "Hasło jest wymagane"}, validatePassword
-        },
+            validation: {
+                required: "Hasło jest wymagane",
+                validate: validatePassword
+            }
+        }
+
     ]
 
     return (
